@@ -14,14 +14,7 @@
         "outputPath": "dist/apps/admin-portal",
         "browser": "apps/admin-portal/src/main.ts",
         "tsConfig": "apps/admin-portal/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "apps/admin-portal/public"
-          }
-        ],
-        "styles": ["apps/admin-portal/src/styles.scss"]
+        "styles": ["apps/admin-portal/src/styles.css"]
       },
       "configurations": {
         "production": {

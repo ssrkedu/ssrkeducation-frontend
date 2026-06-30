@@ -1,11 +1,13 @@
+import { environment } from '../../../environments/environment';
+
 export const API_ROUTES = {
   public: {
-    trust: {
-      home: '/api/public/trust/home',
+    sites: {
+      resolve: '/api/public/sites/resolve',
     },
   },
 } as const;
 
 export function buildApiUrl(path: string): string {
-  return path;
+  return `${environment.apiBaseUrl}${path}`;
 }

@@ -1,0 +1,13 @@
+<section class="ssrk-stats-bar bg-ssrk-blue-primary" [attr.aria-label]="ariaLabel()">
+  <div class="ssrk-stats-bar__grid grid grid-cols-2 md:grid-cols-4">
+    @for (item of items(); track item.label) {
+      <app-stat-card [data]="item" />
+    }
+  </div>
+
+  @if (footnote()) {
+    <p class="ssrk-stats-bar__footnote border-t border-white/10 px-4 py-2.5 text-center text-[11px] leading-relaxed text-white/55 md:px-6 md:py-3 md:text-[11.5px]">
+      {{ footnote() }}
+    </p>
+  }
+</section>

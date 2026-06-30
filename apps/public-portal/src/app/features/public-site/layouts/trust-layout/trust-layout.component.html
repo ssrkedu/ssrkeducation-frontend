@@ -1,0 +1,11 @@
+<div class="flex min-h-screen flex-col">
+  <app-trust-header />
+
+  <app-mobile-nav-drawer [config]="mobileNavConfig" />
+
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+
+  <app-trust-footer />
+</div>

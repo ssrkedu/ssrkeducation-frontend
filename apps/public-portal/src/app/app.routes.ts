@@ -4,7 +4,9 @@ export const APP_ROUTES: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./features/trust/trust.routes').then((m) => m.TRUST_ROUTES),
+      import('./features/public-site/public-site.routes').then(
+        (m) => m.PUBLIC_SITE_ROUTES,
+      ),
   },
   {
     path: '**',

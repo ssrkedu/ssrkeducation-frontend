@@ -1,0 +1,17 @@
+<section class="mx-auto max-w-[1240px] px-4 py-16 lg:px-8">
+  <h1 class="font-serif text-3xl font-bold text-ssrk-text-heading">Gallery</h1>
+  <p class="mt-3 max-w-2xl text-sm text-ssrk-text-muted">
+    Campus and event photos for {{ site()?.name }} will load from the API. Mock grid
+    placeholder for now.
+  </p>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+      <div
+        class="flex aspect-[4/3] items-center justify-center rounded-sm bg-ssrk-blue-light text-sm font-medium text-ssrk-blue-primary"
+      >
+        Photo {{ item }}
+      </div>
+    }
+  </div>
+</section>

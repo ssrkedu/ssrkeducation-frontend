@@ -1,0 +1,59 @@
+<header class="sticky top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
+  <div class="mx-auto flex h-[70px] max-w-[1240px] items-center justify-between px-4 lg:px-8">
+    <a routerLink="/" class="flex items-center gap-3">
+      <div
+        class="flex h-[50px] w-[50px] items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
+      >
+        {{ site()?.name?.charAt(0) }}
+      </div>
+      <div>
+        <p class="font-serif text-lg font-bold leading-none text-ssrk-blue-primary">
+          {{ site()?.name }}
+        </p>
+        <p class="mt-0.5 text-[10px] font-medium uppercase tracking-wide text-ssrk-text-muted">
+          {{ site()?.tagline }}
+        </p>
+      </div>
+    </a>
+
+    <nav class="hidden items-center gap-6 text-sm font-medium text-ssrk-text-body lg:flex">
+      <a
+        routerLink="/"
+        routerLinkActive="text-ssrk-blue-primary"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:text-ssrk-blue-primary"
+      >
+        Home
+      </a>
+      @if (siteContext.isPageEnabled('courses')) {
+        <a
+          routerLink="/courses"
+          routerLinkActive="text-ssrk-blue-primary"
+          class="hover:text-ssrk-blue-primary"
+        >
+          Courses
+        </a>
+      }
+      @if (siteContext.isPageEnabled('scholarships')) {
+        <a
+          routerLink="/scholarships"
+          routerLinkActive="text-ssrk-blue-primary"
+          class="hover:text-ssrk-blue-primary"
+        >
+          Scholarships
+        </a>
+      }
+      @if (siteContext.isPageEnabled('gallery')) {
+        <a
+          routerLink="/gallery"
+          routerLinkActive="text-ssrk-blue-primary"
+          class="hover:text-ssrk-blue-primary"
+        >
+          Gallery
+        </a>
+      }
+    </nav>
+
+    <app-mobile-nav-hamburger />
+  </div>
+</header>
