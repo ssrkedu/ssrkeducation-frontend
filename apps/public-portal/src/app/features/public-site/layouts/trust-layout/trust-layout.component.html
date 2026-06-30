@@ -1,0 +1,18 @@
+<app-trust-header
+  [menuOpen]="mobileMenuOpen()"
+  [activeLanguage]="activeLanguage()"
+  (menuToggle)="toggleMobileMenu()"
+  (languageChange)="setLanguage($event)"
+/>
+
+  <app-mobile-nav-drawer [config]="mobileNavConfig" />
+
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+
+<main class="flex-1">
+  <router-outlet />
+</main>
+
+<app-trust-footer />

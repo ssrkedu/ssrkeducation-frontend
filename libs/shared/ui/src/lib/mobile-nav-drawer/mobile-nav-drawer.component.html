@@ -1,0 +1,138 @@
+<p-drawer
+  [visible]="mobileNav.visible()"
+  (visibleChange)="onDrawerVisibleChange($event)"
+  [position]="drawerPosition()"
+  [modal]="true"
+  [dismissible]="true"
+  [blockScroll]="true"
+  [closable]="true"
+>
+  <ng-template #headless>
+    <nav
+      class="flex h-full flex-col bg-white"
+      [attr.aria-label]="config().ariaLabel ?? 'Mobile navigation'"
+    >
+      <div class="flex items-center justify-between border-b border-ssrk-border px-5 py-4">
+        <p class="font-serif text-lg font-bold text-ssrk-blue-primary">
+          {{ config().title ?? 'Menu' }}
+        </p>
+        <button
+          type="button"
+          class="flex h-11 w-11 items-center justify-center rounded-full bg-ssrk-bg text-xl text-ssrk-text-heading"
+          aria-label="Close menu"
+          (click)="closeNav()"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-5 pb-8 pt-2">
+        @for (item of visibleItems(); track $index) {
+          @if (item.type === 'link') {
+            <div class="border-b border-ssrk-border">
+              @if (item.routerLink) {
+                <a
+                  [routerLink]="item.routerLink"
+                  routerLinkActive="text-ssrk-blue-primary"
+                  [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                  class="flex items-center justify-between py-4 text-base font-semibold text-ssrk-text-heading"
+                  (click)="closeNav()"
+                >
+                  {{ item.label }}
+                </a>
+              } @else {
+                <a
+                  [href]="item.href ?? '#'"
+                  class="flex items-center justify-between py-4 text-base font-semibold text-ssrk-text-heading"
+                  (click)="closeNav()"
+                >
+                  {{ item.label }}
+                </a>
+              }
+            </div>
+          } @else {
+            <div class="border-b border-ssrk-border">
+              <button
+                type="button"
+                class="flex w-full items-center justify-between py-4 text-left text-base font-semibold text-ssrk-text-heading"
+                (click)="toggleGroup(item, $index)"
+                [attr.aria-expanded]="isGroupOpen(item, $index)"
+              >
+                {{ item.label }}
+                <span class="text-xs" [class.rotate-180]="isGroupOpen(item, $index)">▾</span>
+              </button>
+
+              @if (isGroupOpen(item, $index)) {
+                <div class="pb-3 pl-4">
+                  @for (child of visibleChildren(item); track child.label; let last = $last) {
+                    @if (child.routerLink) {
+                      <a
+                        [routerLink]="child.routerLink"
+                        routerLinkActive="text-ssrk-blue-primary"
+                        [routerLinkActiveOptions]="{ exact: child.exact ?? false }"
+                        class="block py-2.5 text-sm text-ssrk-text-body"
+                        [class.border-b]="!last"
+                        [class.border-ssrk-bg]="!last"
+                        (click)="closeNav()"
+                      >
+                        {{ child.label }}
+                      </a>
+                    } @else {
+                      <a
+                        [href]="child.href ?? '#'"
+                        class="block py-2.5 text-sm text-ssrk-text-body"
+                        [class.border-b]="!last"
+                        [class.border-ssrk-bg]="!last"
+                        (click)="closeNav()"
+                      >
+                        {{ child.label }}
+                      </a>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          }
+        }
+
+        @if (config().cta && !config().cta!.hidden) {
+          @if (config().cta!.routerLink) {
+            <a
+              [routerLink]="config().cta!.routerLink"
+              class="mt-6 block rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-3.5 text-center text-[15px] font-bold text-white"
+              (click)="closeNav()"
+            >
+              {{ config().cta!.label }}
+            </a>
+          } @else {
+            <a
+              [href]="config().cta!.href ?? '#'"
+              class="mt-6 block rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-3.5 text-center text-[15px] font-bold text-white"
+              (click)="closeNav()"
+            >
+              {{ config().cta!.label }}
+            </a>
+          }
+        }
+
+        @if (config().contacts?.length) {
+          <div class="-mx-5 mt-6 bg-ssrk-bg px-5 py-5">
+            @for (contact of config().contacts; track contact.text) {
+              <p
+                class="flex items-center gap-2 text-[13px] text-ssrk-text-muted"
+                [class.mb-1.5]="$index < (config().contacts?.length ?? 0) - 1"
+              >
+                @if (contact.icon) {
+                  <span aria-hidden="true">{{ contact.icon }}</span>
+                }
+                {{ contact.text }}
+              </p>
+            }
+          </div>
+        }
+
+        <ng-content />
+      </div>
+    </nav>
+  </ng-template>
+</p-drawer>

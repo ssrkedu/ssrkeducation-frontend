@@ -1,0 +1,28 @@
+<section class="mx-auto max-w-[1240px] px-4 py-16 lg:px-8">
+  <p class="text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
+    Our Institutions
+  </p>
+  <h1 class="mt-2 font-serif text-3xl font-bold text-ssrk-text-heading">
+    SSRK group institutions
+  </h1>
+  <p class="mt-3 max-w-2xl text-sm text-ssrk-text-muted">
+    Each institution has its own subdomain website powered by the same public portal app.
+  </p>
+
+  <div class="mt-10 grid gap-6 md:grid-cols-2">
+    @for (institution of institutions(); track institution.id) {
+      <article class="rounded-sm border border-ssrk-border bg-white p-6 shadow-sm">
+        <h2 class="font-serif text-xl font-bold text-ssrk-text-heading">
+          {{ institution.name }}
+        </h2>
+        <p class="mt-2 text-sm text-ssrk-text-muted">{{ institution.description }}</p>
+        <a
+          class="mt-4 inline-flex text-sm font-semibold text-ssrk-blue-primary hover:underline"
+          [href]="institutionSiteUrl(institution.subdomain)"
+        >
+          Visit {{ institutionSiteHost(institution.subdomain) }}
+        </a>
+      </article>
+    }
+  </div>
+</section>

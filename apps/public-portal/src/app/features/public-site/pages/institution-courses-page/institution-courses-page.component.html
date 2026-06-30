@@ -1,0 +1,27 @@
+<section class="mx-auto max-w-[1240px] px-4 py-16 lg:px-8">
+  <p class="text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
+    {{ site()?.name }}
+  </p>
+  <h1 class="mt-2 font-serif text-3xl font-bold text-ssrk-text-heading">Courses</h1>
+  <p class="mt-3 max-w-2xl text-sm text-ssrk-text-muted">
+    Programs offered at this institution. Data is temporary mock content.
+  </p>
+
+  <div class="mt-10 grid gap-4">
+    @for (course of courses(); track course.id) {
+      <article class="rounded-sm border border-ssrk-border bg-white p-6">
+        <h2 class="font-serif text-xl font-bold text-ssrk-text-heading">
+          <a
+            class="hover:text-ssrk-blue-primary"
+            [routerLink]="['/courses', course.slug]"
+          >
+            {{ course.name }}
+          </a>
+        </h2>
+        <p class="mt-2 text-sm text-ssrk-text-muted">{{ course.description }}</p>
+      </article>
+    } @empty {
+      <p class="text-sm text-ssrk-text-muted">No courses available yet.</p>
+    }
+  </div>
+</section>
