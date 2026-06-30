@@ -1,9 +1,19 @@
-<div class="flex min-h-screen flex-col">
-  <app-trust-header />
+<app-trust-header
+  [menuOpen]="mobileMenuOpen()"
+  [activeLanguage]="activeLanguage()"
+  (menuToggle)="toggleMobileMenu()"
+  (languageChange)="setLanguage($event)"
+/>
 
-  <main class="flex-1">
-    <router-outlet />
-  </main>
+<app-trust-mobile-sidebar
+  [isOpen]="mobileMenuOpen()"
+  [activeLanguage]="activeLanguage()"
+  (closed)="closeMobileMenu()"
+  (languageChange)="setLanguage($event)"
+/>
 
-  <app-trust-footer />
-</div>
+<main class="flex-1">
+  <router-outlet />
+</main>
+
+<app-trust-footer />

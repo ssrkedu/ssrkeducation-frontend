@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@source './app/**/*.{html,ts}';
+
 @import '../../../libs/shared/design-tokens/src/lib/ssrk-tokens.css';
 
 html,

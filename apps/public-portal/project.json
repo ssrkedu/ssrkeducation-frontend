@@ -21,7 +21,7 @@
             "input": "apps/public-portal/public"
           }
         ],
-        "styles": ["apps/public-portal/src/styles.scss"]
+        "styles": ["apps/public-portal/src/styles.css"]
       },
       "configurations": {
         "production": {

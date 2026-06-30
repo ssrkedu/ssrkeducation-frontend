@@ -1,17 +1,15 @@
 import { Routes } from '@angular/router';
-import { TrustLayoutComponent } from './layout/trust-layout.component';
 
 export const TRUST_ROUTES: Routes = [
   {
     path: '',
-    component: TrustLayoutComponent,
+    loadComponent: () =>
+      import('./layout/trust-layout.component').then((m) => m.TrustLayoutComponent),
     children: [
       {
         path: '',
-        loadComponent: () =>
-          import('./pages/trust-home-page/trust-home-page.component').then(
-            (m) => m.TrustHomePageComponent,
-          ),
+        loadChildren: () =>
+          import('./home/home.routes').then((m) => m.HOME_ROUTES),
       },
     ],
   },
