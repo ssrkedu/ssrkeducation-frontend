@@ -1,0 +1,20 @@
+<app-hero-carousel [slides]="heroSlides" />
+
+<app-stats-bar
+  [items]="statsBar.items"
+  [footnote]="statsBar.footnote"
+  [ariaLabel]="statsBar.ariaLabel ?? 'Key statistics'"
+/>
+
+<app-trust-about-section [content]="about" />
+
+<app-trust-institutions-section [content]="institutions()" />
+
+<app-trust-enquiry-section [collegeOptions]="enquiryCollegeOptions()" />
+
+<p-scrollTop
+  [threshold]="400"
+  behavior="smooth"
+  buttonAriaLabel="Scroll to top"
+  styleClass="ssrk-scroll-top"
+/> 

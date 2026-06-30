@@ -1,10 +1,10 @@
 import { Component, input } from '@angular/core';
-import { StatCardComponent } from '../stat-card/stat-card.component';
-import { StatCardData } from '../stat-card/stat-card.types';
+import { SsrkCardComponent } from '../ssrk-card/ssrk-card.component';
+import { StatCardData } from './stats-bar.types';
 
 @Component({
   selector: 'app-stats-bar',
-  imports: [StatCardComponent],
+  imports: [SsrkCardComponent],
   templateUrl: './stats-bar.component.html',
 })
 export class StatsBarComponent {

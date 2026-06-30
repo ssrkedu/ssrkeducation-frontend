@@ -1,16 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, delay, map, of } from 'rxjs';
 import { API_ROUTES, buildApiUrl } from '../api/api.routes';
-import {
-  MOCK_COURSES,
-  MOCK_INSTITUTIONS,
-  MOCK_SITE_REGISTRY,
-} from './mock/public-site.mock-data';
-import {
-  CourseSummary,
-  InstitutionSummary,
-  SiteContext,
-} from './site-context.model';
+import { MOCK_COURSES, MOCK_SITE_REGISTRY } from './mock/public-site.mock-data';
+import { CourseSummary, SiteContext } from './site-context.model';
 import { resolveTenantKeyFromHost } from './site-host.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -44,10 +36,6 @@ export class SiteResolverService {
       logoUrl: null,
       enabledPages: ['home', 'courses', 'scholarships', 'gallery'],
     };
-  }
-
-  getInstitutions(): Observable<InstitutionSummary[]> {
-    return of(MOCK_INSTITUTIONS).pipe(delay(100));
   }
 
   getCoursesForInstitution(institutionId: string): Observable<CourseSummary[]> {

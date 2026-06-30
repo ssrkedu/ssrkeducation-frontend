@@ -1,7 +1,26 @@
 <section class="ssrk-stats-bar bg-ssrk-blue-primary" [attr.aria-label]="ariaLabel()">
   <div class="ssrk-stats-bar__grid grid grid-cols-2 md:grid-cols-4">
     @for (item of items(); track item.label) {
-      <app-stat-card [data]="item" />
+      <app-ssrk-card variant="stat">
+        <div class="ssrk-stat-card__body text-center">
+          <p
+            class="ssrk-stat-card__value font-serif font-bold leading-none text-white"
+            [class.ssrk-stat-card__value--compact]="item.valueSize === 'compact'"
+          >
+            {{ item.value }}
+            @if (item.accent) {
+              @if (item.accentPosition === 'inline') {
+                <span class="text-ssrk-saffron-light"> {{ item.accent }}</span>
+              } @else {
+                <span class="text-ssrk-saffron-light">{{ item.accent }}</span>
+              }
+            }
+          </p>
+          <p class="ssrk-stat-card__label mt-1 text-[10.5px] font-semibold uppercase tracking-wide text-white/70">
+            {{ item.label }}
+          </p>
+        </div>
+      </app-ssrk-card>
     }
   </div>
 

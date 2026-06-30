@@ -5,6 +5,9 @@ export const API_ROUTES = {
     sites: {
       resolve: '/api/public/sites/resolve',
     },
+    institutions: {
+      list: '/api/public/institutions',
+    },
   },
 } as const;
 

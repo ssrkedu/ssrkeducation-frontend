@@ -50,4 +50,4 @@ npm run test
 
 ## Next step
 
-Implement the **trust home page** in `apps/public-portal/src/app/features/trust/pages/trust-home-page/` using the HTML reference at `ssrkeducation-design-ref/education-website/trust/index.html`.
+Implement the **trust home page** in `apps/public-portal/src/app/features/public-site/home/pages/trust-home-page/` using the HTML reference at `ssrkeducation-design-ref/education-website/trust/index.html`.

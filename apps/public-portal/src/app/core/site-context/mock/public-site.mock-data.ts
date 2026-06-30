@@ -1,8 +1,4 @@
-import {
-  CourseSummary,
-  InstitutionSummary,
-  SiteContext,
-} from '../site-context.model';
+import { CourseSummary, SiteContext } from '../site-context.model';
 
 /** Temporary mock registry until GET /api/public/sites/resolve is available. */
 export const MOCK_SITE_REGISTRY: Record<string, SiteContext> = {
@@ -37,26 +33,6 @@ export const MOCK_SITE_REGISTRY: Record<string, SiteContext> = {
     enabledPages: ['home', 'courses', 'scholarships', 'gallery'],
   },
 };
-
-export const MOCK_INSTITUTIONS: InstitutionSummary[] = [
-  {
-    id: 'inst-ssrkdc',
-    code: 'ssrkdc',
-    subdomain: 'ssrkdc',
-    name: 'SSRK Degree College',
-    description:
-      'Undergraduate programs in arts, science, commerce, and management.',
-    logoUrl: null,
-  },
-  {
-    id: 'inst-ssrkjc',
-    code: 'ssrkjc',
-    subdomain: 'ssrkjc',
-    name: 'SSRK Junior College',
-    description: 'Plus-two programs preparing students for higher education.',
-    logoUrl: null,
-  },
-];
 
 export const MOCK_COURSES: CourseSummary[] = [
   {

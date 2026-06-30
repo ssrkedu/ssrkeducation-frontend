@@ -1,0 +1,82 @@
+@let section = content();
+
+<section id="institutions" class="bg-ssrk-bg py-16 md:py-[88px]" aria-labelledby="institutions-heading">
+  <div class="mx-auto max-w-[1240px] px-4 lg:px-8">
+    <div class="text-center">
+      <p class="text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
+        {{ section.sectionLabel }}
+      </p>
+      <h2
+        id="institutions-heading"
+        class="mt-2 font-serif text-[clamp(22px,4vw,32px)] font-bold text-ssrk-text-heading"
+      >
+        {{ section.title }}
+        @if (section.titleAccent) {
+          <span class="text-ssrk-blue-primary">{{ section.titleAccent }}</span>
+        }
+      </h2>
+      <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-ssrk-text-muted">
+        {{ section.description }}
+      </p>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      @for (card of section.cards; track card.name) {
+        <app-ssrk-card variant="interactive">
+          <article class="flex h-full flex-col gap-2.5 p-6">
+            <div
+              class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[10px]"
+              [style.background-color]="card.iconBackgroundColor"
+              aria-hidden="true"
+            >
+              @switch (card.icon) {
+                @case ('degree') {
+                  <svg class="h-[26px] w-[26px]" viewBox="0 0 24 24" fill="none" [attr.stroke]="card.iconStrokeColor" stroke-width="1.7" stroke-linecap="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                  </svg>
+                }
+                @case ('junior-college') {
+                  <svg class="h-[26px] w-[26px]" viewBox="0 0 24 24" fill="none" [attr.stroke]="card.iconStrokeColor" stroke-width="1.7" stroke-linecap="round">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                }
+              }
+            </div>
+
+            <h3 class="font-serif text-base font-bold leading-snug text-ssrk-text-heading">
+              {{ card.name }}
+            </h3>
+
+            <p class="text-xs leading-relaxed text-ssrk-text-muted">
+              {{ card.coursesLine }}
+              @if (card.programsLine) {
+                <br />
+                {{ card.programsLine }}
+              }
+            </p>
+
+            <a
+              class="group/link mt-auto inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
+              [href]="card.href"
+            >
+              {{ card.linkLabel ?? 'Visit College' }}
+              <svg
+                class="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </article>
+        </app-ssrk-card>
+      }
+    </div>
+  </div>
+</section>

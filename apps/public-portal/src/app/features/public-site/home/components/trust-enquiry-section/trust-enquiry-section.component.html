@@ -1,0 +1,38 @@
+@let section = content();
+
+<section
+  id="enquiry"
+  class="ssrk-enquiry-section relative overflow-hidden bg-gradient-to-br from-ssrk-blue-deep to-ssrk-blue-primary px-4 py-16 md:py-[88px] lg:px-8"
+  aria-labelledby="enquiry-heading"
+>
+  <div class="pointer-events-none absolute -right-24 -top-24 h-[360px] w-[360px] rounded-full border-[80px] border-white/5"></div>
+  <div class="pointer-events-none absolute bottom-[-70px] left-[15%] h-[240px] w-[240px] rounded-full border-[60px] border-white/[0.04]"></div>
+
+  <div class="relative z-[1] mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[1fr_420px] lg:items-center lg:gap-16">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/65">
+        {{ section.sectionLabel }}
+      </p>
+      <h2
+        id="enquiry-heading"
+        class="mt-2 font-serif text-[clamp(22px,4vw,34px)] font-bold leading-tight text-white"
+      >
+        {{ section.title }}
+      </h2>
+      <p class="mt-3 text-[15px] leading-relaxed text-white/80">
+        {{ section.description }}
+      </p>
+
+      <ul class="mt-6 flex flex-col gap-2.5">
+        @for (highlight of section.highlights; track highlight) {
+          <li class="flex items-center gap-2.5 text-sm text-white/88">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-ssrk-saffron-light" aria-hidden="true"></span>
+            {{ highlight }}
+          </li>
+        }
+      </ul>
+    </div>
+
+    <app-enquiry-form [collegeOptions]="collegeOptions()" />
+  </div>
+</section>

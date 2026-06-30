@@ -1,0 +1,128 @@
+<form
+  class="ssrk-enquiry-form rounded-ssrk-lg bg-white p-6 shadow-[0_8px_24px_rgba(0,0,0,0.13)] md:p-7"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  novalidate
+>
+  <h3 class="mb-5 font-serif text-[19px] font-bold text-ssrk-text-heading">
+    {{ title() }}
+  </h3>
+
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div class="ssrk-enquiry-form__field">
+      <label class="ssrk-enquiry-form__label" for="enquiry-first-name">First Name</label>
+      <input
+        pInputText
+        id="enquiry-first-name"
+        type="text"
+        formControlName="firstName"
+        placeholder="Ramesh"
+        autocomplete="given-name"
+        class="w-full"
+        fluid
+        [invalid]="isInvalid('firstName')"
+      />
+    </div>
+
+    <div class="ssrk-enquiry-form__field">
+      <label class="ssrk-enquiry-form__label" for="enquiry-last-name">Last Name</label>
+      <input
+        pInputText
+        id="enquiry-last-name"
+        type="text"
+        formControlName="lastName"
+        placeholder="Patra"
+        autocomplete="family-name"
+        class="w-full"
+        fluid
+        [invalid]="isInvalid('lastName')"
+      />
+    </div>
+  </div>
+
+  <div class="ssrk-enquiry-form__field">
+    <label class="ssrk-enquiry-form__label" for="enquiry-phone">Mobile Number</label>
+    <input
+      pInputText
+      id="enquiry-phone"
+      type="tel"
+      formControlName="phone"
+      placeholder="+91 98765 43210"
+      autocomplete="tel"
+      class="w-full"
+      fluid
+      [invalid]="isInvalid('phone')"
+    />
+  </div>
+
+  <div class="ssrk-enquiry-form__field">
+    <label class="ssrk-enquiry-form__label" for="enquiry-email">Email Address</label>
+    <input
+      pInputText
+      id="enquiry-email"
+      type="email"
+      formControlName="email"
+      placeholder="ramesh@email.com"
+      autocomplete="email"
+      class="w-full"
+      fluid
+      [invalid]="isInvalid('email')"
+    />
+  </div>
+
+  <div class="ssrk-enquiry-form__field">
+    <label class="ssrk-enquiry-form__label" for="enquiry-college">Interested College</label>
+    <p-select
+      inputId="enquiry-college"
+      formControlName="collegeCode"
+      [options]="collegeOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select a College"
+      styleClass="ssrk-enquiry-form__select w-full"
+      [invalid]="isInvalid('collegeCode')"
+    />
+  </div>
+
+  <div class="ssrk-enquiry-form__field">
+    <label class="ssrk-enquiry-form__label" for="enquiry-interests">
+      What would you like to know about?
+    </label>
+    <p-multiselect
+      inputId="enquiry-interests"
+      formControlName="interests"
+      [options]="interestOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select topics..."
+      [displaySelectedLabel]="false"
+      styleClass="ssrk-enquiry-form__multiselect w-full"
+      [invalid]="isInvalid('interests')"
+    />
+
+    @if (selectedInterestPills().length > 0) {
+      <div class="ssrk-enquiry-form__pills mt-3 flex flex-wrap gap-1.5">
+        @for (pill of selectedInterestPills(); track pill.value) {
+          <p-chip
+            [label]="pill.label"
+            [removable]="true"
+            styleClass="ssrk-enquiry-form__pill"
+            (onRemove)="removeInterest(pill.value, $event)"
+          />
+        }
+      </div>
+    }
+  </div>
+
+  <p-button
+    type="submit"
+    [label]="submitSuccess() ? 'Enquiry Submitted!' : submitLabel()"
+    [loading]="submitting()"
+    [disabled]="submitting()"
+    styleClass="ssrk-enquiry-form__submit w-full"
+  />
+
+  <p class="mt-2.5 text-center text-[11px] text-ssrk-text-muted">
+    {{ privacyNote() }}
+  </p>
+</form>

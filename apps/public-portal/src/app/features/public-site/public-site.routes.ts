@@ -1,71 +1,34 @@
 import { Routes } from '@angular/router';
-import { PublicSiteLayoutRouterComponent } from './layouts/public-site-layout-router/public-site-layout-router.component';
-import {
-  institutionPageGuard,
-  institutionSiteGuard,
-  trustSiteGuard,
-} from './public-site.guards';
+import { PublicSiteLayoutComponent } from './layout/public-site-layout.component';
+import { trustSiteGuard } from './public-site.guards';
 
 export const PUBLIC_SITE_ROUTES: Routes = [
   {
     path: '',
-    component: PublicSiteLayoutRouterComponent,
+    component: PublicSiteLayoutComponent,
     children: [
       {
         path: '',
-        canMatch: [trustSiteGuard],
-        loadComponent: () =>
-          import('./pages/trust-home-page/trust-home-page.component').then(
-            (m) => m.TrustHomePageComponent,
-          ),
-      },
-      {
-        path: '',
-        canMatch: [institutionSiteGuard],
-        loadComponent: () =>
-          import('./pages/institution-home-page/institution-home-page.component').then(
-            (m) => m.InstitutionHomePageComponent,
-          ),
+        loadChildren: () => import('./home/home.routes').then((m) => m.HOME_ROUTES),
       },
       {
         path: 'institutions',
         canMatch: [trustSiteGuard],
-        loadComponent: () =>
-          import('./pages/institutions-page/institutions-page.component').then(
-            (m) => m.InstitutionsPageComponent,
-          ),
+        loadChildren: () =>
+          import('./institutions/institutions.routes').then((m) => m.INSTITUTIONS_ROUTES),
       },
       {
         path: 'courses',
-        canMatch: [institutionPageGuard('courses')],
-        loadComponent: () =>
-          import('./pages/institution-courses-page/institution-courses-page.component').then(
-            (m) => m.InstitutionCoursesPageComponent,
-          ),
-      },
-      {
-        path: 'courses/:courseSlug',
-        canMatch: [institutionPageGuard('courses')],
-        loadComponent: () =>
-          import(
-            './pages/institution-course-detail-page/institution-course-detail-page.component'
-          ).then((m) => m.InstitutionCourseDetailPageComponent),
+        loadChildren: () => import('./courses/courses.routes').then((m) => m.COURSES_ROUTES),
       },
       {
         path: 'scholarships',
-        canMatch: [institutionPageGuard('scholarships')],
-        loadComponent: () =>
-          import(
-            './pages/institution-scholarships-page/institution-scholarships-page.component'
-          ).then((m) => m.InstitutionScholarshipsPageComponent),
+        loadChildren: () =>
+          import('./scholarships/scholarships.routes').then((m) => m.SCHOLARSHIPS_ROUTES),
       },
       {
         path: 'gallery',
-        canMatch: [institutionPageGuard('gallery')],
-        loadComponent: () =>
-          import('./pages/institution-gallery-page/institution-gallery-page.component').then(
-            (m) => m.InstitutionGalleryPageComponent,
-          ),
+        loadChildren: () => import('./gallery/gallery.routes').then((m) => m.GALLERY_ROUTES),
       },
       {
         path: '**',

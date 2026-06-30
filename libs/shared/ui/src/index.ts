@@ -1,3 +1,5 @@
+export * from './lib/enquiry-form/enquiry-form.component';
+export * from './lib/enquiry-form/enquiry-form.types';
 export * from './lib/hero-carousel/hero-carousel.component';
 export * from './lib/hero-carousel/hero-carousel.types';
 export * from './lib/loader/loader.component';
@@ -5,7 +7,7 @@ export * from './lib/mobile-nav-drawer/mobile-nav-drawer.component';
 export * from './lib/mobile-nav-drawer/mobile-nav-drawer.service';
 export * from './lib/mobile-nav-drawer/mobile-nav-drawer.types';
 export * from './lib/mobile-nav-drawer/mobile-nav-hamburger.component';
-export * from './lib/stat-card/stat-card.component';
-export * from './lib/stat-card/stat-card.types';
+export * from './lib/ssrk-card/ssrk-card.component';
+export * from './lib/ssrk-card/ssrk-card.types';
 export * from './lib/stats-bar/stats-bar.component';
 export * from './lib/stats-bar/stats-bar.types';
