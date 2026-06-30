@@ -243,6 +243,18 @@ body {
   }
 }
 
+.ssrk-founder-card::before {
+  content: '"';
+  position: absolute;
+  top: -24px;
+  left: 14px;
+  font-family: var(--font-serif);
+  font-size: 130px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
 .ssrk-scroll-top.p-scrolltop {
   right: 16px;
   bottom: 22px;

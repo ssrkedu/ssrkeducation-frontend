@@ -1,9 +1,5 @@
-<app-trust-header
-  [menuOpen]="mobileMenuOpen()"
-  [activeLanguage]="activeLanguage()"
-  (menuToggle)="toggleMobileMenu()"
-  (languageChange)="setLanguage($event)"
-/>
+<div class="flex min-h-screen flex-col">
+  <app-trust-header />
 
   <app-mobile-nav-drawer [config]="mobileNavConfig" />
 
@@ -11,8 +7,5 @@
     <router-outlet />
   </main>
 
-<main class="flex-1">
-  <router-outlet />
-</main>
-
-<app-trust-footer />
+  <app-trust-footer />
+</div>
