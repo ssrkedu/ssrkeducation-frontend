@@ -5,4 +5,5 @@ export const TRUST_MOBILE_ENQUIRE_CONFIG: MobileEnquireBarConfig = {
   routerLink: '/',
   fragment: 'enquiry',
   hideWhenSectionId: 'enquiry',
+  visibleOnlyOnRoutes: ['/', '/institutions'],
 };

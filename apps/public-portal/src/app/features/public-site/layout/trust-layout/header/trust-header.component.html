@@ -1,38 +1,38 @@
-<header #headerRef class="fixed inset-x-0 top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
-  <div class="mx-auto flex min-h-[70px] max-w-[1240px] items-center justify-between gap-3 px-4 py-2 lg:px-8">
-    <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-3">
+<header #headerRef class="fixed inset-x-0 top-0 z-50 max-w-full border-b border-ssrk-border bg-white shadow-sm">
+  <div class="mx-auto flex min-h-[70px] w-full min-w-0 max-w-[1240px] items-center justify-between gap-3 px-4 py-2 lg:px-8">
+    <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-3 lg:max-w-[300px] xl:max-w-[360px]">
       <div
         class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
       >
         S
       </div>
-      <div class="min-w-0">
-        <p class="font-serif text-lg font-bold leading-snug text-ssrk-blue-primary">
+      <div class="min-w-0 flex-1">
+        <p class="truncate font-serif text-lg font-bold leading-snug text-ssrk-blue-primary">
           {{ site()?.name }}
         </p>
-        <p class="mt-0.5 text-[10px] font-medium uppercase leading-snug tracking-wide text-ssrk-text-muted">
+        <p class="mt-0.5 truncate text-[10px] font-medium uppercase leading-snug tracking-wide text-ssrk-text-muted">
           {{ site()?.tagline }}
         </p>
       </div>
     </a>
 
-    <nav class="hidden flex-1 items-center justify-end gap-1 text-[13.5px] font-semibold text-ssrk-text-heading lg:flex">
+    <nav class="hidden min-w-0 flex-1 flex-nowrap items-center justify-end gap-0.5 whitespace-nowrap text-[13.5px] font-semibold text-ssrk-text-heading xl:gap-1 lg:flex">
       <a
         routerLink="/"
         routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary"
+        class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
       >
         Home
       </a>
-      <a href="#about" class="rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
+      <a href="#about" class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3">
         About Us
       </a>
-      <div class="group relative">
+      <div class="group relative shrink-0">
         <a
           routerLink="/institutions"
           routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
-          class="flex items-center gap-1 rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary"
+          class="flex items-center gap-1 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
         >
           Institutions
           <span class="text-[9px] transition-transform group-hover:rotate-180">▾</span>
@@ -49,28 +49,28 @@
             </a>
           </li>
           <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
+            <a [href]="degreeCollegeUrl" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
               Sri Sai Rama Krishna Degree College
             </a>
           </li>
           <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
+            <a [href]="juniorCollegeUrl" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
               Sri Sai Rama Krishna Junior College (+2)
             </a>
           </li>
         </ul>
       </div>
-      <a href="#" class="rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-primary hover:text-white">
+      <a href="#" class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-primary hover:text-white xl:px-3">
         Admin Portal
       </a>
       <app-lang-toggle
-        class="ml-1.5"
+        class="ml-1 shrink-0 xl:ml-1.5"
         [value]="siteLanguage.language()"
         (valueChange)="siteLanguage.setLanguage($event)"
       />
       <a
         href="#enquiry"
-        class="ml-1.5 rounded-ssrk-sm bg-ssrk-blue-primary px-5 py-2 font-bold text-white hover:bg-ssrk-blue-deep"
+        class="ml-1 shrink-0 rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-2 font-bold text-white hover:bg-ssrk-blue-deep xl:ml-1.5 xl:px-5"
       >
         Enquire Now
       </a>

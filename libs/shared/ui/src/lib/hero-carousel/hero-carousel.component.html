@@ -1,6 +1,6 @@
 @let carouselOptions = resolvedOptions();
 
-<section class="ssrk-hero-carousel-wrap" [attr.aria-label]="carouselOptions.ariaLabel">
+<section class="ssrk-hero-carousel-wrap w-full max-w-full overflow-x-clip" [attr.aria-label]="carouselOptions.ariaLabel">
   <p-carousel
     [value]="slides()"
     [numVisible]="1"
@@ -28,25 +28,25 @@
           aria-hidden="true"
         ></div>
 
-        <div class="relative z-[2] mx-auto w-full max-w-[1240px] px-4 md:px-6 lg:px-8">
-          <div class="max-w-[700px] text-white">
+        <div class="relative z-[2] mx-auto w-full min-w-0 max-w-[1240px] px-4 md:px-6 lg:px-8">
+          <div class="max-w-[700px] min-w-0 text-white">
             <span
-              class="mb-[18px] inline-block rounded-[20px] border border-white/30 bg-white/15 px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[2px] text-white/90"
+              class="mb-[18px] inline-block max-w-full rounded-[20px] border border-white/30 bg-white/15 px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[2px] text-white/90"
             >
               {{ slide.badge }}
             </span>
 
             <h1
-              class="mb-3.5 font-serif text-[clamp(24px,5.5vw,54px)] font-bold leading-[1.13] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.35)]"
+              class="mb-3.5 max-w-full break-words font-serif text-[clamp(24px,5.5vw,54px)] font-bold leading-[1.13] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.35)]"
             >
               {{ slide.title }}
             </h1>
 
-            <p class="mb-7 max-w-[520px] text-[clamp(13px,2.5vw,17px)] leading-relaxed text-white/85">
+            <p class="mb-7 max-w-[520px] break-words text-[clamp(13px,2.5vw,17px)] leading-relaxed text-white/85">
               {{ slide.description }}
             </p>
 
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex min-w-0 max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               @if (visibleAction(slide.primaryAction)) {
                 @if (slide.primaryAction.routerLink) {
                   <a

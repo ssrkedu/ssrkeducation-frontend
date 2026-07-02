@@ -59,7 +59,7 @@ export class MobileEnquireBarComponent {
       )
       .subscribe(() => {
         this.observer?.disconnect();
-        this.enquireService.barVisible.set(true);
+        this.enquireService.barVisible.set(this.isVisibleRoute());
         requestAnimationFrame(() => this.observeTargetSection());
       });
 
@@ -115,6 +115,13 @@ export class MobileEnquireBarComponent {
   }
 
   private observeTargetSection(): void {
+    this.observer?.disconnect();
+
+    if (!this.isVisibleRoute()) {
+      this.enquireService.barVisible.set(false);
+      return;
+    }
+
     const sectionId = this.config().hideWhenSectionId;
     if (!sectionId) {
       this.enquireService.barVisible.set(true);
@@ -137,5 +144,15 @@ export class MobileEnquireBarComponent {
     );
 
     this.observer.observe(section);
+  }
+
+  private isVisibleRoute(): boolean {
+    const visibleRoutes = this.config().visibleOnlyOnRoutes;
+    if (!visibleRoutes?.length) {
+      return true;
+    }
+
+    const currentPath = this.router.url.split(/[?#]/, 1)[0] || '/';
+    return visibleRoutes.includes(currentPath);
   }
 }

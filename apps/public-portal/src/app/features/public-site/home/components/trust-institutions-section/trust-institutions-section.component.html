@@ -1,31 +1,31 @@
 @let section = content();
 
-<section id="institutions" class="bg-ssrk-bg py-16 md:py-[88px]" aria-labelledby="institutions-heading">
-  <div class="mx-auto max-w-[1240px] px-4 lg:px-8">
-    <div class="text-center">
+<section id="institutions" class="w-full max-w-full overflow-x-clip bg-ssrk-bg py-16 md:py-[88px]" aria-labelledby="institutions-heading">
+  <div class="mx-auto w-full min-w-0 max-w-[1240px] px-4 sm:px-6 lg:px-8">
+    <div class="min-w-0 text-center">
       <p class="text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
         {{ section.sectionLabel }}
       </p>
       <h2
         id="institutions-heading"
-        class="mt-2 font-serif text-[clamp(22px,4vw,32px)] font-bold text-ssrk-text-heading"
+        class="mt-2 max-w-full break-words font-serif text-[clamp(22px,4vw,32px)] font-bold leading-tight text-ssrk-text-heading"
       >
         {{ section.title }}
         @if (section.titleAccent) {
-          <span class="text-ssrk-blue-primary">{{ section.titleAccent }}</span>
+          <span class="block text-ssrk-blue-primary sm:inline">{{ section.titleAccent }}</span>
         }
       </h2>
-      <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-ssrk-text-muted">
+      <p class="mx-auto mt-3 max-w-xl break-words text-sm leading-relaxed text-ssrk-text-muted">
         {{ section.description }}
       </p>
     </div>
 
     <div
-      class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,400px))] lg:justify-center lg:gap-6"
+      class="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,400px))] lg:justify-center lg:gap-6"
     >
       @for (card of section.cards; track card.name) {
-        <app-ssrk-card variant="interactive" class="block h-full w-full">
-          <article class="flex h-full flex-col gap-2.5 p-6">
+        <app-ssrk-card variant="interactive" class="block h-full w-full min-w-0 max-w-full">
+          <article class="flex h-full min-w-0 flex-col gap-2.5 p-6">
             <div
               class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[10px]"
               [style.background-color]="card.iconBackgroundColor"
@@ -47,11 +47,11 @@
               }
             </div>
 
-            <h3 class="font-serif text-base font-bold leading-snug text-ssrk-text-heading">
+            <h3 class="min-w-0 break-words font-serif text-base font-bold leading-snug text-ssrk-text-heading">
               {{ card.name }}
             </h3>
 
-            <p class="text-xs leading-relaxed text-ssrk-text-muted">
+            <p class="min-w-0 break-words text-xs leading-relaxed text-ssrk-text-muted">
               {{ card.coursesLine }}
               @if (card.programsLine) {
                 <br />
@@ -60,7 +60,7 @@
             </p>
 
             <a
-              class="group/link mt-auto inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
+              class="group/link mt-auto inline-flex max-w-full items-center gap-1.5 break-words text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
               [href]="card.href"
             >
               {{ card.linkLabel ?? 'Visit College' }}
