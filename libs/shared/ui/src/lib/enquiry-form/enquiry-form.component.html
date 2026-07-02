@@ -1,14 +1,14 @@
 <form
-  class="ssrk-enquiry-form rounded-ssrk-lg bg-white p-6 shadow-[0_8px_24px_rgba(0,0,0,0.13)] md:p-7"
+  class="ssrk-enquiry-form w-full min-w-0 max-w-full rounded-ssrk-lg bg-white p-6 shadow-[0_8px_24px_rgba(0,0,0,0.13)] md:p-7"
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   novalidate
 >
-  <h3 class="mb-5 font-serif text-[19px] font-bold text-ssrk-text-heading">
+  <h3 class="mb-5 break-words font-serif text-[19px] font-bold text-ssrk-text-heading">
     {{ title() }}
   </h3>
 
-  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+  <div class="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
     <div class="ssrk-enquiry-form__field">
       <label class="ssrk-enquiry-form__label" for="enquiry-first-name">First Name</label>
       <input
@@ -101,7 +101,7 @@
     />
 
     @if (selectedInterestPills().length > 0) {
-      <div class="ssrk-enquiry-form__pills mt-3 flex flex-wrap gap-1.5">
+      <div class="ssrk-enquiry-form__pills mt-3 flex min-w-0 flex-wrap gap-1.5">
         @for (pill of selectedInterestPills(); track pill.value) {
           <p-chip
             [label]="pill.label"

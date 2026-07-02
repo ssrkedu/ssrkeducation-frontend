@@ -26,7 +26,7 @@ import { MobileNavDrawerService } from '../services/mobile-nav-drawer.service';
 export class MobileNavDrawerComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   protected readonly mobileNav = inject(MobileNavDrawerService);
-  protected readonly drawerPosition = signal<'left' | 'full'>('left');
+  protected readonly drawerPosition = signal<'right' | 'full'>('right');
   protected readonly expandedGroups = signal<Record<string, boolean>>({});
 
   readonly config = input.required<MobileNavDrawerConfig>();
@@ -44,7 +44,7 @@ export class MobileNavDrawerComponent implements OnInit {
     );
 
     const syncDrawerMode = (): void => {
-      this.drawerPosition.set(compactDrawerQuery.matches ? 'full' : 'left');
+      this.drawerPosition.set(compactDrawerQuery.matches ? 'full' : 'right');
 
       if (desktopNavQuery.matches) {
         this.mobileNav.close();

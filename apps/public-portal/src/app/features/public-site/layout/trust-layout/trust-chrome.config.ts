@@ -1,3 +1,5 @@
+import { buildTenantSiteUrl } from '../../../../core/site-context/public-site-url.utils';
+
 export type TrustLanguage = 'en' | 'od';
 
 export interface TrustNavChildLink {
@@ -18,8 +20,8 @@ export interface TrustFooterLink {
 }
 
 export const TRUST_INSTITUTION_LINKS: TrustNavChildLink[] = [
-  { label: 'Sri Sai Rama Krishna Degree College', href: '#' },
-  { label: 'Sri Sai Rama Krishna Junior College (+2)', href: '#' },
+  { label: 'Sri Sai Rama Krishna Degree College', href: buildTenantSiteUrl('ssrkdc') },
+  { label: 'Sri Sai Rama Krishna Junior College (+2)', href: buildTenantSiteUrl('ssrkjc') },
 ];
 
 export const TRUST_MAIN_NAV_LINKS: TrustNavLink[] = [

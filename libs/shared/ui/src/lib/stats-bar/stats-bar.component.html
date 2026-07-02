@@ -1,7 +1,7 @@
-<section class="ssrk-stats-bar bg-ssrk-blue-primary" [attr.aria-label]="ariaLabel()">
-  <div class="ssrk-stats-bar__grid grid grid-cols-2 md:grid-cols-4">
+<section class="ssrk-stats-bar w-full max-w-full overflow-x-clip bg-ssrk-blue-primary" [attr.aria-label]="ariaLabel()">
+  <div class="ssrk-stats-bar__grid grid min-w-0 grid-cols-2 md:grid-cols-4">
     @for (item of items(); track item.label) {
-      <app-ssrk-card variant="stat">
+      <app-ssrk-card variant="stat" class="min-w-0">
         <div class="ssrk-stat-card__body text-center">
           <p
             class="ssrk-stat-card__value font-serif font-bold leading-none text-white"
@@ -16,7 +16,7 @@
               }
             }
           </p>
-          <p class="ssrk-stat-card__label mt-1 text-[10.5px] font-semibold uppercase tracking-wide text-white/70">
+          <p class="ssrk-stat-card__label mt-1 break-words text-[10.5px] font-semibold uppercase tracking-wide text-white/70">
             {{ item.label }}
           </p>
         </div>

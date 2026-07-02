@@ -4,4 +4,5 @@ export interface MobileEnquireBarConfig {
   href?: string;
   fragment?: string;
   hideWhenSectionId?: string;
+  visibleOnlyOnRoutes?: string[];
 }

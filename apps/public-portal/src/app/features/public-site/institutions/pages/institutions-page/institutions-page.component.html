@@ -1,25 +1,25 @@
-<section class="mx-auto max-w-[1240px] px-4 py-16 lg:px-8">
-  <p class="text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
+<section class="mx-auto w-full min-w-0 max-w-[1240px] overflow-x-clip px-4 py-16 sm:px-6 lg:px-8">
+  <p class="break-words text-xs font-bold uppercase tracking-[0.25em] text-ssrk-blue-primary">
     Our Institutions
   </p>
-  <h1 class="mt-2 font-serif text-3xl font-bold text-ssrk-text-heading">
+  <h1 class="mt-2 break-words font-serif text-3xl font-bold leading-tight text-ssrk-text-heading">
     Sri Sai Rama Krishna group institutions
   </h1>
-  <p class="mt-3 max-w-2xl text-sm text-ssrk-text-muted">
+  <p class="mt-3 max-w-2xl break-words text-sm text-ssrk-text-muted">
     Each institution has its own dedicated website with admissions, courses, and campus information.
   </p>
 
   <div
-    class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,400px))] lg:justify-center lg:gap-6"
+    class="mt-10 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,400px))] lg:justify-center lg:gap-6"
   >
     @for (card of institutionCards(); track card.institution.id) {
       <a
         [href]="card.siteUrl"
-        class="group block h-full text-inherit no-underline"
+        class="group block h-full min-w-0 max-w-full text-inherit no-underline"
         [attr.aria-label]="'Visit ' + card.institution.name + ' website'"
       >
-        <app-ssrk-card variant="interactive" class="block h-full w-full">
-          <article class="flex h-full flex-col gap-2.5 p-6">
+        <app-ssrk-card variant="interactive" class="block h-full w-full min-w-0 max-w-full">
+          <article class="flex h-full min-w-0 flex-col gap-2.5 p-6">
             @if (card.presentation) {
               <div
                 class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[10px]"
@@ -43,16 +43,16 @@
               </div>
             }
 
-            <h2 class="font-serif text-base font-bold leading-snug text-ssrk-text-heading">
+            <h2 class="min-w-0 break-words font-serif text-base font-bold leading-snug text-ssrk-text-heading">
               {{ card.institution.name }}
             </h2>
 
-            <p class="text-xs leading-relaxed text-ssrk-text-muted">
+            <p class="min-w-0 break-words text-xs leading-relaxed text-ssrk-text-muted">
               {{ card.institution.description }}
             </p>
 
             <span
-              class="mt-auto inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary transition-colors group-hover:text-ssrk-saffron"
+              class="mt-auto inline-flex max-w-full items-center gap-1.5 break-words text-[13px] font-bold text-ssrk-blue-primary transition-colors group-hover:text-ssrk-saffron"
             >
               Visit College site
               <svg

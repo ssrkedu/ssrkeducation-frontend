@@ -34,7 +34,7 @@ export class HeroCarouselComponent {
 
   protected actionClass(variant: HeroCarouselActionVariant | undefined): string {
     const base =
-      'inline-flex items-center justify-center gap-2 rounded-ssrk-sm px-[26px] py-3 text-sm font-semibold transition';
+      'inline-flex w-full min-w-0 max-w-full items-center justify-center gap-2 rounded-ssrk-sm px-[26px] py-3 text-sm font-semibold transition sm:w-auto';
 
     if (variant === 'outline') {
       return `${base} border-2 border-white/65 bg-transparent font-semibold text-white hover:border-white hover:bg-white/15`;

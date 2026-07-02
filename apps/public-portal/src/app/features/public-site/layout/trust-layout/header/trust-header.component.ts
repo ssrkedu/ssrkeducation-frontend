@@ -1,6 +1,7 @@
 import { afterNextRender, Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LangToggleComponent, MobileNavHamburgerComponent } from '@ssrk/shared/ui';
+import { buildTenantSiteUrl } from '../../../../../core/site-context/public-site-url.utils';
 import { SiteLanguageService } from '../../../../../core/site-context/site-language.service';
 import { SiteContextService } from '../../../../../core/site-context/site-context.service';
 
@@ -17,6 +18,8 @@ export class TrustHeaderComponent {
   protected readonly site = inject(SiteContextService).site;
   protected readonly siteLanguage = inject(SiteLanguageService);
   protected readonly headerSpacerHeight = signal(70);
+  protected readonly degreeCollegeUrl = buildTenantSiteUrl('ssrkdc');
+  protected readonly juniorCollegeUrl = buildTenantSiteUrl('ssrkjc');
 
   constructor() {
     afterNextRender(() => {
@@ -25,12 +28,19 @@ export class TrustHeaderComponent {
         return;
       }
 
-      const syncHeight = () => this.headerSpacerHeight.set(header.offsetHeight);
+      const syncHeight = () => {
+        const height = header.offsetHeight;
+        this.headerSpacerHeight.set(height);
+        document.documentElement.style.setProperty('--trust-header-height', `${height}px`);
+      };
       syncHeight();
 
       const observer = new ResizeObserver(syncHeight);
       observer.observe(header);
-      this.destroyRef.onDestroy(() => observer.disconnect());
+      this.destroyRef.onDestroy(() => {
+        observer.disconnect();
+        document.documentElement.style.removeProperty('--trust-header-height');
+      });
     });
   }
 }
