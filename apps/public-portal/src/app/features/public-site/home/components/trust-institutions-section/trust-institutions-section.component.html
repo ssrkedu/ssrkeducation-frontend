@@ -20,9 +20,11 @@
       </p>
     </div>
 
-    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div
+      class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(2,minmax(0,400px))] lg:justify-center lg:gap-6"
+    >
       @for (card of section.cards; track card.name) {
-        <app-ssrk-card variant="interactive">
+        <app-ssrk-card variant="interactive" class="block h-full w-full">
           <article class="flex h-full flex-col gap-2.5 p-6">
             <div
               class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[10px]"

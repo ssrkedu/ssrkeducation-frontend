@@ -3,6 +3,11 @@
 @import '../../../libs/shared/design-tokens/src/lib/ssrk-tokens.css';
 @import 'primeicons/primeicons.css';
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
 html,
 body {
   height: 100%;
@@ -366,6 +371,12 @@ body {
   height: 44px;
   border-radius: 50%;
   box-shadow: 0 8px 20px rgba(13, 35, 64, 0.1), 0 2px 6px rgba(13, 35, 64, 0.05);
+}
+
+@media (max-width: 1023px) {
+  .ssrk-scroll-top.p-scrolltop {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .ssrk-scroll-top.p-scrolltop .p-button {

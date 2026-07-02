@@ -1,16 +1,16 @@
-<header class="fixed inset-x-0 top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
-  <div class="mx-auto flex h-[70px] max-w-[1240px] items-center justify-between gap-3 px-4 lg:px-8">
-    <a routerLink="/" class="flex min-w-0 items-center gap-3">
+<header #headerRef class="fixed inset-x-0 top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
+  <div class="mx-auto flex min-h-[70px] max-w-[1240px] items-center justify-between gap-3 px-4 py-2 lg:px-8">
+    <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-3">
       <div
         class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
       >
         S
       </div>
       <div class="min-w-0">
-        <p class="truncate font-serif text-lg font-bold leading-none text-ssrk-blue-primary">
+        <p class="font-serif text-lg font-bold leading-snug text-ssrk-blue-primary">
           {{ site()?.name }}
         </p>
-        <p class="mt-0.5 truncate text-[10px] font-medium uppercase tracking-wide text-ssrk-text-muted">
+        <p class="mt-0.5 text-[10px] font-medium uppercase leading-snug tracking-wide text-ssrk-text-muted">
           {{ site()?.tagline }}
         </p>
       </div>
@@ -50,42 +50,24 @@
           </li>
           <li>
             <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK Degree College
+              Sri Sai Rama Krishna Degree College
             </a>
           </li>
           <li>
             <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK Engineering College
-            </a>
-          </li>
-          <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK College of Pharmacy
-            </a>
-          </li>
-          <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK College of Education
-            </a>
-          </li>
-          <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK Junior College (+2)
-            </a>
-          </li>
-          <li>
-            <a href="#" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              SSRK Institute of Management
+              Sri Sai Rama Krishna Junior College (+2)
             </a>
           </li>
         </ul>
       </div>
-      <a href="#news" class="rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-        News &amp; Events
-      </a>
       <a href="#" class="rounded-ssrk-sm px-3 py-2 hover:bg-ssrk-blue-primary hover:text-white">
         Admin Portal
       </a>
+      <app-lang-toggle
+        class="ml-1.5"
+        [value]="siteLanguage.language()"
+        (valueChange)="siteLanguage.setLanguage($event)"
+      />
       <a
         href="#enquiry"
         class="ml-1.5 rounded-ssrk-sm bg-ssrk-blue-primary px-5 py-2 font-bold text-white hover:bg-ssrk-blue-deep"
@@ -94,6 +76,13 @@
       </a>
     </nav>
 
-    <app-mobile-nav-hamburger />
+    <div class="flex shrink-0 items-center gap-2.5 lg:hidden">
+      <app-lang-toggle
+        [value]="siteLanguage.language()"
+        (valueChange)="siteLanguage.setLanguage($event)"
+      />
+      <app-mobile-nav-hamburger buttonClass="" />
+    </div>
   </div>
 </header>
+<div class="shrink-0" [style.height.px]="headerSpacerHeight()" aria-hidden="true"></div>

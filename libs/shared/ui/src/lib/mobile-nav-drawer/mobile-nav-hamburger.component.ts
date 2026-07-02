@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { MobileNavDrawerService } from './mobile-nav-drawer.service';
+import { MobileNavDrawerService } from '../services/mobile-nav-drawer.service';
 
 @Component({
   selector: 'app-mobile-nav-hamburger',

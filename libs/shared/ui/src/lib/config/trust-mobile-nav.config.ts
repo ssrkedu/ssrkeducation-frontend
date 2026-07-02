@@ -1,4 +1,4 @@
-import { MobileNavDrawerConfig } from '@ssrk/shared/ui';
+import { MobileNavDrawerConfig } from '../mobile-nav-drawer/mobile-nav-drawer.types';
 
 export const TRUST_MOBILE_NAV_CONFIG: MobileNavDrawerConfig = {
   title: 'Menu',
@@ -11,15 +11,10 @@ export const TRUST_MOBILE_NAV_CONFIG: MobileNavDrawerConfig = {
       label: 'Institutions',
       children: [
         { label: 'All Institutions', routerLink: '/institutions' },
-        { label: 'SSRK Degree College', href: '#' },
-        { label: 'SSRK Engineering College', href: '#' },
-        { label: 'SSRK College of Pharmacy', href: '#' },
-        { label: 'SSRK College of Education', href: '#' },
-        { label: 'SSRK Junior College (+2)', href: '#' },
-        { label: 'SSRK Institute of Management', href: '#' },
+        { label: 'Sri Sai Rama Krishna Degree College', href: '#' },
+        { label: 'Sri Sai Rama Krishna Junior College (+2)', href: '#' },
       ],
     },
-    { type: 'link', label: 'News & Events', href: '#news' },
     { type: 'link', label: 'Admin Portal', href: '#' },
   ],
   cta: {

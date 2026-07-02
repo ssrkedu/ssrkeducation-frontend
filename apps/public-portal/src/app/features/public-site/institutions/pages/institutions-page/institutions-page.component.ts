@@ -1,13 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  buildTenantSiteUrl,
-  formatTenantSiteHost,
-} from '../../../../../core/site-context/public-site-url.utils';
+import { SsrkCardComponent } from '@ssrk/shared/ui';
+import { buildTenantSiteUrl } from '../../../../../core/site-context/public-site-url.utils';
+import { getInstitutionCardPresentation } from '../../../home/mappers/trust-institution-card.mapper';
 import { InstitutionsApiService } from '../../api/institutions-api.service';
 
 @Component({
   selector: 'app-institutions-page',
+  imports: [SsrkCardComponent],
   templateUrl: './institutions-page.component.html',
 })
 export class InstitutionsPageComponent {
@@ -17,6 +17,11 @@ export class InstitutionsPageComponent {
     initialValue: [],
   });
 
-  protected readonly institutionSiteUrl = buildTenantSiteUrl;
-  protected readonly institutionSiteHost = formatTenantSiteHost;
+  protected readonly institutionCards = computed(() =>
+    this.institutions().map((institution) => ({
+      institution,
+      siteUrl: buildTenantSiteUrl(institution.subdomain),
+      presentation: getInstitutionCardPresentation(institution.code),
+    })),
+  );
 }

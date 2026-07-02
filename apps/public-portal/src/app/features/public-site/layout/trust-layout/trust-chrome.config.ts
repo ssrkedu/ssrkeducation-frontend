@@ -18,12 +18,8 @@ export interface TrustFooterLink {
 }
 
 export const TRUST_INSTITUTION_LINKS: TrustNavChildLink[] = [
-  { label: 'SSRK Degree College', href: '#' },
-  { label: 'SSRK Engineering College', href: '#' },
-  { label: 'SSRK College of Pharmacy', href: '#' },
-  { label: 'SSRK College of Education', href: '#' },
-  { label: 'SSRK Junior College (+2)', href: '#' },
-  { label: 'SSRK Institute of Management', href: '#' },
+  { label: 'Sri Sai Rama Krishna Degree College', href: '#' },
+  { label: 'Sri Sai Rama Krishna Junior College (+2)', href: '#' },
 ];
 
 export const TRUST_MAIN_NAV_LINKS: TrustNavLink[] = [
@@ -34,7 +30,7 @@ export const TRUST_MAIN_NAV_LINKS: TrustNavLink[] = [
     href: '#institutions',
     children: TRUST_INSTITUTION_LINKS,
   },
-  { label: 'News & Events', href: '#news' },
+  // { label: 'News & Events', href: '#news' },
   { label: 'Admin Portal', href: '#' },
   { label: 'Enquire Now', href: '#enquiry', cta: true },
 ];

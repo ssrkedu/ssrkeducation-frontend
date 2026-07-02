@@ -3,9 +3,14 @@
 
   <app-mobile-nav-drawer [config]="mobileNavConfig" />
 
-  <main class="flex-1">
+  <main
+    class="flex-1 transition-[padding] duration-300 lg:pb-0"
+    [class.pb-[calc(3.5rem+env(safe-area-inset-bottom))]]="enquireService.barVisible()"
+  >
     <router-outlet />
   </main>
 
   <app-trust-footer />
+
+  <app-mobile-enquire-bar [config]="mobileEnquireConfig" />
 </div>

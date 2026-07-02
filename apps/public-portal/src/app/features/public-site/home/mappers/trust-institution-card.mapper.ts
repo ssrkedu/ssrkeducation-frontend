@@ -23,7 +23,7 @@ export interface TrustInstitutionsSectionContent {
   cards: TrustInstitutionCard[];
 }
 
-interface TrustInstitutionCardPresentation {
+export interface TrustInstitutionCardPresentation {
   coursesLine: string;
   programsLine?: string;
   icon: TrustInstitutionIcon;
@@ -72,6 +72,16 @@ export function mapInstitutionsToTrustSectionContent(
     ...TRUST_INSTITUTIONS_SECTION,
     cards,
   };
+}
+
+export function getInstitutionCardPresentation(
+  code: string,
+): TrustInstitutionCardPresentation | null {
+  return (
+    PRESENTATION_BY_CODE[
+      code as (typeof TRUST_HOME_INSTITUTION_CODES)[number]
+    ] ?? null
+  );
 }
 
 function mapInstitutionToTrustCard(

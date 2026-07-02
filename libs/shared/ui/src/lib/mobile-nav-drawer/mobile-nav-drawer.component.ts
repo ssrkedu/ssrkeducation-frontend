@@ -16,7 +16,7 @@ import {
   MobileNavGroupConfig,
   MobileNavLinkConfig,
 } from './mobile-nav-drawer.types';
-import { MobileNavDrawerService } from './mobile-nav-drawer.service';
+import { MobileNavDrawerService } from '../services/mobile-nav-drawer.service';
 
 @Component({
   selector: 'app-mobile-nav-drawer',
