@@ -1,0 +1,35 @@
+---
+description: Mandatory ai-rules loading protocol for all SSRK frontend work
+alwaysApply: true
+---
+
+# ai-rules — mandatory coding standards
+
+The standards library lives at `../../../Documents/GitHub/ai-rules/` (GitHub: `ssrkedu/ai-rules`).
+It is also available in this workspace as `Documents/GitHub/ai-rules/`.
+**Every code change must follow those rules.**
+
+## Loading protocol
+
+1. Open `RULES-INDEX.md` — never load the whole tree.
+2. Classify the task (frontend only for this repo).
+3. Open `frontend/00-index/frontend-rules-index.md` and pick **2–5** matching rule files from the task map.
+4. Always load the frontend always-on set from `RULES-INDEX.md`:
+   - `frontend/01-architecture/folder-structure-and-boundary-rules.md`
+   - `frontend/05-quality/naming-and-file-rules.md`
+   - `frontend/05-quality/forbidden-patterns-rules.md`
+5. Add task-specific rules only when the work matches (examples):
+   - Public site / trust + institution subdomains → `public-multi-site-architecture-rules.md`, `subdomain-site-context-rules.md`, `core-vs-feature-data-boundary-rules.md`
+   - Components / templates → `component-and-template-rules.md`
+   - API / HTTP / DTOs → `api-and-http-rules.md`, `api-url-and-endpoint-rules.md`
+   - Styling / responsive → `scss-and-design-token-rules.md`, `accessibility-and-responsive-rules.md`
+   - PrimeNG → `primeng-styling-rules.md`
+6. For environment / deploy / hostname setup, also read `ai-rules/.cursor/skills/public-site-environment-setup.md`.
+
+> Token discipline: typical tasks need **2–4 rule files**, not the entire library.
+
+If `ai-rules/` is missing locally:
+
+```bash
+git clone https://github.com/ssrkedu/ai-rules.git ../../../Documents/GitHub/ai-rules
+```
