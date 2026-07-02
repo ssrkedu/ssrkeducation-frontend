@@ -8,6 +8,6 @@ export const environment: AppEnvironment = {
     protocol: 'https',
     apexDomain: 'dev.ssrkeducation.com',
     port: null,
-    mainHosts: ['dev.ssrkeducation.com'],
+    mainHosts: ['dev.ssrkeducation.com','dev-ssrkedu.netlify.app'],
   },
 };
