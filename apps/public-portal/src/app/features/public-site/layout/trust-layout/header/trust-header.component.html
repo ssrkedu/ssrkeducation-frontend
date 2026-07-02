@@ -1,16 +1,19 @@
 <header #headerRef class="fixed inset-x-0 top-0 z-50 max-w-full border-b border-ssrk-border bg-white shadow-sm">
-  <div class="mx-auto flex min-h-[70px] w-full min-w-0 max-w-[1240px] items-center justify-between gap-3 px-4 py-2 lg:px-8">
-    <a routerLink="/" class="flex min-w-0 flex-1 items-center gap-3 lg:max-w-[300px] xl:max-w-[360px]">
+  <div class="mx-auto flex min-h-[70px] w-full min-w-0 max-w-[1240px] items-center justify-between gap-3 px-4 py-2.5 lg:px-8">
+    <a
+      routerLink="/"
+      class="flex min-w-0 max-w-[calc(100%-6.5rem)] flex-1 items-center gap-2.5 sm:gap-3 lg:max-w-[300px] xl:max-w-[360px]"
+    >
       <div
         class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
       >
         S
       </div>
       <div class="min-w-0 flex-1">
-        <p class="truncate font-serif text-lg font-bold leading-snug text-ssrk-blue-primary">
+        <p class="break-words font-serif text-base font-bold leading-tight text-ssrk-blue-primary sm:text-lg">
           {{ site()?.name }}
         </p>
-        <p class="mt-0.5 truncate text-[10px] font-medium uppercase leading-snug tracking-wide text-ssrk-text-muted">
+        <p class="mt-0.5 break-words text-[10px] font-medium uppercase leading-snug tracking-wide text-ssrk-text-muted">
           {{ site()?.tagline }}
         </p>
       </div>
