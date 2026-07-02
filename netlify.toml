@@ -1,0 +1,3 @@
+[build]
+  command = "nx run public-portal:build"
+  publish = "dist/apps/public-portal/browser"
