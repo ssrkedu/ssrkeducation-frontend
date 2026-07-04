@@ -1,0 +1,28 @@
+.ssrk-announcement-ticker__track {
+  animation: ssrk-announcement-ticker-scroll 40s linear infinite;
+}
+
+.ssrk-announcement-ticker:hover .ssrk-announcement-ticker__track,
+.ssrk-announcement-ticker:focus-within .ssrk-announcement-ticker__track {
+  animation-play-state: paused;
+}
+
+@keyframes ssrk-announcement-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ssrk-announcement-ticker__track {
+    animation: none;
+  }
+
+  .ssrk-announcement-ticker__viewport {
+    overflow-x: auto;
+  }
+}

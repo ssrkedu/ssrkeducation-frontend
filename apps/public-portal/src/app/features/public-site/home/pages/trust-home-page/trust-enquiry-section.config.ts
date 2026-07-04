@@ -5,8 +5,7 @@ export const TRUST_ENQUIRY_SECTION = {
     'Seats are filling fast for the 2025–26 academic year. Fill in the enquiry form and our admissions team will call you within 24 hours with all the information you need.',
   highlights: [
     'UG & +2 programmes across our colleges',
-    'Merit-based scholarships up to ₹50,000',
-    'Hostel facility available for outstation students',
+    'Caste and Merit based scholarships available',
     'Approved programmes with dedicated faculty support',
     'Easy instalment fee payment options',
   ],

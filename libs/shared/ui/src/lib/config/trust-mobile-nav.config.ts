@@ -19,7 +19,8 @@ export const TRUST_MOBILE_NAV_CONFIG: MobileNavDrawerConfig = {
   ],
   cta: {
     label: 'Enquire / Apply Now',
-    href: '#enquiry',
+    routerLink: '/',
+    fragment: 'enquiry',
   },
   contacts: [
     { icon: '📞', text: '+91 674 255 0000' },

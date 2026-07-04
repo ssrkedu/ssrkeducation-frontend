@@ -11,6 +11,7 @@ export interface TrustEnquirySectionContent {
 
 @Component({
   selector: 'app-trust-enquiry-section',
+  host: { class: 'block w-full min-w-0 max-w-full' },
   imports: [EnquiryFormComponent],
   templateUrl: './trust-enquiry-section.component.html',
 })

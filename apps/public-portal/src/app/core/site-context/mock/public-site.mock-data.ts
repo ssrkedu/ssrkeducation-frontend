@@ -6,7 +6,7 @@ export const MOCK_SITE_REGISTRY: Record<string, SiteContext> = {
     siteType: 'trust',
     tenantKey: 'trust',
     institutionId: null,
-    name: 'SSRK Educational Trust',
+    name: 'SRI SAI RAMA KRISHNA GROUP OF INSTITUTIONS',
     tagline: 'Empowering Odisha',
     theme: { primaryColor: '#1e3a8a' },
     logoUrl: null,

@@ -1,5 +1,5 @@
 <form
-  class="ssrk-enquiry-form w-full min-w-0 max-w-full rounded-ssrk-lg bg-white p-6 shadow-[0_8px_24px_rgba(0,0,0,0.13)] md:p-7"
+  class="ssrk-enquiry-form box-border w-full min-w-0 max-w-full rounded-ssrk-lg bg-white p-5 shadow-[0_8px_24px_rgba(0,0,0,0.13)] sm:p-6 md:p-7"
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   novalidate
@@ -8,8 +8,8 @@
     {{ title() }}
   </h3>
 
-  <div class="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
-    <div class="ssrk-enquiry-form__field">
+  <div class="grid min-w-0 max-w-full grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
       <label class="ssrk-enquiry-form__label" for="enquiry-first-name">First Name</label>
       <input
         pInputText
@@ -18,13 +18,13 @@
         formControlName="firstName"
         placeholder="Ramesh"
         autocomplete="given-name"
-        class="w-full"
+        class="w-full min-w-0 max-w-full"
         fluid
         [invalid]="isInvalid('firstName')"
       />
     </div>
 
-    <div class="ssrk-enquiry-form__field">
+    <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
       <label class="ssrk-enquiry-form__label" for="enquiry-last-name">Last Name</label>
       <input
         pInputText
@@ -33,14 +33,14 @@
         formControlName="lastName"
         placeholder="Patra"
         autocomplete="family-name"
-        class="w-full"
+        class="w-full min-w-0 max-w-full"
         fluid
         [invalid]="isInvalid('lastName')"
       />
     </div>
   </div>
 
-  <div class="ssrk-enquiry-form__field">
+  <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
     <label class="ssrk-enquiry-form__label" for="enquiry-phone">Mobile Number</label>
     <input
       pInputText
@@ -49,13 +49,13 @@
       formControlName="phone"
       placeholder="+91 98765 43210"
       autocomplete="tel"
-      class="w-full"
+      class="w-full min-w-0 max-w-full"
       fluid
       [invalid]="isInvalid('phone')"
     />
   </div>
 
-  <div class="ssrk-enquiry-form__field">
+  <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
     <label class="ssrk-enquiry-form__label" for="enquiry-email">Email Address</label>
     <input
       pInputText
@@ -64,13 +64,13 @@
       formControlName="email"
       placeholder="ramesh@email.com"
       autocomplete="email"
-      class="w-full"
+      class="w-full min-w-0 max-w-full"
       fluid
       [invalid]="isInvalid('email')"
     />
   </div>
 
-  <div class="ssrk-enquiry-form__field">
+  <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
     <label class="ssrk-enquiry-form__label" for="enquiry-college">Interested College</label>
     <p-select
       inputId="enquiry-college"
@@ -84,7 +84,7 @@
     />
   </div>
 
-  <div class="ssrk-enquiry-form__field">
+  <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
     <label class="ssrk-enquiry-form__label" for="enquiry-interests">
       What would you like to know about?
     </label>

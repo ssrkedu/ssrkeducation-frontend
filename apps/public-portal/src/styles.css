@@ -237,9 +237,17 @@ body {
   padding: 22px 16px;
 }
 
+.ssrk-stat-card__body--feature {
+  padding: 20px 14px;
+}
+
 @media (min-width: 768px) {
   .ssrk-stat-card__body {
     padding: 28px 20px;
+  }
+
+  .ssrk-stat-card__body--feature {
+    padding: 24px 16px;
   }
 }
 
@@ -249,6 +257,34 @@ body {
 
 .ssrk-stat-card__value--compact {
   font-size: clamp(22px, 3.5vw, 36px);
+}
+
+.ssrk-stat-card__value--icon {
+  font-family: var(--font-sans);
+  font-size: clamp(26px, 4vw, 32px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.ssrk-stat-card__label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ssrk-stat-card__label--feature {
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .ssrk-stat-card__label--feature {
+    font-size: 13.5px;
+  }
 }
 
 .ssrk-interactive-card.p-card {
@@ -314,8 +350,15 @@ body {
   }
 }
 
+.ssrk-enquiry-form,
+.ssrk-enquiry-form * {
+  box-sizing: border-box;
+}
+
 .ssrk-enquiry-form__field {
   margin-bottom: 13px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .ssrk-enquiry-form__label {
@@ -329,8 +372,10 @@ body {
 }
 
 .ssrk-enquiry-form .p-inputtext {
+  display: block;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   border: 1.5px solid var(--color-ssrk-border);
   border-radius: var(--radius-sm);
   background: var(--color-ssrk-bg);
@@ -346,12 +391,22 @@ body {
 
 .ssrk-enquiry-form__select.p-select,
 .ssrk-enquiry-form__multiselect.p-multiselect {
+  display: flex;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   border: 1.5px solid var(--color-ssrk-border);
   border-radius: var(--radius-sm);
   background: var(--color-ssrk-bg);
+}
+
+.ssrk-enquiry-form__select.p-select .p-select-label,
+.ssrk-enquiry-form__multiselect.p-multiselect .p-multiselect-label-container,
+.ssrk-enquiry-form__multiselect.p-multiselect .p-multiselect-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ssrk-enquiry-form__select.p-select:not(.p-disabled):hover,

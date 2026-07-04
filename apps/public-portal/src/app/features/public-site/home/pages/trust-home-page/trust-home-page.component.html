@@ -1,9 +1,14 @@
+<app-announcement-ticker
+  [items]="announcements.items"
+  [label]="announcements.label ?? 'LATEST'"
+  [ariaLabel]="announcements.ariaLabel ?? 'Latest announcements'"
+/>
+
 <app-hero-carousel [slides]="heroSlides" />
 
 <app-stats-bar
   [items]="statsBar.items"
-  [footnote]="statsBar.footnote"
-  [ariaLabel]="statsBar.ariaLabel ?? 'Key statistics'"
+  [ariaLabel]="statsBar.ariaLabel ?? 'Why choose SSRK'"
 />
 
 <app-trust-about-section [content]="about" />

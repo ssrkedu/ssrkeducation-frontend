@@ -6,7 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Drawer } from 'primeng/drawer';
 import {
   DEFAULT_MOBILE_NAV_BREAKPOINTS,
@@ -25,6 +25,7 @@ import { MobileNavDrawerService } from '../services/mobile-nav-drawer.service';
 })
 export class MobileNavDrawerComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
   protected readonly mobileNav = inject(MobileNavDrawerService);
   protected readonly drawerPosition = signal<'right' | 'full'>('right');
   protected readonly expandedGroups = signal<Record<string, boolean>>({});
@@ -90,8 +91,93 @@ export class MobileNavDrawerComponent implements OnInit {
     this.mobileNav.close();
   }
 
+  protected onNavLinkClick(
+    event: MouseEvent,
+    options: {
+      href?: string;
+      routerLink?: string | unknown[];
+      fragment?: string;
+    } = {},
+  ): void {
+    // Blur before drawer teardown — removing a focused node inside the overlay
+    // makes mobile browsers jump the page to the top.
+    (document.activeElement as HTMLElement | null)?.blur();
+
+    const sectionId = this.resolveSectionId(options.fragment, options.href);
+
+    // In-page section target (e.g. #enquiry, #about)
+    if (sectionId) {
+      event.preventDefault();
+
+      const section = document.getElementById(sectionId);
+      if (section) {
+        this.scrollToSection(sectionId);
+        this.closeNav();
+        return;
+      }
+
+      const routerLink = options.routerLink;
+      if (routerLink) {
+        const commands = Array.isArray(routerLink) ? routerLink : [routerLink];
+        this.closeNav();
+        void this.router.navigate(commands, { fragment: sectionId }).then(() => {
+          this.scrollToSection(sectionId);
+        });
+        return;
+      }
+
+      this.closeNav();
+      return;
+    }
+
+    // External URL or plain route — let the browser / router handle navigation.
+    this.closeNav();
+  }
+
   protected onDrawerVisibleChange(visible: boolean): void {
     this.mobileNav.visible.set(visible);
+  }
+
+  private resolveSectionId(
+    fragment?: string,
+    href?: string,
+  ): string | null {
+    const fromFragment = fragment?.trim();
+    if (fromFragment) {
+      return fromFragment;
+    }
+
+    const fromHref = href?.trim();
+    if (fromHref?.startsWith('#') && fromHref.length > 1) {
+      return fromHref.slice(1);
+    }
+
+    return null;
+  }
+
+  private scrollToSection(sectionId: string): void {
+    const section = document.getElementById(sectionId);
+    if (!section) {
+      return;
+    }
+
+    const padding =
+      Number.parseFloat(
+        getComputedStyle(document.documentElement).scrollPaddingTop,
+      ) || 0;
+    const top = Math.max(
+      0,
+      section.getBoundingClientRect().top + window.scrollY - padding,
+    );
+
+    // Bypass global `html { scroll-behavior: smooth }` so the jump is not animated/cancelled.
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, top);
+    root.style.scrollBehavior = previousBehavior;
+
+    history.replaceState(null, '', `#${sectionId}`);
   }
 
   private resolveBreakpoints(): Required<MobileNavDrawerBreakpoints> {

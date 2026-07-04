@@ -1,5 +1,7 @@
 export * from './lib/config';
 export * from './lib/services';
+export * from './lib/announcement-ticker/announcement-ticker.component';
+export * from './lib/announcement-ticker/announcement-ticker.types';
 export * from './lib/mobile-enquire-bar/mobile-enquire-bar.component';
 export * from './lib/mobile-enquire-bar/mobile-enquire-bar.types';
 export * from './lib/lang-toggle/lang-toggle.component';

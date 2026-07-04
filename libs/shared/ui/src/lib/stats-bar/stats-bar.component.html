@@ -2,10 +2,15 @@
   <div class="ssrk-stats-bar__grid grid min-w-0 grid-cols-2 md:grid-cols-4">
     @for (item of items(); track item.label) {
       <app-ssrk-card variant="stat" class="min-w-0">
-        <div class="ssrk-stat-card__body text-center">
+        <div
+          class="ssrk-stat-card__body min-w-0 text-center"
+          [class.ssrk-stat-card__body--feature]="!!item.description"
+        >
           <p
             class="ssrk-stat-card__value font-serif font-bold leading-none text-white"
             [class.ssrk-stat-card__value--compact]="item.valueSize === 'compact'"
+            [class.ssrk-stat-card__value--icon]="item.valueSize === 'icon'"
+            [attr.aria-hidden]="item.valueSize === 'icon' ? true : null"
           >
             {{ item.value }}
             @if (item.accent) {
@@ -16,9 +21,17 @@
               }
             }
           </p>
-          <p class="ssrk-stat-card__label mt-1 break-words text-[10.5px] font-semibold uppercase tracking-wide text-white/70">
+          <p
+            class="ssrk-stat-card__label mt-1 break-words font-semibold tracking-wide"
+            [class.ssrk-stat-card__label--feature]="!!item.description"
+          >
             {{ item.label }}
           </p>
+          @if (item.description) {
+            <p class="ssrk-stat-card__description mt-1.5 break-words text-[12px] leading-snug text-white/75 sm:text-[12.5px]">
+              {{ item.description }}
+            </p>
+          }
         </div>
       </app-ssrk-card>
     }

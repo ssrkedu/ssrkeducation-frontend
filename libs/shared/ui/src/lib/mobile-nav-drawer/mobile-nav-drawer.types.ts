@@ -21,6 +21,7 @@ export interface MobileNavCtaConfig {
   label: string;
   href?: string;
   routerLink?: string | unknown[];
+  fragment?: string;
   hidden?: boolean;
 }
 

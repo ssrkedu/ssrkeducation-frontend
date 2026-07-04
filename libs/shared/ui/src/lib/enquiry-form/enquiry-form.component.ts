@@ -38,6 +38,7 @@ type EnquiryFormGroup = FormGroup<{
 
 @Component({
   selector: 'app-enquiry-form',
+  host: { class: 'block w-full min-w-0 max-w-full' },
   imports: [ReactiveFormsModule, InputText, Select, MultiSelect, Chip, Button],
   templateUrl: './enquiry-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

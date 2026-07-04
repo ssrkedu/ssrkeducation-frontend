@@ -1,27 +1,32 @@
 import { StatsBarConfig } from '@ssrk/shared/ui';
 
 export const TRUST_STATS_BAR: StatsBarConfig = {
-  ariaLabel: 'Key statistics',
-  footnote:
-    '*Scholarship availability depends on eligibility, course, and institution rules.',
+  ariaLabel: 'Why choose SSRK',
   items: [
-    { value: '2', label: 'Institutions' },
     {
-      value: '100',
-      accent: '%',
-      accentPosition: 'suffix',
-      label: 'Scholarship Available*',
+      value: '🎓',
+      label: 'Quality Education',
+      description: 'Experienced faculty and outcome-focused learning.',
+      valueSize: 'icon',
     },
     {
-      value: 'UG & +2',
-      label: 'Programmes',
-      valueSize: 'compact',
+      value: '📚',
+      label: 'Diverse Courses',
+      description: '+2, +3 and career-oriented programs across multiple disciplines.',
+      valueSize: 'icon',
     },
     {
-      value: '1',
-      accent: 'Form',
-      accentPosition: 'inline',
-      label: 'For Admission Enquiry',
+      value: '💰',
+      label: 'Scholarships Available',
+      description:
+        'Government scholarships and institutional support to support their dreams.',
+      valueSize: 'icon',
+    },
+    {
+      value: '🤝',
+      label: 'Student Support',
+      description: 'Expert guidance for admissions, courses and career success.',
+      valueSize: 'icon',
     },
   ],
 };
