@@ -37,7 +37,14 @@
     </div>
 
     <div class="min-w-0 max-w-full">
-      <app-enquiry-form [collegeOptions]="collegeOptions()" />
+      <app-enquiry-form
+        [collegeOptions]="collegeOptions()"
+        [interestOptions]="interestOptions()"
+        [submitting]="submitting()"
+        [submitSuccess]="submitSuccess()"
+        [errorMessage]="submitError()"
+        (submitted)="onSubmitted($event)"
+      />
     </div>
   </div>
 </section>

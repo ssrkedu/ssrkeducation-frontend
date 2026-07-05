@@ -1,23 +1,19 @@
-import { buildTenantSiteUrl } from '../../../../core/site-context/public-site-url.utils';
+// FALLBACK-PHASE: static chrome content kept for content-fallback plan.
+// Chrome now loads from GET /api/public/sites/trust/pages/chrome
 
-export type TrustLanguage = 'en' | 'od';
+import { buildTenantSiteUrl } from '../../../site-context/public-site-url.utils';
+import {
+  TrustFooterLink,
+  TrustNavChildLink,
+  TrustNavLink,
+} from './trust-chrome-fallback.types';
 
-export interface TrustNavChildLink {
-  label: string;
-  href: string;
-}
-
-export interface TrustNavLink {
-  label: string;
-  href: string;
-  children?: TrustNavChildLink[];
-  cta?: boolean;
-}
-
-export interface TrustFooterLink {
-  label: string;
-  href: string;
-}
+export type {
+  TrustFooterLink,
+  TrustLanguage,
+  TrustNavChildLink,
+  TrustNavLink,
+} from './trust-chrome-fallback.types';
 
 export const TRUST_INSTITUTION_LINKS: TrustNavChildLink[] = [
   { label: 'Sri Sai Rama Krishna Degree College', href: buildTenantSiteUrl('ssrkdc') },
@@ -32,7 +28,6 @@ export const TRUST_MAIN_NAV_LINKS: TrustNavLink[] = [
     href: '#institutions',
     children: TRUST_INSTITUTION_LINKS,
   },
-  // { label: 'News & Events', href: '#news' },
   { label: 'Admin Portal', href: '#' },
   { label: 'Enquire Now', href: '#enquiry', cta: true },
 ];

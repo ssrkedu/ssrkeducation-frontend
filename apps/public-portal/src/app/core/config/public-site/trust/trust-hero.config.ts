@@ -1,3 +1,5 @@
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+
 import { HeroCarouselSlide } from '@ssrk/shared/ui';
 
 export const TRUST_HERO_SLIDES: HeroCarouselSlide[] = [

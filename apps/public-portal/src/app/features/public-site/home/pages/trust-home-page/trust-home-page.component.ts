@@ -1,22 +1,24 @@
 import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Meta, Title } from '@angular/platform-browser';
 import {
   AnnouncementTickerComponent,
   HeroCarouselComponent,
+  LoaderComponent,
   StatsBarComponent,
 } from '@ssrk/shared/ui';
-import { map } from 'rxjs';
+import { catchError, concat, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
+import { toApiLanguage } from '../../../../../core/public-api/language-code.util';
+import { PublicPageContentService } from '../../../../../core/public-api/public-page-content.service';
+import { SiteLanguage, SiteLanguageService } from '../../../../../core/site-context/site-language.service';
 import { InstitutionsApiService } from '../../../institutions/api/institutions-api.service';
 import { TrustAboutSectionComponent } from '../../components/trust-about-section/trust-about-section.component';
 import { TrustEnquirySectionComponent } from '../../components/trust-enquiry-section/trust-enquiry-section.component';
 import { TrustInstitutionsSectionComponent } from '../../components/trust-institutions-section/trust-institutions-section.component';
 import { mapInstitutionsToEnquiryCollegeOptions } from '../../mappers/enquiry-college-options.mapper';
-import { mapInstitutionsToTrustSectionContent } from '../../mappers/trust-institution-card.mapper';
-import { TRUST_ABOUT } from './trust-about.config';
-import { TRUST_ANNOUNCEMENTS } from './trust-announcements.config';
-import { TRUST_HERO_SLIDES } from './trust-hero.config';
-import { TRUST_INSTITUTIONS_SECTION } from './trust-institutions-section.config';
-import { TRUST_STATS_BAR } from './trust-stats.config';
+import { mapPageToTrustHomeContentVm } from '../../mappers/trust-home-page-content.mapper';
+import { mapInstitutionsToTrustSectionContentVm } from '../../mappers/trust-institution-card.mapper';
+import { TrustHomePageVm } from '../../models/trust-home-page.vm';
 import { ScrollTop } from 'primeng/scrolltop';
 
 @Component({
@@ -29,32 +31,73 @@ import { ScrollTop } from 'primeng/scrolltop';
     TrustAboutSectionComponent,
     TrustInstitutionsSectionComponent,
     TrustEnquirySectionComponent,
+    LoaderComponent,
     ScrollTop,
   ],
   templateUrl: './trust-home-page.component.html',
 })
 export class TrustHomePageComponent {
+  private readonly pageContent = inject(PublicPageContentService);
   private readonly institutionsApi = inject(InstitutionsApiService);
+  private readonly siteLanguage = inject(SiteLanguageService);
+  private readonly title = inject(Title);
+  private readonly meta = inject(Meta);
 
-  protected readonly announcements = TRUST_ANNOUNCEMENTS;
-  protected readonly heroSlides = TRUST_HERO_SLIDES;
-  protected readonly statsBar = TRUST_STATS_BAR;
-  protected readonly about = TRUST_ABOUT;
-  protected readonly institutions = toSignal(
-    this.institutionsApi
-      .getInstitutions()
-      .pipe(map((items) => mapInstitutionsToTrustSectionContent(items))),
-    {
-      initialValue: {
-        ...TRUST_INSTITUTIONS_SECTION,
-        cards: [],
-      },
-    },
-  );
-  protected readonly enquiryCollegeOptions = toSignal(
-    this.institutionsApi
-      .getInstitutions()
-      .pipe(map((items) => mapInstitutionsToEnquiryCollegeOptions(items))),
-    { initialValue: [] },
+  protected readonly viewModel = toSignal(
+    toObservable(this.siteLanguage.language).pipe(
+      switchMap((language: SiteLanguage) =>
+        concat(
+          of<TrustHomePageVm>({ status: 'loading' }),
+          forkJoin({
+            home: this.pageContent
+              .getPageContent('trust', 'home', toApiLanguage(language))
+              .pipe(map(mapPageToTrustHomeContentVm)),
+            institutions: this.institutionsApi.getInstitutions(
+              'trust',
+              toApiLanguage(language),
+            ),
+          }).pipe(
+            tap(({ home }) => {
+              if (home.seo.metaTitle) {
+                this.title.setTitle(home.seo.metaTitle);
+              }
+
+              if (home.seo.metaDescription) {
+                this.meta.updateTag({
+                  name: 'description',
+                  content: home.seo.metaDescription,
+                });
+              }
+            }),
+            map(
+              ({ home, institutions }): TrustHomePageVm => ({
+                status: 'ready',
+                announcements: home.announcements,
+                heroSlides: home.heroSlides,
+                statsBar: home.statsBar,
+                about: home.about,
+                enquirySection: home.enquirySection,
+                institutions: mapInstitutionsToTrustSectionContentVm(
+                  institutions,
+                  home.institutionsSection,
+                ),
+                enquiryCollegeOptions: mapInstitutionsToEnquiryCollegeOptions(
+                  institutions,
+                ),
+              }),
+            ),
+            catchError(
+              (): Observable<TrustHomePageVm> =>
+                of({
+                  status: 'error',
+                  errorMessage:
+                    'Unable to load home page content. Please try again later.',
+                }),
+            ),
+          ),
+        ),
+      ),
+    ),
+    { initialValue: { status: 'loading' } as TrustHomePageVm },
   );
 }

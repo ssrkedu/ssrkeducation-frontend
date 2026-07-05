@@ -1,20 +1,7 @@
-export interface TrustAboutConfig {
-  sectionLabel: string;
-  title: string;
-  description: string;
-  highlights: string[];
-  cta: { label: string; href: string };
-  founder: {
-    quote: string;
-    name: string;
-    role: string;
-    avatarInitial: string;
-    badge: string;
-    badgeNote: string;
-  };
-}
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+// Home page now loads this data from GET /api/public/sites/trust/pages/home
 
-export const TRUST_ABOUT: TrustAboutConfig = {
+export const TRUST_ABOUT = {
   sectionLabel: 'About SSRK Edu',
   title: 'Guiding Students Toward the Right Education Path',
   description:
@@ -36,4 +23,4 @@ export const TRUST_ABOUT: TrustAboutConfig = {
     badge: 'NAAC B++',
     badgeNote: 'Recognitions and affiliations are shown as applicable to each institution.',
   },
-};
+} as const;

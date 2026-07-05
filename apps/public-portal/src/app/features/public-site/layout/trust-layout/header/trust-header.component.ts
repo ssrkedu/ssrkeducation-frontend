@@ -1,7 +1,7 @@
-import { afterNextRender, Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LangToggleComponent, MobileNavHamburgerComponent } from '@ssrk/shared/ui';
-import { buildTenantSiteUrl } from '../../../../../core/site-context/public-site-url.utils';
+import { TrustChromeContentService } from '../../services/trust-chrome-content.service';
 import { SiteLanguageService } from '../../../../../core/site-context/site-language.service';
 import { SiteContextService } from '../../../../../core/site-context/site-context.service';
 
@@ -14,12 +14,14 @@ import { SiteContextService } from '../../../../../core/site-context/site-contex
 export class TrustHeaderComponent {
   private readonly headerRef = viewChild<ElementRef<HTMLElement>>('headerRef');
   private readonly destroyRef = inject(DestroyRef);
+  private readonly chromeContent = inject(TrustChromeContentService);
 
   protected readonly site = inject(SiteContextService).site;
   protected readonly siteLanguage = inject(SiteLanguageService);
   protected readonly headerSpacerHeight = signal(70);
-  protected readonly degreeCollegeUrl = buildTenantSiteUrl('ssrkdc');
-  protected readonly juniorCollegeUrl = buildTenantSiteUrl('ssrkjc');
+  protected readonly navLinks = computed(
+    () => this.chromeContent.chrome()?.navLinks ?? [],
+  );
 
   constructor() {
     afterNextRender(() => {

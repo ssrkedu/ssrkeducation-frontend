@@ -1,5 +1,5 @@
-import { SiteContextService } from '../../../../core/site-context/site-context.service';
 import { MobileNavDrawerConfig } from '@ssrk/shared/ui';
+import { SiteContextService } from '../../../site-context/site-context.service';
 
 export function buildInstitutionMobileNavConfig(
   siteContext: SiteContextService,

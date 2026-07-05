@@ -10,16 +10,18 @@
         </div>
         <div class="min-w-0">
           <p class="truncate font-serif text-lg font-bold">{{ site()?.name }}</p>
-          <p class="mt-0.5 truncate text-xs text-white/60">Odisha, India</p>
+          <p class="mt-0.5 truncate text-xs text-white/60">
+            {{ footerIntro()?.locationLine ?? 'Odisha, India' }}
+          </p>
         </div>
       </div>
 
       <p class="mt-4 max-w-sm break-words text-sm leading-relaxed text-white/72">
-        Education guidance, admissions support, and college information under one trusted trust.
+        {{ footerIntro()?.description }}
       </p>
 
       <div class="mt-5 flex flex-wrap gap-2.5">
-        @for (link of socialLinks; track link.label) {
+        @for (link of socialLinks(); track link.label) {
           <a
             [href]="link.href"
             class="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-xs font-bold text-white transition hover:border-ssrk-saffron hover:bg-ssrk-saffron"
@@ -34,7 +36,7 @@
     <div class="min-w-0">
       <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-white/78">Colleges</h2>
       <div class="mt-4 flex min-w-0 flex-col gap-2.5">
-        @for (link of institutionLinks; track link.label) {
+        @for (link of institutionLinks(); track link.label) {
           <a [href]="link.href" class="break-words text-sm text-white/68 transition hover:text-ssrk-saffron">
             {{ link.label }}
           </a>
@@ -45,48 +47,50 @@
     <div class="min-w-0">
       <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-white/78">Contact Us</h2>
 
-      <div class="mt-4 flex min-w-0 flex-col gap-3 text-sm leading-relaxed text-white/68">
-        <div class="flex min-w-0 items-start gap-3">
-          <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
-            </svg>
-          </span>
-          <p class="min-w-0 break-words whitespace-pre-line">{{ contact.address }}</p>
-        </div>
+      @if (contact(); as contactInfo) {
+        <div class="mt-4 flex min-w-0 flex-col gap-3 text-sm leading-relaxed text-white/68">
+          <div class="flex min-w-0 items-start gap-3">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
+              </svg>
+            </span>
+            <p class="min-w-0 break-words whitespace-pre-line">{{ contactInfo.address }}</p>
+          </div>
 
-        <div class="flex min-w-0 items-start gap-3">
-          <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2Z" />
-            </svg>
-          </span>
-          <p class="min-w-0 break-words">
-            @for (phone of contact.phones; track phone; let last = $last) {
-              <a [href]="'tel:' + phone" class="hover:text-ssrk-saffron">{{ phone }}</a>
-              @if (!last) {
-                <br />
+          <div class="flex min-w-0 items-start gap-3">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2Z" />
+              </svg>
+            </span>
+            <p class="min-w-0 break-words">
+              @for (phone of contactInfo.phones; track phone; let last = $last) {
+                <a [href]="'tel:' + phone" class="hover:text-ssrk-saffron">{{ phone }}</a>
+                @if (!last) {
+                  <br />
+                }
               }
-            }
-          </p>
-        </div>
+            </p>
+          </div>
 
-        <div class="flex min-w-0 items-start gap-3">
-          <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
-            </svg>
-          </span>
-          <p class="min-w-0 break-words">
-            @for (email of contact.emails; track email; let last = $last) {
-              <a [href]="'mailto:' + email" class="hover:text-ssrk-saffron">{{ email }}</a>
-              @if (!last) {
-                <br />
+          <div class="flex min-w-0 items-start gap-3">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-ssrk-saffron" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
+              </svg>
+            </span>
+            <p class="min-w-0 break-words">
+              @for (email of contactInfo.emails; track email; let last = $last) {
+                <a [href]="'mailto:' + email" class="hover:text-ssrk-saffron">{{ email }}</a>
+                @if (!last) {
+                  <br />
+                }
               }
-            }
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 

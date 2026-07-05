@@ -1,3 +1,5 @@
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+
 export const TRUST_ENQUIRY_SECTION = {
   sectionLabel: 'Admissions 2025–26',
   title: 'Begin Your Journey at SSRK',

@@ -1,3 +1,5 @@
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+
 import { StatsBarConfig } from '@ssrk/shared/ui';
 
 export const TRUST_STATS_BAR: StatsBarConfig = {

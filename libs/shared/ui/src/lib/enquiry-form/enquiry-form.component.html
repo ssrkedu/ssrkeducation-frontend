@@ -122,6 +122,12 @@
     styleClass="ssrk-enquiry-form__submit w-full"
   />
 
+  @if (errorMessage()) {
+    <p class="mt-2.5 text-center text-[12px] text-red-600">
+      {{ errorMessage() }}
+    </p>
+  }
+
   <p class="mt-2.5 text-center text-[11px] text-ssrk-text-muted">
     {{ privacyNote() }}
   </p>

@@ -1,7 +1,9 @@
 <div class="flex min-h-screen w-full min-w-0 max-w-full flex-col overflow-x-clip">
   <app-trust-header />
 
-  <app-mobile-nav-drawer [config]="mobileNavConfig" />
+  @if (mobileNavConfig(); as navConfig) {
+    <app-mobile-nav-drawer [config]="navConfig" />
+  }
 
   <main
     class="min-w-0 max-w-full flex-1 overflow-x-clip transition-[padding] duration-300 lg:pb-0"
@@ -12,5 +14,7 @@
 
   <app-trust-footer />
 
-  <app-mobile-enquire-bar [config]="mobileEnquireConfig" />
+  @if (mobileEnquireConfig(); as enquireConfig) {
+    <app-mobile-enquire-bar [config]="enquireConfig" />
+  }
 </div>

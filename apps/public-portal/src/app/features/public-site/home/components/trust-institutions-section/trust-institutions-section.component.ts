@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { SsrkCardComponent } from '@ssrk/shared/ui';
-import { TrustInstitutionsSectionContent } from '../../mappers/trust-institution-card.mapper';
+import { TrustInstitutionsSectionContentVm } from '../../models/trust-institution-card.vm';
 
 @Component({
   selector: 'app-trust-institutions-section',
@@ -8,5 +8,5 @@ import { TrustInstitutionsSectionContent } from '../../mappers/trust-institution
   templateUrl: './trust-institutions-section.component.html',
 })
 export class TrustInstitutionsSectionComponent {
-  readonly content = input.required<TrustInstitutionsSectionContent>();
+  readonly content = input.required<TrustInstitutionsSectionContentVm>();
 }

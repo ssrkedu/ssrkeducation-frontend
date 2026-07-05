@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { SiteContextService } from '../../../../../core/site-context/site-context.service';
 import { HeroCarouselComponent } from '@ssrk/shared/ui';
-import { buildInstitutionHeroSlides } from './institution-hero.config';
+import { buildInstitutionHeroSlides } from '../../../../../core/config/public-site/institution/institution-hero.config';
 
 @Component({
   selector: 'app-institution-home-page',

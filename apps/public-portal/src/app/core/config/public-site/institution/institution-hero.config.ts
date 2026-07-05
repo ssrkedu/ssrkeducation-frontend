@@ -1,5 +1,5 @@
-import { PublicPageKey, SiteContext } from '../../../../../core/site-context/site-context.model';
 import { HeroCarouselSlide } from '@ssrk/shared/ui';
+import { PublicPageKey, SiteContext } from '../../../site-context/site-context.model';
 
 export function buildInstitutionHeroSlides(
   site: SiteContext | null,

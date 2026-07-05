@@ -1,16 +1,45 @@
-import { Injectable } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
-import { API_ROUTES, buildApiUrl } from '../../../../core/api/api.routes';
+import { Injectable, inject } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { InstitutionItemDto } from '../../../../core/public-api/dtos/public-api.dtos';
+import { ApiLanguageCode } from '../../../../core/public-api/language-code.util';
+import { PublicApiClient } from '../../../../core/public-api/public-api.client';
 import { InstitutionSummaryDto } from './dtos/institution-summary.dto';
-import { MOCK_INSTITUTIONS } from './mock/institutions.mock';
 
 @Injectable({ providedIn: 'root' })
 export class InstitutionsApiService {
-  getInstitutions(): Observable<InstitutionSummaryDto[]> {
-    // TODO: GET buildApiUrl(API_ROUTES.public.institutions.list)
-    return of(MOCK_INSTITUTIONS).pipe(delay(100));
-  }
+  private readonly api = inject(PublicApiClient);
 
-  /** Reserved for backend integration — documents the future list contract. */
-  readonly listEndpoint = buildApiUrl(API_ROUTES.public.institutions.list);
+  getInstitutions(
+    tenantKey = 'trust',
+    lang: ApiLanguageCode,
+  ): Observable<InstitutionSummaryDto[]> {
+    return this.api.getInstitutions(tenantKey, lang).pipe(
+      map((response) =>
+        [...response.items]
+          .sort((left, right) => left.sortOrder - right.sortOrder)
+          .map(mapInstitutionItem),
+      ),
+    );
+  }
+}
+
+function mapInstitutionItem(item: InstitutionItemDto): InstitutionSummaryDto {
+  return {
+    id: item.id,
+    code: item.code,
+    slug: item.slug,
+    subdomain: item.subdomain,
+    name: item.name,
+    shortName: item.shortName,
+    description: item.description,
+    logoUrl: item.logoUrl,
+    primaryColor: item.primaryColor,
+    coursesLine: item.coursesLine,
+    programsLine: item.programsLine,
+    iconKey: item.iconKey,
+    iconBackgroundColor: item.iconBackgroundColor,
+    iconStrokeColor: item.iconStrokeColor,
+    sortOrder: item.sortOrder,
+    href: item.href,
+  };
 }

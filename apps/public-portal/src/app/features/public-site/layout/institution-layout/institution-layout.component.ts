@@ -4,7 +4,7 @@ import { MobileNavDrawerComponent } from '@ssrk/shared/ui';
 import { SiteContextService } from '../../../../core/site-context/site-context.service';
 import { InstitutionFooterComponent } from './footer/institution-footer.component';
 import { InstitutionHeaderComponent } from './header/institution-header.component';
-import { buildInstitutionMobileNavConfig } from './institution-mobile-nav.config';
+import { buildInstitutionMobileNavConfig } from '../../../../core/config/public-site/institution/institution-mobile-nav.config';
 
 @Component({
   selector: 'app-institution-layout',

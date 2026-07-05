@@ -3,7 +3,7 @@ import { AppEnvironment } from './public-site-environment.model';
 export const environment: AppEnvironment = {
   name: 'local',
   production: false,
-  apiBaseUrl: 'http://localhost:5000',
+  apiBaseUrl: 'http://localhost:5206',
   publicSite: {
     protocol: 'http',
     apexDomain: 'lvh.me',

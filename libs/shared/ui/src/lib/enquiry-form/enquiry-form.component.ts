@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   output,
-  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -26,6 +26,7 @@ import {
   EnquiryFormOption,
   EnquiryFormValue,
 } from './enquiry-form.types';
+// FALLBACK-PHASE: DEFAULT_ENQUIRY_INTEREST_OPTIONS kept for content-fallback plan
 
 type EnquiryFormGroup = FormGroup<{
   firstName: FormControl<string>;
@@ -54,10 +55,10 @@ export class EnquiryFormComponent {
     DEFAULT_ENQUIRY_INTEREST_OPTIONS,
   );
   readonly submitting = input(false);
+  readonly submitSuccess = input(false);
+  readonly errorMessage = input<string | null>(null);
 
   readonly submitted = output<EnquiryFormValue>();
-
-  protected readonly submitSuccess = signal(false);
 
   protected readonly form: EnquiryFormGroup = this.fb.group({
     firstName: this.fb.control('', {
@@ -85,6 +86,23 @@ export class EnquiryFormComponent {
     { initialValue: [] as string[] },
   );
 
+  constructor() {
+    effect(() => {
+      if (!this.submitSuccess()) {
+        return;
+      }
+
+      this.form.reset({
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        collegeCode: '',
+        interests: [],
+      });
+    });
+  }
+
   protected readonly selectedInterestPills = computed(() => {
     const options = this.interestOptions();
     return this.selectedInterestValues()
@@ -106,25 +124,11 @@ export class EnquiryFormComponent {
   }
 
   protected onSubmit(): void {
-    this.submitSuccess.set(false);
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const value = this.form.getRawValue();
-    this.submitted.emit(value);
-    this.submitSuccess.set(true);
-    this.form.reset({
-      firstName: '',
-      lastName: '',
-      phone: '',
-      email: '',
-      collegeCode: '',
-      interests: [],
-    });
-
-    window.setTimeout(() => this.submitSuccess.set(false), 2500);
+    this.submitted.emit(this.form.getRawValue());
   }
 }

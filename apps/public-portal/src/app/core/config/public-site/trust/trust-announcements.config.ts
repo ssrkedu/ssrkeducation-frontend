@@ -1,3 +1,6 @@
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+// Home page now loads this data from GET /api/public/sites/trust/pages/home
+
 import { AnnouncementTickerConfig } from '@ssrk/shared/ui';
 
 export const TRUST_ANNOUNCEMENTS: AnnouncementTickerConfig = {

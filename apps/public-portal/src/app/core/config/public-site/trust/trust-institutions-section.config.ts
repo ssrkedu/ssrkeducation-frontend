@@ -1,3 +1,5 @@
+// FALLBACK-PHASE: static content kept for content-fallback plan.
+
 export const TRUST_INSTITUTIONS_SECTION = {
   sectionLabel: 'Our Institutions',
   title: 'Pursue Your Passion at',

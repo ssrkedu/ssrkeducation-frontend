@@ -4,25 +4,24 @@ How visible content is supplied on the **trust** public site today, section by s
 
 **Goal (target state):** all user-facing copy and lists should be highly configurable (CMS/API or a single content layer), not scattered in templates.
 
-**Current state:** most home and chrome copy lives in static `*.config.ts` files. A few fields come from mock “API” data (`SiteContext`, institutions list).
-
----
-
-## Content flow patterns
-
-### Static config (most sections)
+**Current state (API-driven):** trust site content loads from backend public APIs on startup and reloads when language changes. Static `*.config.ts` and mock files are **kept but commented out** for a future API-failure fallback phase.
 
 ```text
-*.config.ts  →  page / layout component  →  shared UI or section component  →  template
+PublicApiClient  →  SiteResolverService / PublicPageContentService / InstitutionsApiService / PublicEnquiryService
+                 →  page + layout components  →  shared UI
 ```
 
-### Runtime / mock data (few fields)
+| API | Replaces |
+|-----|----------|
+| `GET /api/public/sites/resolve` | `MOCK_SITE_REGISTRY` |
+| `GET /api/public/sites/trust/pages/home` | `trust-*.config.ts` (home sections) |
+| `GET /api/public/sites/trust/pages/chrome` | `trust-chrome.config.ts`, mobile nav configs |
+| `GET /api/public/sites/trust/pages/institutions` | hardcoded institutions page intro |
+| `GET /api/public/sites/trust/institutions` | `institutions.mock.ts` |
+| `GET /api/public/enquiry-interest-topics` | `DEFAULT_ENQUIRY_INTEREST_OPTIONS` |
+| `POST /api/public/enquiries` | local-only form submit |
 
-```text
-mock data  →  SiteContextService or InstitutionsApiService  →  mapper (optional)  →  template
-```
-
-There is **no CMS** yet. Site resolve is planned (`SiteResolverService` TODO → `GET` public sites resolve). Institutions list is mock until `GET /api/public/institutions`.
+Fallback files remain in repo for `ssrkeducation-docs/todo/content-fallback/fallback-plan.md`.
 
 ---
 
@@ -160,15 +159,17 @@ Resolved at app init (`app.config.ts` → `SiteResolverService.resolve()` → `S
 
 | Path | Role |
 | --- | --- |
-| `home/pages/trust-home-page/trust-announcements.config.ts` | Ticker messages |
-| `home/pages/trust-home-page/trust-hero.config.ts` | Hero slides |
-| `home/pages/trust-home-page/trust-stats.config.ts` | Stats bar |
-| `home/pages/trust-home-page/trust-about.config.ts` | About + founder |
-| `home/pages/trust-home-page/trust-institutions-section.config.ts` | Institutions section headings |
-| `home/pages/trust-home-page/trust-enquiry-section.config.ts` | Enquiry section copy |
+| `core/config/public-site/trust/trust-announcements.config.ts` | Ticker messages (fallback) |
+| `core/config/public-site/trust/trust-hero.config.ts` | Hero slides (fallback) |
+| `core/config/public-site/trust/trust-stats.config.ts` | Stats bar (fallback) |
+| `core/config/public-site/trust/trust-about.config.ts` | About + founder (fallback) |
+| `core/config/public-site/trust/trust-institutions-section.config.ts` | Institutions section headings (fallback) |
+| `core/config/public-site/trust/trust-enquiry-section.config.ts` | Enquiry section copy (fallback) |
 | `home/mappers/trust-institution-card.mapper.ts` | Institution card presentation |
 | `home/mappers/enquiry-college-options.mapper.ts` | Enquiry college options |
-| `layout/trust-layout/trust-chrome.config.ts` | Footer contact/social; nav configs (partial use) |
+| `core/config/public-site/trust/trust-chrome.config.ts` | Footer contact/social; nav configs (fallback) |
+| `core/config/public-site/institution/institution-hero.config.ts` | Institution tenant hero builder |
+| `core/config/public-site/institution/institution-mobile-nav.config.ts` | Institution tenant mobile nav builder |
 | `libs/shared/ui/.../trust-mobile-nav.config.ts` | Mobile drawer |
 | `libs/shared/ui/.../trust-mobile-enquire.config.ts` | Sticky enquire bar |
 | `core/site-context/mock/public-site.mock-data.ts` | Site name, tagline, theme |

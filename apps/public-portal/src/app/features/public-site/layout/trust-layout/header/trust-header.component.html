@@ -20,63 +20,82 @@
     </a>
 
     <nav class="hidden min-w-0 flex-1 flex-nowrap items-center justify-end gap-0.5 whitespace-nowrap text-[13.5px] font-semibold text-ssrk-text-heading xl:gap-1 lg:flex">
-      <a
-        routerLink="/"
-        routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
-      >
-        Home
-      </a>
-      <a href="#about" class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3">
-        About Us
-      </a>
-      <div class="group relative shrink-0">
-        <a
-          routerLink="/institutions"
-          routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
-          class="flex items-center gap-1 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
-        >
-          Institutions
-          <span class="text-[9px] transition-transform group-hover:rotate-180">▾</span>
-        </a>
-        <ul
-          class="invisible absolute left-0 top-[calc(100%+4px)] z-50 min-w-[230px] translate-y-1.5 rounded-ssrk-md border-t-[3px] border-ssrk-blue-primary bg-white p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100"
-        >
-          <li>
-            <a
-              routerLink="/institutions"
-              class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary"
+      @for (link of navLinks(); track link.label) {
+        @if (link.children?.length) {
+          <div class="group relative shrink-0">
+            @if (link.routerLink) {
+              <a
+                [routerLink]="link.routerLink"
+                routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
+                class="flex items-center gap-1 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
+              >
+                {{ link.label }}
+                <span class="text-[9px] transition-transform group-hover:rotate-180">▾</span>
+              </a>
+            } @else {
+              <a
+                [href]="link.href"
+                class="flex items-center gap-1 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
+              >
+                {{ link.label }}
+                <span class="text-[9px] transition-transform group-hover:rotate-180">▾</span>
+              </a>
+            }
+            <ul
+              class="invisible absolute left-0 top-[calc(100%+4px)] z-50 min-w-[230px] translate-y-1.5 rounded-ssrk-md border-t-[3px] border-ssrk-blue-primary bg-white p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100"
             >
-              All Institutions
-            </a>
-          </li>
-          <li>
-            <a [href]="degreeCollegeUrl" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              Sri Sai Rama Krishna Degree College
-            </a>
-          </li>
-          <li>
-            <a [href]="juniorCollegeUrl" class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary">
-              Sri Sai Rama Krishna Junior College (+2)
-            </a>
-          </li>
-        </ul>
-      </div>
-      <a href="#" class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-primary hover:text-white xl:px-3">
-        Admin Portal
-      </a>
+              @for (child of link.children; track child.label) {
+                <li>
+                  @if (child.routerLink) {
+                    <a
+                      [routerLink]="child.routerLink"
+                      class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary"
+                    >
+                      {{ child.label }}
+                    </a>
+                  } @else {
+                    <a
+                      [href]="child.href"
+                      class="block rounded-md px-3 py-2 text-[13px] font-medium text-ssrk-text-body hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary"
+                    >
+                      {{ child.label }}
+                    </a>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+        } @else if (link.cta) {
+          <a
+            [href]="link.href"
+            class="ml-1 shrink-0 rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-2 font-bold text-white hover:bg-ssrk-blue-deep xl:ml-1.5 xl:px-5"
+          >
+            {{ link.label }}
+          </a>
+        } @else if (link.routerLink) {
+          <a
+            [routerLink]="link.routerLink"
+            routerLinkActive="bg-ssrk-blue-light text-ssrk-blue-primary"
+            [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+            class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
+          >
+            {{ link.label }}
+          </a>
+        } @else {
+          <a
+            [href]="link.href"
+            class="shrink-0 rounded-ssrk-sm px-2.5 py-2 hover:bg-ssrk-blue-light hover:text-ssrk-blue-primary xl:px-3"
+          >
+            {{ link.label }}
+          </a>
+        }
+      }
+
       <app-lang-toggle
         class="ml-1 shrink-0 xl:ml-1.5"
         [value]="siteLanguage.language()"
         (valueChange)="siteLanguage.setLanguage($event)"
       />
-      <a
-        href="#enquiry"
-        class="ml-1 shrink-0 rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-2 font-bold text-white hover:bg-ssrk-blue-deep xl:ml-1.5 xl:px-5"
-      >
-        Enquire Now
-      </a>
     </nav>
 
     <div class="flex shrink-0 items-center gap-2.5 lg:hidden">
