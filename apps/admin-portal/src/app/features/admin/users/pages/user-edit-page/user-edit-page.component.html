@@ -45,10 +45,15 @@
         />
       </div>
     </div>
-    <label class="mt-1.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
-      <input type="checkbox" [checked]="accountActive()" (change)="accountActive.set($event.target.checked)" />
-      Account Active
-    </label>
+    <div class="mt-1.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
+      <p-checkbox
+        inputId="user-account-active"
+        [binary]="true"
+        [ngModel]="accountActive()"
+        (ngModelChange)="accountActive.set($event)"
+      />
+      <label for="user-account-active">Account Active</label>
+    </div>
   </section>
 
   <section class="admin-card p-[18px]">
@@ -58,10 +63,11 @@
     </p>
 
     <label class="admin-perm-item">
-      <input
-        type="checkbox"
-        [checked]="contentManagement()"
-        (change)="contentManagement.set($event.target.checked)"
+      <p-checkbox
+        inputId="perm-content"
+        [binary]="true"
+        [ngModel]="contentManagement()"
+        (ngModelChange)="contentManagement.set($event)"
       />
       <div>
         <p class="text-[13px] font-semibold text-ssrk-text-heading">Content Management</p>
@@ -72,10 +78,11 @@
     </label>
 
     <label class="admin-perm-item">
-      <input
-        type="checkbox"
-        [checked]="enquiryManagement()"
-        (change)="enquiryManagement.set($event.target.checked)"
+      <p-checkbox
+        inputId="perm-enquiry"
+        [binary]="true"
+        [ngModel]="enquiryManagement()"
+        (ngModelChange)="enquiryManagement.set($event)"
       />
       <div>
         <p class="text-[13px] font-semibold text-ssrk-text-heading">Enquiry Management</p>

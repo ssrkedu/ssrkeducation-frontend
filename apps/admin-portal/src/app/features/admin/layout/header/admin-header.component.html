@@ -14,13 +14,13 @@
     />
   </div>
 
-  <h1 class="min-w-0 flex-1 font-serif text-base font-bold text-ssrk-text-heading">{{ title() }}</h1>
+  <div class="ml-auto flex min-w-0 items-center gap-3">
+    @if (newEnquiryCount() > 0) {
+      <span class="rounded-[10px] bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700">
+        {{ newEnquiryCount() }} New
+      </span>
+    }
 
-  @if (newEnquiryCount() > 0) {
-    <span class="rounded-[10px] bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700">
-      {{ newEnquiryCount() }} New
-    </span>
-  }
-
-  <app-admin-header-user-menu />
+    <app-admin-header-user-menu />
+  </div>
 </header>

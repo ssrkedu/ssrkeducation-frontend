@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Tag } from 'primeng/tag';
 
 type AdminBadgeVariant =
   | 'new'
@@ -13,32 +14,35 @@ type AdminBadgeVariant =
   selector: 'app-admin-status-badge',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'inline-flex' },
+  imports: [Tag],
   template: `
-    <span [class]="badgeClass()">{{ label() }}</span>
+    <p-tag
+      [value]="label()"
+      [severity]="severity()"
+      [rounded]="true"
+      styleClass="admin-status-tag"
+    />
   `,
 })
 export class AdminStatusBadgeComponent {
   readonly label = input.required<string>();
   readonly variant = input<AdminBadgeVariant>('new');
 
-  protected badgeClass(): string {
-    const base =
-      'inline-flex items-center rounded-[10px] px-2.5 py-0.5 text-[11px] font-bold';
-
+  protected readonly severity = computed(() => {
     switch (this.variant()) {
       case 'reviewed':
       case 'published':
-        return `${base} bg-emerald-100 text-emerald-700`;
+        return 'success';
       case 'draft':
       case 'inactive':
-        return `${base} bg-gray-100 text-gray-500`;
+        return 'secondary';
       case 'super':
-        return `${base} bg-red-100 text-red-800`;
+        return 'danger';
       case 'admin':
-        return `${base} bg-ssrk-blue-light text-ssrk-blue-primary`;
+        return 'info';
       case 'new':
       default:
-        return `${base} bg-amber-100 text-amber-700`;
+        return 'warn';
     }
-  }
+  });
 }

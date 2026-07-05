@@ -1,12 +1,10 @@
-import { AdminPermission, AdminRole } from '../../../core/auth/auth.types';
-
 export interface ManagedUser {
   id: number;
   name: string;
   initials: string;
   email: string;
-  role: AdminRole;
-  permissions: readonly AdminPermission[];
+  role: 'super_admin' | 'admin';
+  permissions: readonly string[];
   active: boolean;
   lastLogin: string;
 }

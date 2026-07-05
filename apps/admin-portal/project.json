@@ -30,25 +30,94 @@
               "maximumError": "8kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "local": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.local.ts"
+            }
+          ]
+        },
+        "dev": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.dev.ts"
+            }
+          ]
+        },
+        "qa": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.qa.ts"
+            }
+          ]
+        },
+        "uat": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.uat.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/admin-portal/src/environments/environment.ts",
+              "with": "apps/admin-portal/src/environments/environment.local.ts"
+            }
+          ]
         }
       }
     },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "local",
       "configurations": {
         "production": {
           "buildTarget": "admin-portal:build:production"
         },
+        "local": {
+          "buildTarget": "admin-portal:build:local"
+        },
+        "dev": {
+          "buildTarget": "admin-portal:build:dev"
+        },
+        "qa": {
+          "buildTarget": "admin-portal:build:qa"
+        },
+        "uat": {
+          "buildTarget": "admin-portal:build:uat"
+        },
         "development": {
-          "buildTarget": "admin-portal:build:development"
+          "buildTarget": "admin-portal:build:local",
+          "proxyConfig": "apps/admin-portal/proxy.conf.json"
         }
       }
     },

@@ -4,20 +4,55 @@
   </a>
 </app-admin-page-header>
 
+<div class="mb-4">
+  <p-iconfield styleClass="admin-filter-search">
+    <p-inputicon styleClass="pi pi-search" />
+    <input
+      pInputText
+      type="search"
+      placeholder="Search users…"
+      class="admin-filter-input"
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+  </p-iconfield>
+</div>
+
 <section class="admin-card">
   <p-table
     [value]="users()"
     styleClass="admin-table"
     [tableStyle]="{ 'min-width': '60rem' }"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [rowHover]="true"
+    sortField="name"
+    [sortOrder]="1"
   >
     <ng-template #header>
       <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
+        <th pSortableColumn="name">
+          Name
+          <p-sortIcon field="name" />
+        </th>
+        <th pSortableColumn="email">
+          Email
+          <p-sortIcon field="email" />
+        </th>
+        <th pSortableColumn="role">
+          Role
+          <p-sortIcon field="role" />
+        </th>
         <th>Permissions</th>
-        <th>Status</th>
-        <th>Last Login</th>
+        <th pSortableColumn="active">
+          Status
+          <p-sortIcon field="active" />
+        </th>
+        <th pSortableColumn="lastLogin">
+          Last Login
+          <p-sortIcon field="lastLogin" />
+        </th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -25,11 +60,7 @@
       <tr class="cursor-pointer" [routerLink]="['/users', user.id, 'edit']">
         <td>
           <div class="flex items-center gap-2">
-            <div
-              class="flex h-7 w-7 items-center justify-center rounded-full bg-ssrk-blue-light text-[10px] font-bold text-ssrk-blue-primary"
-            >
-              {{ user.initials }}
-            </div>
+            <p-avatar [label]="user.initials" shape="circle" styleClass="admin-user-avatar" />
             <strong>{{ user.name }}</strong>
           </div>
         </td>
@@ -54,6 +85,13 @@
           <a [routerLink]="['/users', user.id, 'edit']" (click)="$event.stopPropagation()">
             <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
           </a>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="7" class="py-8 text-center text-ssrk-text-muted">
+          No users match your search.
         </td>
       </tr>
     </ng-template>

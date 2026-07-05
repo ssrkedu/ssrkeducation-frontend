@@ -31,17 +31,16 @@
       </div>
       <div class="px-5 pb-5 pt-1">
         <label class="admin-auth-label" for="enquiry-status">Current Status</label>
-        <select
-          id="enquiry-status"
-          class="admin-filter-select w-full"
-          [value]="item.status"
+        <p-select
+          inputId="enquiry-status"
+          [options]="statusOptions"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="admin-filter-select w-full"
           [disabled]="!auth.canWriteEnquiries()"
-          (change)="updateStatus($any($event.target).value)"
-        >
-          @for (option of statusOptions; track option.value) {
-            <option [value]="option.value">{{ option.label }}</option>
-          }
-        </select>
+          [ngModel]="item.status"
+          (ngModelChange)="updateStatus($event)"
+        />
 
         <p class="mb-2.5 mt-4 text-xs font-semibold uppercase tracking-wide text-ssrk-text-muted">
           Notes

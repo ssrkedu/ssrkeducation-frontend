@@ -1,22 +1,28 @@
-<div class="flex shrink-0 items-center gap-1">
+<div class="flex shrink-0 items-center gap-1 rounded-lg border border-ssrk-border bg-white px-1 py-1 hover:bg-ssrk-bg">
   <button
     type="button"
-    class="flex cursor-pointer items-center gap-2 rounded-lg border-0 bg-transparent p-1 text-left hover:bg-ssrk-bg"
+    class="admin-header-user-trigger flex items-center gap-2 rounded-md border-0 bg-transparent px-1 py-0.5 text-left"
     aria-label="Open user menu"
     aria-haspopup="menu"
     (click)="toggleMenu($event)"
   >
-    <div
-      class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ssrk-blue-light text-[11px] font-bold text-ssrk-blue-primary"
-    >
-      {{ currentUser()?.initials ?? 'GU' }}
-    </div>
+    <p-avatar
+      [label]="currentUser()?.initials ?? 'GU'"
+      shape="circle"
+      styleClass="admin-header-user-avatar"
+    />
 
-    <div class="hidden min-w-0 text-right sm:block">
-      <p class="truncate text-[13px] font-semibold leading-tight text-ssrk-text-heading">
+    <div class="min-w-0 text-left">
+      <p
+        class="max-w-[5.5rem] truncate text-[12px] font-semibold leading-tight text-ssrk-text-heading sm:max-w-[9rem] sm:text-[13px]"
+      >
         {{ displayName() }}
       </p>
-      <p class="text-[11px] leading-tight text-ssrk-text-muted">{{ roleLabel() }}</p>
+      <p
+        class="max-w-[5.5rem] truncate text-[10px] leading-tight text-ssrk-text-muted sm:max-w-[9rem] sm:text-[11px]"
+      >
+        {{ roleLabel() }}
+      </p>
     </div>
   </button>
 
@@ -30,12 +36,12 @@
     ariaLabel="Open user menu"
     (onClick)="toggleMenu($event)"
   />
-
-  <p-menu
-    #userMenu
-    [model]="menuItems()"
-    [popup]="true"
-    appendTo="body"
-    styleClass="admin-user-menu"
-  />
 </div>
+
+<p-menu
+  #userMenu
+  [model]="menuItems()"
+  [popup]="true"
+  appendTo="body"
+  styleClass="admin-user-menu"
+/>

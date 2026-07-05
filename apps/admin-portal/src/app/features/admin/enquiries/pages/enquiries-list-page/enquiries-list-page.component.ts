@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { AdminDemoDataService } from '../../../data/admin-demo.service';
@@ -14,9 +18,13 @@ import { AdminStatusBadgeComponent } from '../../../shared/components/admin-stat
   selector: 'app-enquiries-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     RouterLink,
     TableModule,
     Button,
+    Select,
+    IconField,
+    InputIcon,
     InputText,
     AdminPageHeaderComponent,
     AdminPermissionBannerComponent,

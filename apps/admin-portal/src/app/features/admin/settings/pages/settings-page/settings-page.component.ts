@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { ProfileSettingsFormModel } from '../../../../../core/auth/auth.types';
 import { AdminPageHeaderComponent } from '../../../shared/components/admin-page-header/admin-page-header.component';
@@ -20,7 +21,7 @@ type ProfileSettingsFormGroup = FormGroup<{
 @Component({
   selector: 'app-settings-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, InputText, Button, AdminPageHeaderComponent],
+  imports: [ReactiveFormsModule, InputText, Button, Message, AdminPageHeaderComponent],
   templateUrl: './settings-page.component.html',
 })
 export class SettingsPageComponent {
@@ -48,7 +49,7 @@ export class SettingsPageComponent {
         return;
       }
 
-      this.roleLabel.set(user.role === 'super_admin' ? 'Super Admin' : 'Admin');
+      this.roleLabel.set(this.auth.getRoleLabel(user));
       this.form.reset({ name: user.name, email: user.email });
     });
   }

@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
+import { SelectButton } from 'primeng/selectbutton';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { TableModule } from 'primeng/table';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { AdminDemoDataService } from '../../../data/admin-demo.service';
@@ -16,9 +19,16 @@ import { AdminStatusBadgeComponent } from '../../../shared/components/admin-stat
   selector: 'app-cms-courses-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     RouterLink,
     TableModule,
     Button,
+    SelectButton,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
     AdminPageHeaderComponent,
     AdminPermissionBannerComponent,
     AdminStatusBadgeComponent,
@@ -54,11 +64,13 @@ export class CmsCoursesPageComponent {
     this.institutionContext.set(id);
   }
 
-  protected setSection(id: CmsSection): void {
-    this.activeSection.set(id);
+  protected setSection(id: CmsSection | string | number | undefined): void {
+    if (typeof id === 'string') {
+      this.activeSection.set(id as CmsSection);
+    }
   }
 
-  protected sectionLabel(): string {
-    return this.sectionOptions.find((item) => item.id === this.activeSection())?.label ?? 'Section';
+  protected sectionLabel(id: CmsSection): string {
+    return this.sectionOptions.find((item) => item.id === id)?.label ?? 'Section';
   }
 }

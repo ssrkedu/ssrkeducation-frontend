@@ -1,5 +1,6 @@
 @import 'tailwindcss' source('./app');
 @import '../../../libs/shared/design-tokens/src/lib/ssrk-tokens.css';
+@import 'primeicons/primeicons.css';
 
 html,
 body {
@@ -70,18 +71,30 @@ body {
   color: var(--color-ssrk-text-muted);
 }
 
-.admin-filter-select {
-  padding: 8px 11px;
+.admin-filter-select.p-select {
+  min-width: 10rem;
   border: 1.5px solid var(--color-ssrk-border);
   border-radius: var(--radius-sm);
   background: #fff;
   font-size: 13px;
-  color: var(--color-ssrk-text-body);
 }
 
-.admin-filter-select:focus {
-  outline: none;
+.admin-filter-select-wide.p-select {
+  min-width: 11rem;
+}
+
+.admin-filter-select.p-select:not(.p-disabled):hover,
+.admin-filter-select.p-select.p-focus {
   border-color: var(--color-ssrk-blue-primary);
+}
+
+.admin-filter-search.p-iconfield {
+  width: 200px;
+  max-width: 100%;
+}
+
+.admin-filter-search .admin-filter-input {
+  width: 100%;
 }
 
 .admin-filter-input {
@@ -220,6 +233,10 @@ body {
   color: var(--color-ssrk-text-heading);
 }
 
+.admin-header-user-trigger {
+  cursor: pointer;
+}
+
 .admin-header-user-toggle.p-button {
   display: inline-flex;
   flex-shrink: 0;
@@ -237,6 +254,63 @@ body {
 .admin-header-user-toggle.p-button .p-button-icon {
   font-size: 0.75rem;
   color: currentColor;
+}
+
+.admin-header-user-avatar.p-avatar,
+.admin-user-avatar.p-avatar {
+  width: 2rem;
+  height: 2rem;
+  background: var(--color-ssrk-blue-light);
+  color: var(--color-ssrk-blue-primary);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-status-tag.p-tag {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-permission-message.p-message,
+.admin-inline-message.p-message {
+  width: 100%;
+}
+
+.admin-stat-card.p-card {
+  border: 1.5px solid var(--color-ssrk-border);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 1px 2px rgba(13, 35, 64, 0.04),
+    0 3px 10px rgba(13, 35, 64, 0.07);
+}
+
+.admin-stat-card.p-card .p-card-body {
+  padding: 1.25rem;
+}
+
+.admin-progress-bar.p-progressbar {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--color-ssrk-border);
+}
+
+.admin-progress-bar.p-progressbar .p-progressbar-value {
+  border-radius: 9999px;
+  background: var(--color-ssrk-blue-primary);
+}
+
+.admin-filter-selectbutton.p-selectbutton .p-togglebutton {
+  border: 1.5px solid var(--color-ssrk-border);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-cms-tabs.p-tabs .p-tablist-tab-list {
+  border-bottom: 2px solid var(--color-ssrk-border);
+}
+
+.admin-language-tabs.p-tabs .p-tablist-tab-list {
+  border-bottom: 2px solid var(--color-ssrk-border);
 }
 
 .admin-sidebar-link {

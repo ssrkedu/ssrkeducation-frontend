@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { ProgressBar } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { AdminDemoDataService } from '../../../data/admin-demo.service';
@@ -14,6 +16,8 @@ import { AdminStatusBadgeComponent } from '../../../shared/components/admin-stat
     RouterLink,
     TableModule,
     Button,
+    Card,
+    ProgressBar,
     AdminPageHeaderComponent,
     AdminStatusBadgeComponent,
   ],

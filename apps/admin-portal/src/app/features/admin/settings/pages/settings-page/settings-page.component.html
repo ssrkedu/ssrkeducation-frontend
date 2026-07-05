@@ -51,7 +51,9 @@
     </div>
 
     @if (saveMessage(); as message) {
-      <p class="mb-3 text-xs font-medium text-emerald-700">{{ message }}</p>
+      <p-message severity="success" styleClass="admin-inline-message mb-3 w-full">
+        {{ message }}
+      </p-message>
     }
 
     <p-button

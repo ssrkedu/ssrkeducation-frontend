@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Menu } from 'primeng/menu';
 import { AuthService } from '../../../../../core/auth/auth.service';
@@ -9,7 +10,7 @@ import { AuthService } from '../../../../../core/auth/auth.service';
   selector: 'app-admin-header-user-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'shrink-0' },
-  imports: [Button, Menu],
+  imports: [Avatar, Button, Menu],
   templateUrl: './admin-header-user-menu.component.html',
 })
 export class AdminHeaderUserMenuComponent {
@@ -20,11 +21,9 @@ export class AdminHeaderUserMenuComponent {
 
   protected readonly currentUser = this.auth.currentUser;
 
-  protected readonly roleLabel = computed(() => {
-    const user = this.currentUser();
-    if (!user) return 'Guest';
-    return user.role === 'super_admin' ? 'Super Admin' : 'Admin';
-  });
+  protected readonly roleLabel = computed(() =>
+    this.auth.getRoleLabel(this.currentUser()),
+  );
 
   protected readonly displayName = computed(
     () => this.currentUser()?.name ?? 'Guest User',
@@ -51,7 +50,6 @@ export class AdminHeaderUserMenuComponent {
   }
 
   private logout(): void {
-    this.auth.signOut();
-    void this.router.navigateByUrl('/auth/login');
+    this.auth.logout().subscribe();
   }
 }

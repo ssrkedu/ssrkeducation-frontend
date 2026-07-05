@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button } from 'primeng/button';
+import { Checkbox } from 'primeng/checkbox';
 import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { map } from 'rxjs';
@@ -10,7 +12,7 @@ import { AdminDemoDataService } from '../../../data/admin-demo.service';
 @Component({
   selector: 'app-user-edit-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Button, InputText, Password],
+  imports: [FormsModule, Button, Checkbox, InputText, Password],
   templateUrl: './user-edit-page.component.html',
 })
 export class UserEditPageComponent {

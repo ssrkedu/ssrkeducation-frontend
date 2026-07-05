@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../../../core/auth/auth.service';
+import { Perm } from '../../../../../core/auth/permissions';
 
 interface SidebarNavItem {
   label: string;
@@ -51,7 +52,7 @@ export class AdminSidebarNavComponent {
       },
     ];
 
-    if (this.auth.isSuperAdmin() || this.auth.hasPermission('content_management')) {
+    if (this.auth.isSuperAdmin() || this.auth.hasPermission(Perm.Content.Read)) {
       items.push({
         label: 'Content Management',
         icon: 'pi pi-file',
@@ -59,7 +60,7 @@ export class AdminSidebarNavComponent {
       });
     }
 
-    if (this.auth.isSuperAdmin()) {
+    if (this.auth.canManageUsers()) {
       items.push({
         label: 'User Management',
         icon: 'pi pi-users',

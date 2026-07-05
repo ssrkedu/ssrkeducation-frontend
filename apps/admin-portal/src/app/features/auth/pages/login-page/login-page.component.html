@@ -10,6 +10,12 @@
     </p>
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (errorMessage()) {
+        <p class="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[13px] text-red-700">
+          {{ errorMessage() }}
+        </p>
+      }
+
       <div class="admin-auth-field">
         <label class="admin-auth-label" for="login-email">Email Address</label>
         <input
@@ -57,11 +63,5 @@
         </a>
       </div>
     </form>
-
-    <p
-      class="mt-[18px] border-t border-ssrk-border pt-3.5 text-center text-[11px] text-ssrk-text-muted"
-    >
-      Leave fields empty for Super Admin dev login · vikram@ssrkedu.com · sunita@ssrkedu.com · meera@ssrkedu.com
-    </p>
   </section>
 </main>

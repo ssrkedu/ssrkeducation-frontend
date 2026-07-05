@@ -12,91 +12,114 @@
   />
 }
 
-<div class="mb-4 flex flex-wrap gap-2">
-  @for (option of institutionOptions; track option.id) {
-    <button
-      type="button"
-      class="rounded-full border-[1.5px] px-3.5 py-1.5 text-xs font-semibold transition"
-      [class.border-ssrk-blue-primary]="institutionContext() === option.id"
-      [class.bg-ssrk-blue-primary]="institutionContext() === option.id"
-      [class.text-white]="institutionContext() === option.id"
-      [class.border-ssrk-border]="institutionContext() !== option.id"
-      [class.text-ssrk-text-muted]="institutionContext() !== option.id"
-      (click)="setInstitution(option.id)"
-    >
-      {{ option.label }}
-    </button>
-  }
+<div class="mb-4">
+  <p-selectbutton
+    [options]="institutionOptions"
+    optionLabel="label"
+    optionValue="id"
+    styleClass="admin-filter-selectbutton"
+    [ngModel]="institutionContext()"
+    (ngModelChange)="setInstitution($event)"
+  />
 </div>
 
-<div class="mb-5 flex gap-0 overflow-x-auto border-b-2 border-ssrk-border">
-  @for (section of sectionOptions; track section.id) {
-    <button
-      type="button"
-      class="shrink-0 border-b-2 px-3.5 py-2 text-[13px] font-semibold transition"
-      [class.border-ssrk-blue-primary]="activeSection() === section.id"
-      [class.text-ssrk-blue-primary]="activeSection() === section.id"
-      [class.border-transparent]="activeSection() !== section.id"
-      [class.text-ssrk-text-muted]="activeSection() !== section.id"
-      (click)="setSection(section.id)"
-    >
-      {{ section.label }}
-    </button>
-  }
-</div>
+<p-tabs
+  [value]="activeSection()"
+  (valueChange)="setSection($event)"
+  [scrollable]="true"
+  styleClass="admin-cms-tabs"
+>
+  <p-tablist>
+    @for (section of sectionOptions; track section.id) {
+      <p-tab [value]="section.id">{{ section.label }}</p-tab>
+    }
+  </p-tablist>
 
-@if (activeSection() === 'courses') {
-  <section class="admin-card">
-    <p-table
-      [value]="courses()"
-      styleClass="admin-table"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template #header>
-        <tr>
-          <th>Course Name</th>
-          <th>Slug</th>
-          <th>Duration</th>
-          <th>Seats</th>
-          <th>Status</th>
-          <th>Last Updated</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-course>
-        <tr>
-          <td><strong>{{ course.name }}</strong></td>
-          <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
-          <td>{{ course.duration }}</td>
-          <td>{{ course.seats }}</td>
-          <td>
-            <app-admin-status-badge
-              [label]="course.status"
-              [variant]="course.status === 'Published' ? 'published' : 'draft'"
-            />
-          </td>
-          <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
-          <td>
-            @if (auth.canWriteCms()) {
-              <div class="flex gap-2">
-                <a [routerLink]="['/cms/courses', course.slug, 'edit']">
-                  <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                </a>
-                <p-button label="Delete" styleClass="admin-btn-danger admin-btn-sm" [link]="true" />
-              </div>
-            } @else {
-              <span class="text-xs text-ssrk-text-muted">Read only</span>
-            }
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </section>
-} @else {
-  <section class="admin-card p-8 text-center">
-    <h2 class="font-serif text-lg font-bold text-ssrk-text-heading">{{ sectionLabel() }}</h2>
-    <p class="mt-2 text-sm text-ssrk-text-muted">
-      This CMS section will be built in the next iteration. Courses are available under the Courses tab.
-    </p>
-  </section>
-}
+  <p-tabpanels>
+    @for (section of sectionOptions; track section.id) {
+      <p-tabpanel [value]="section.id">
+        @if (section.id === 'courses') {
+          <section class="admin-card mt-4">
+            <p-table
+              [value]="courses()"
+              styleClass="admin-table"
+              [tableStyle]="{ 'min-width': '50rem' }"
+              [paginator]="true"
+              [rows]="10"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [rowHover]="true"
+              sortField="name"
+              [sortOrder]="1"
+            >
+              <ng-template #header>
+                <tr>
+                  <th pSortableColumn="name">
+                    Course Name
+                    <p-sortIcon field="name" />
+                  </th>
+                  <th pSortableColumn="slug">
+                    Slug
+                    <p-sortIcon field="slug" />
+                  </th>
+                  <th pSortableColumn="duration">
+                    Duration
+                    <p-sortIcon field="duration" />
+                  </th>
+                  <th pSortableColumn="seats">
+                    Seats
+                    <p-sortIcon field="seats" />
+                  </th>
+                  <th pSortableColumn="status">
+                    Status
+                    <p-sortIcon field="status" />
+                  </th>
+                  <th pSortableColumn="updatedOn">
+                    Last Updated
+                    <p-sortIcon field="updatedOn" />
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-course>
+                <tr>
+                  <td><strong>{{ course.name }}</strong></td>
+                  <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
+                  <td>{{ course.duration }}</td>
+                  <td>{{ course.seats }}</td>
+                  <td>
+                    <app-admin-status-badge
+                      [label]="course.status"
+                      [variant]="course.status === 'Published' ? 'published' : 'draft'"
+                    />
+                  </td>
+                  <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
+                  <td>
+                    @if (auth.canWriteCms()) {
+                      <div class="flex gap-2">
+                        <a [routerLink]="['/cms/courses', course.slug, 'edit']">
+                          <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                        </a>
+                        <p-button label="Delete" styleClass="admin-btn-danger admin-btn-sm" [link]="true" />
+                      </div>
+                    } @else {
+                      <span class="text-xs text-ssrk-text-muted">Read only</span>
+                    }
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+        } @else {
+          <section class="admin-card mt-4 p-8 text-center">
+            <h2 class="font-serif text-lg font-bold text-ssrk-text-heading">
+              {{ sectionLabel(section.id) }}
+            </h2>
+            <p class="mt-2 text-sm text-ssrk-text-muted">
+              This CMS section will be built in the next iteration. Courses are available under the Courses tab.
+            </p>
+          </section>
+        }
+      </p-tabpanel>
+    }
+  </p-tabpanels>
+</p-tabs>

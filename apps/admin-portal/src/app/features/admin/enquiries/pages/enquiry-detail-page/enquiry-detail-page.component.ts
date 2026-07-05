@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
+import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { map } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
@@ -12,7 +14,7 @@ import { AdminPermissionBannerComponent } from '../../../shared/components/admin
 @Component({
   selector: 'app-enquiry-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, Button, Textarea, AdminPermissionBannerComponent],
+  imports: [FormsModule, RouterLink, Button, Select, Textarea, AdminPermissionBannerComponent],
   templateUrl: './enquiry-detail-page.component.html',
 })
 export class EnquiryDetailPageComponent {

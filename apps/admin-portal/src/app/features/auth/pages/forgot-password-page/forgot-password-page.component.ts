@@ -9,6 +9,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
 import { AuthBrandComponent } from '../../components/auth-brand/auth-brand.component';
 
 type ForgotPasswordFormGroup = FormGroup<{
@@ -18,7 +19,7 @@ type ForgotPasswordFormGroup = FormGroup<{
 @Component({
   selector: 'app-forgot-password-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, AuthBrandComponent, InputText, Button],
+  imports: [ReactiveFormsModule, RouterLink, AuthBrandComponent, InputText, Button, Message],
   templateUrl: './forgot-password-page.component.html',
 })
 export class ForgotPasswordPageComponent {

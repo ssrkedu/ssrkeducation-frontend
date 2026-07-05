@@ -2,63 +2,61 @@
 </app-admin-page-header>
 
 <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-  <article class="admin-card flex items-start gap-3.5 p-5">
-    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-amber-100">
-      <svg class="h-5 w-5 stroke-amber-700" viewBox="0 0 24 24" fill="none" stroke-width="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
+  <p-card styleClass="admin-stat-card">
+    <div class="flex items-start gap-3.5">
+      <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-amber-100">
+        <i class="pi pi-comments text-xl text-amber-700" aria-hidden="true"></i>
+      </div>
+      <div>
+        <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+          {{ stats.newEnquiries() }}
+        </p>
+        <p class="mt-1 text-xs text-ssrk-text-muted">New Enquiries</p>
+      </div>
     </div>
-    <div>
-      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
-        {{ stats.newEnquiries() }}
-      </p>
-      <p class="mt-1 text-xs text-ssrk-text-muted">New Enquiries</p>
-    </div>
-  </article>
+  </p-card>
 
-  <article class="admin-card flex items-start gap-3.5 p-5">
-    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-ssrk-blue-light">
-      <svg class="h-5 w-5 stroke-ssrk-blue-primary" viewBox="0 0 24 24" fill="none" stroke-width="2">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-      </svg>
+  <p-card styleClass="admin-stat-card">
+    <div class="flex items-start gap-3.5">
+      <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-ssrk-blue-light">
+        <i class="pi pi-chart-line text-xl text-ssrk-blue-primary" aria-hidden="true"></i>
+      </div>
+      <div>
+        <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+          {{ stats.totalEnquiries() }}
+        </p>
+        <p class="mt-1 text-xs text-ssrk-text-muted">Total Enquiries</p>
+      </div>
     </div>
-    <div>
-      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
-        {{ stats.totalEnquiries() }}
-      </p>
-      <p class="mt-1 text-xs text-ssrk-text-muted">Total Enquiries</p>
-    </div>
-  </article>
+  </p-card>
 
-  <article class="admin-card flex items-start gap-3.5 p-5">
-    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-emerald-100">
-      <svg class="h-5 w-5 stroke-emerald-600" viewBox="0 0 24 24" fill="none" stroke-width="2">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-      </svg>
+  <p-card styleClass="admin-stat-card">
+    <div class="flex items-start gap-3.5">
+      <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-emerald-100">
+        <i class="pi pi-file text-xl text-emerald-600" aria-hidden="true"></i>
+      </div>
+      <div>
+        <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+          {{ stats.publishedCourses() }}
+        </p>
+        <p class="mt-1 text-xs text-ssrk-text-muted">Published Courses</p>
+      </div>
     </div>
-    <div>
-      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
-        {{ stats.publishedCourses() }}
-      </p>
-      <p class="mt-1 text-xs text-ssrk-text-muted">Published Courses</p>
-    </div>
-  </article>
+  </p-card>
 
-  <article class="admin-card flex items-start gap-3.5 p-5">
-    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-violet-100">
-      <svg class="h-5 w-5 stroke-violet-600" viewBox="0 0 24 24" fill="none" stroke-width="2">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5" />
-        <circle cx="9" cy="7" r="4" />
-      </svg>
+  <p-card styleClass="admin-stat-card">
+    <div class="flex items-start gap-3.5">
+      <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-violet-100">
+        <i class="pi pi-users text-xl text-violet-600" aria-hidden="true"></i>
+      </div>
+      <div>
+        <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+          {{ stats.activeUsers() }}
+        </p>
+        <p class="mt-1 text-xs text-ssrk-text-muted">Active Users</p>
+      </div>
     </div>
-    <div>
-      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
-        {{ stats.activeUsers() }}
-      </p>
-      <p class="mt-1 text-xs text-ssrk-text-muted">Active Users</p>
-    </div>
-  </article>
+  </p-card>
 </div>
 
 <section class="admin-card mb-5">
@@ -75,14 +73,32 @@
       [value]="recentEnquiries()"
       styleClass="admin-table"
       [tableStyle]="{ 'min-width': '40rem' }"
+      [rowHover]="true"
+      sortField="submittedOn"
+      [sortOrder]="-1"
     >
       <ng-template #header>
         <tr>
-          <th>Student</th>
-          <th>Course</th>
-          <th>Institution</th>
-          <th>Status</th>
-          <th>Submitted</th>
+          <th pSortableColumn="name">
+            Student
+            <p-sortIcon field="name" />
+          </th>
+          <th pSortableColumn="course">
+            Course
+            <p-sortIcon field="course" />
+          </th>
+          <th pSortableColumn="institution">
+            Institution
+            <p-sortIcon field="institution" />
+          </th>
+          <th pSortableColumn="status">
+            Status
+            <p-sortIcon field="status" />
+          </th>
+          <th pSortableColumn="submittedOn">
+            Submitted
+            <p-sortIcon field="submittedOn" />
+          </th>
         </tr>
       </ng-template>
       <ng-template #body let-enquiry>
@@ -104,19 +120,21 @@
 </section>
 
 <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-  <section class="admin-card">
-    <div class="px-5 pt-[18px]">
-      <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Quick Actions</h2>
-    </div>
-    <div class="flex flex-col gap-2 px-5 pb-5 pt-3">
+  <p-card styleClass="admin-stat-card">
+    <ng-template #title>
+      <span class="font-serif text-[15px] font-bold text-ssrk-text-heading">Quick Actions</span>
+    </ng-template>
+    <div class="flex flex-col gap-2">
       <p-button
         label="Review New Enquiries"
+        icon="pi pi-comments"
         routerLink="/enquiries"
         styleClass="admin-btn-outline w-full justify-start"
       />
       @if (auth.canWriteCms()) {
         <p-button
           label="Add New Course"
+          icon="pi pi-plus"
           routerLink="/cms/courses/new"
           styleClass="admin-btn-outline w-full justify-start"
         />
@@ -124,32 +142,28 @@
       @if (auth.isSuperAdmin()) {
         <p-button
           label="Add New User"
+          icon="pi pi-user-plus"
           routerLink="/users/new"
           styleClass="admin-btn-outline w-full justify-start"
         />
       }
     </div>
-  </section>
+  </p-card>
 
-  <section class="admin-card">
-    <div class="px-5 pt-[18px]">
-      <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Enquiries by Course</h2>
-    </div>
-    <div class="space-y-2.5 px-5 pb-5 pt-3">
+  <p-card styleClass="admin-stat-card">
+    <ng-template #title>
+      <span class="font-serif text-[15px] font-bold text-ssrk-text-heading">Enquiries by Course</span>
+    </ng-template>
+    <div class="space-y-2.5">
       @for (item of enquiriesByCourse(); track item.course) {
         <div>
           <div class="mb-1 flex justify-between text-xs">
             <span class="font-semibold text-ssrk-text-heading">{{ item.course }}</span>
             <span class="text-ssrk-text-muted">{{ item.count }}</span>
           </div>
-          <div class="h-1.5 rounded bg-ssrk-border">
-            <div
-              class="h-1.5 rounded bg-ssrk-blue-primary"
-              [style.width.%]="item.percent"
-            ></div>
-          </div>
+          <p-progressbar [value]="item.percent" [showValue]="false" styleClass="admin-progress-bar" />
         </div>
       }
     </div>
-  </section>
+  </p-card>
 </div>
