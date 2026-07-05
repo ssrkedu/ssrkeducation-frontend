@@ -1,0 +1,149 @@
+<div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+  <div class="flex items-center gap-3">
+    <p-button
+      icon="pi pi-arrow-left"
+      styleClass="admin-btn-ghost admin-btn-sm"
+      (onClick)="goBack()"
+    />
+    <h1 class="font-serif text-xl font-bold text-ssrk-text-heading">{{ pageTitle() }}</h1>
+  </div>
+  <div class="flex gap-2">
+    <p-button label="Save Draft" styleClass="admin-btn-outline admin-btn-sm" (onClick)="saveDraft()" />
+    <p-button label="Publish →" styleClass="admin-btn-saffron admin-btn-sm" (onClick)="publish()" />
+  </div>
+</div>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_280px]">
+  <div>
+    <section class="admin-card mb-4 p-5">
+      <h2 class="admin-section-title">Course Content</h2>
+      <div class="mb-3.5 flex border-b-2 border-ssrk-border">
+        <button
+          type="button"
+          class="border-b-2 px-4 py-2 text-[13px] font-semibold"
+          [class.border-ssrk-blue-primary]="activeLanguage() === 'od'"
+          [class.text-ssrk-blue-primary]="activeLanguage() === 'od'"
+          [class.border-transparent]="activeLanguage() !== 'od'"
+          [class.text-ssrk-text-muted]="activeLanguage() !== 'od'"
+          (click)="setLanguage('od')"
+        >
+          ଓଡ଼ିଆ (Odia) <span class="text-[10px] text-red-600">*Required</span>
+        </button>
+        <button
+          type="button"
+          class="border-b-2 px-4 py-2 text-[13px] font-semibold"
+          [class.border-ssrk-blue-primary]="activeLanguage() === 'en'"
+          [class.text-ssrk-blue-primary]="activeLanguage() === 'en'"
+          [class.border-transparent]="activeLanguage() !== 'en'"
+          [class.text-ssrk-text-muted]="activeLanguage() !== 'en'"
+          (click)="setLanguage('en')"
+        >
+          English <span class="text-[10px] text-ssrk-text-muted">Optional</span>
+        </button>
+      </div>
+
+      @if (activeLanguage() === 'od') {
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Course Name (Odia) *</label>
+          <input pInputText class="w-full" placeholder="ଯଥା: ବ୍ୟବସାୟ ପରିଚାଳନା ସ୍ନାତକ" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Short Description (Odia)</label>
+          <textarea pTextarea rows="3" class="w-full" placeholder="ସଂକ୍ଷିପ୍ତ ବିବରଣ…"></textarea>
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Full Overview (Odia)</label>
+          <textarea pTextarea rows="5" class="w-full" placeholder="ସମ୍ପୂର୍ଣ ବିବରଣ…"></textarea>
+        </div>
+      } @else {
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Course Name (English)</label>
+          <input pInputText class="w-full" placeholder="e.g. Bachelor of Business Administration" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Short Description (English)</label>
+          <textarea pTextarea rows="3" class="w-full" placeholder="Short description…"></textarea>
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Full Overview (English)</label>
+          <textarea pTextarea rows="5" class="w-full" placeholder="Full course overview…"></textarea>
+        </div>
+      }
+    </section>
+
+    <section class="admin-card p-5">
+      <h2 class="admin-section-title">Eligibility & Syllabus</h2>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Eligibility Criteria</label>
+        <textarea pTextarea rows="3" class="w-full" placeholder="e.g. Passed 10+2 with Commerce stream…"></textarea>
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Career Opportunities</label>
+        <textarea pTextarea rows="3" class="w-full" placeholder="Describe career paths…"></textarea>
+      </div>
+    </section>
+  </div>
+
+  <div class="space-y-4">
+    <section class="admin-card p-[18px]">
+      <h2 class="admin-section-title">Programme Details</h2>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Slug (URL key) *</label>
+        <input pInputText class="w-full" placeholder="e.g. b-com" fluid />
+        <p class="mt-1 text-[11px] text-ssrk-text-muted">Used in the URL: /courses/b-com</p>
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Course Code</label>
+        <input pInputText class="w-full" placeholder="e.g. B.COM" fluid />
+      </div>
+      <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Duration *</label>
+          <input pInputText class="w-full" placeholder="3 Years" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Total Seats *</label>
+          <input pInputText type="number" class="w-full" placeholder="120" fluid />
+        </div>
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Approval / Affiliation</label>
+        <input pInputText class="w-full" placeholder="Utkal University" fluid />
+      </div>
+    </section>
+
+    <section class="admin-card p-[18px]">
+      <h2 class="admin-section-title">Fee Structure</h2>
+      <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Tuition / Year</label>
+          <input pInputText class="w-full" placeholder="₹14,000" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Admission Fee</label>
+          <input pInputText class="w-full" placeholder="₹2,500" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Exam Fee / Year</label>
+          <input pInputText class="w-full" placeholder="₹2,000" fluid />
+        </div>
+        <div class="admin-auth-field">
+          <label class="admin-auth-label">Total / Year</label>
+          <input pInputText class="w-full" placeholder="₹18,500" fluid />
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-card p-[18px]">
+      <h2 class="admin-section-title">Visibility</h2>
+      <label class="flex items-center gap-2 text-[13px] text-ssrk-text-body">
+        <input type="checkbox" checked />
+        Published (live on site)
+      </label>
+      <label class="mt-2.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
+        <input type="checkbox" checked />
+        Show in course list
+      </label>
+    </section>
+  </div>
+</div>

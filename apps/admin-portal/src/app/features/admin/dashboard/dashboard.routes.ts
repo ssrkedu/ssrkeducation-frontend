@@ -7,5 +7,6 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./pages/dashboard-page/dashboard-page.component').then(
         (m) => m.DashboardPageComponent,
       ),
+    data: { pageTitle: 'Dashboard' },
   },
 ];

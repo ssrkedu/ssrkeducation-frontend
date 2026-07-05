@@ -1,0 +1,106 @@
+<app-admin-page-header title="Enquiry Management">
+  <p-button
+    label="Export CSV"
+    icon="pi pi-download"
+    styleClass="admin-btn-outline admin-btn-sm"
+    (onClick)="exportData()"
+  />
+  <p-button
+    label="Export Excel"
+    styleClass="admin-btn-outline admin-btn-sm"
+    (onClick)="exportData()"
+  />
+</app-admin-page-header>
+
+@if (!auth.canWriteEnquiries()) {
+  <app-admin-permission-banner />
+}
+
+<div class="mb-4 flex flex-wrap items-center gap-2">
+  <select
+    class="admin-filter-select"
+    [value]="filters().status"
+    (change)="updateFilter('status', $any($event.target).value)"
+  >
+    @for (option of statusOptions; track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+
+  <select
+    class="admin-filter-select"
+    [value]="filters().institution"
+    (change)="updateFilter('institution', $any($event.target).value)"
+  >
+    @for (option of institutionOptions; track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+
+  <select
+    class="admin-filter-select"
+    [value]="filters().course"
+    (change)="updateFilter('course', $any($event.target).value)"
+  >
+    @for (option of courseOptions; track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+
+  <input
+    pInputText
+    type="search"
+    placeholder="Search name or phone…"
+    class="admin-filter-input"
+    [value]="filters().search"
+    (input)="updateFilter('search', $any($event.target).value)"
+  />
+  <p-button label="Clear" styleClass="admin-btn-ghost admin-btn-sm" (onClick)="clearFilters()" />
+</div>
+
+<section class="admin-card">
+  <p-table
+    [value]="filteredEnquiries()"
+    styleClass="admin-table"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template #header>
+      <tr>
+        <th>Student</th>
+        <th>Phone</th>
+        <th>Institution</th>
+        <th>Course</th>
+        <th>Topics</th>
+        <th>Source</th>
+        <th>Status</th>
+        <th>Submitted</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-enquiry>
+      <tr class="cursor-pointer" [routerLink]="['/enquiries', enquiry.id]">
+        <td><strong>{{ enquiry.name }}</strong></td>
+        <td>{{ enquiry.phone }}</td>
+        <td>{{ enquiry.institution }}</td>
+        <td>{{ enquiry.course }}</td>
+        <td class="text-xs text-ssrk-text-muted">{{ enquiry.topics }}</td>
+        <td class="text-xs text-ssrk-text-muted">{{ enquiry.source }}</td>
+        <td>
+          <app-admin-status-badge
+            [label]="enquiry.status"
+            [variant]="enquiry.status === 'New' ? 'new' : 'reviewed'"
+          />
+        </td>
+        <td class="text-xs text-ssrk-text-muted">{{ enquiry.submittedOn }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="8" class="py-8 text-center text-ssrk-text-muted">
+          No enquiries match your filters.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>
+
+<p class="mt-2.5 text-xs text-ssrk-text-muted">{{ resultSummary() }}</p>

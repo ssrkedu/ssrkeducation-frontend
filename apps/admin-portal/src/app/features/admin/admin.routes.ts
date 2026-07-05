@@ -12,6 +12,24 @@ export const ADMIN_ROUTES: Routes = [
           import('./dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
       },
       {
+        path: 'enquiries',
+        loadChildren: () =>
+          import('./enquiries/enquiries.routes').then((m) => m.ENQUIRIES_ROUTES),
+      },
+      {
+        path: 'cms',
+        loadChildren: () => import('./cms/cms.routes').then((m) => m.CMS_ROUTES),
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./users/users.routes').then((m) => m.USERS_ROUTES),
+      },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('./settings/settings.routes').then((m) => m.SETTINGS_ROUTES),
+      },
+      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'dashboard',

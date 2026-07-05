@@ -1,12 +1,22 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AdminSidebarComponent } from './sidebar/admin-sidebar.component';
-import { AdminTopbarComponent } from './topbar/admin-topbar.component';
+import { AdminHeaderComponent } from './header/admin-header.component';
 
 @Component({
   selector: 'app-admin-layout',
-  imports: [AdminSidebarComponent, AdminTopbarComponent, RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AdminSidebarComponent, AdminHeaderComponent, RouterOutlet],
   templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.scss',
 })
-export class AdminLayoutComponent {}
+export class AdminLayoutComponent {
+  protected readonly sidebarOpen = signal(false);
+
+  protected toggleSidebar(): void {
+    this.sidebarOpen.update((open) => !open);
+  }
+
+  protected closeSidebar(): void {
+    this.sidebarOpen.set(false);
+  }
+}

@@ -1,0 +1,61 @@
+<app-admin-page-header title="User Management">
+  <a routerLink="/users/new">
+    <p-button label="Create User" icon="pi pi-plus" styleClass="admin-btn-primary admin-btn-sm" />
+  </a>
+</app-admin-page-header>
+
+<section class="admin-card">
+  <p-table
+    [value]="users()"
+    styleClass="admin-table"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template #header>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Permissions</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-user>
+      <tr class="cursor-pointer" [routerLink]="['/users', user.id, 'edit']">
+        <td>
+          <div class="flex items-center gap-2">
+            <div
+              class="flex h-7 w-7 items-center justify-center rounded-full bg-ssrk-blue-light text-[10px] font-bold text-ssrk-blue-primary"
+            >
+              {{ user.initials }}
+            </div>
+            <strong>{{ user.name }}</strong>
+          </div>
+        </td>
+        <td class="text-ssrk-text-muted">{{ user.email }}</td>
+        <td>
+          <app-admin-status-badge
+            [label]="user.role === 'super_admin' ? 'Super Admin' : 'Admin'"
+            [variant]="user.role === 'super_admin' ? 'super' : 'admin'"
+          />
+        </td>
+        <td class="text-xs text-ssrk-text-muted">
+          {{ permissionsLabel(user.permissions, user.role) }}
+        </td>
+        <td>
+          <app-admin-status-badge
+            [label]="user.active ? 'Active' : 'Inactive'"
+            [variant]="user.active ? 'published' : 'inactive'"
+          />
+        </td>
+        <td class="text-xs text-ssrk-text-muted">{{ user.lastLogin }}</td>
+        <td>
+          <a [routerLink]="['/users', user.id, 'edit']" (click)="$event.stopPropagation()">
+            <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>

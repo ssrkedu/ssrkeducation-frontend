@@ -1,0 +1,41 @@
+<div class="flex shrink-0 items-center gap-1">
+  <button
+    type="button"
+    class="flex cursor-pointer items-center gap-2 rounded-lg border-0 bg-transparent p-1 text-left hover:bg-ssrk-bg"
+    aria-label="Open user menu"
+    aria-haspopup="menu"
+    (click)="toggleMenu($event)"
+  >
+    <div
+      class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ssrk-blue-light text-[11px] font-bold text-ssrk-blue-primary"
+    >
+      {{ currentUser()?.initials ?? 'GU' }}
+    </div>
+
+    <div class="hidden min-w-0 text-right sm:block">
+      <p class="truncate text-[13px] font-semibold leading-tight text-ssrk-text-heading">
+        {{ displayName() }}
+      </p>
+      <p class="text-[11px] leading-tight text-ssrk-text-muted">{{ roleLabel() }}</p>
+    </div>
+  </button>
+
+  <p-button
+    type="button"
+    icon="pi pi-chevron-down"
+    styleClass="admin-header-user-toggle"
+    [rounded]="true"
+    [text]="true"
+    severity="secondary"
+    ariaLabel="Open user menu"
+    (onClick)="toggleMenu($event)"
+  />
+
+  <p-menu
+    #userMenu
+    [model]="menuItems()"
+    [popup]="true"
+    appendTo="body"
+    styleClass="admin-user-menu"
+  />
+</div>

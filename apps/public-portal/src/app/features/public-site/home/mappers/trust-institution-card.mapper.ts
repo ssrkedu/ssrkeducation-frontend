@@ -1,4 +1,4 @@
-import { buildTenantSiteUrl } from '../../../../core/site-context/public-site-url.utils';
+import { resolveInstitutionSiteUrl } from '../../../../core/site-context/public-site-url.utils';
 import { InstitutionSummaryDto } from '../../institutions/api/dtos/institution-summary.dto';
 import { TrustHomeInstitutionsSectionVm } from '../models/trust-home-institutions-section.vm';
 import {
@@ -54,9 +54,5 @@ function mapIconKeyVm(iconKey: string | null): TrustInstitutionIconVm {
 }
 
 function resolveInstitutionHref(institution: InstitutionSummaryDto): string {
-  if (institution.href.startsWith('http')) {
-    return institution.href;
-  }
-
-  return buildTenantSiteUrl(institution.subdomain);
+  return resolveInstitutionSiteUrl(institution.subdomain);
 }

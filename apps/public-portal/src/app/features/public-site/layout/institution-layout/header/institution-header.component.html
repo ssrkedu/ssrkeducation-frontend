@@ -1,12 +1,12 @@
 <header class="sticky top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
-  <div class="mx-auto flex h-[70px] max-w-[1240px] items-center justify-between px-4 lg:px-8">
-    <a routerLink="/" class="flex items-center gap-3">
+  <div class="mx-auto flex min-h-[70px] max-w-[1240px] items-center justify-between gap-3 px-4 py-2.5 lg:px-8">
+    <a routerLink="/" class="flex min-w-0 items-center gap-3">
       <div
-        class="flex h-[50px] w-[50px] items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
+        class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
       >
         {{ site()?.name?.charAt(0) }}
       </div>
-      <div>
+      <div class="min-w-0">
         <p class="font-serif text-lg font-bold leading-none text-ssrk-blue-primary">
           {{ site()?.name }}
         </p>
@@ -16,7 +16,7 @@
       </div>
     </a>
 
-    <nav class="hidden items-center gap-6 text-sm font-medium text-ssrk-text-body lg:flex">
+    <nav class="hidden items-center gap-6 text-sm font-semibold text-ssrk-text-body lg:flex">
       <a
         routerLink="/"
         routerLinkActive="text-ssrk-blue-primary"
@@ -52,8 +52,18 @@
           Gallery
         </a>
       }
+      @if (enquireNowUrl()) {
+        <a
+          class="ml-1 shrink-0 rounded-ssrk-sm bg-ssrk-blue-primary px-4 py-2 font-bold text-white hover:bg-ssrk-blue-deep xl:px-5"
+          [href]="enquireNowUrl()!"
+        >
+          Enquire Now
+        </a>
+      }
     </nav>
 
-    <app-mobile-nav-hamburger />
+    <div class="flex shrink-0 items-center lg:hidden">
+      <app-mobile-nav-hamburger />
+    </div>
   </div>
 </header>

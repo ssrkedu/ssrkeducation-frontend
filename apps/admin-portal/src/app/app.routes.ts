@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
 
 export const APP_ROUTES: Routes = [
   {
@@ -9,12 +8,11 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: '',
-    canMatch: [authGuard],
     loadChildren: () =>
       import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: '**',
-    redirectTo: 'auth/login',
+    redirectTo: 'dashboard',
   },
 ];

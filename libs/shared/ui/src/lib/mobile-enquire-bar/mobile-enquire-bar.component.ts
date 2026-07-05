@@ -67,6 +67,11 @@ export class MobileEnquireBarComponent {
   }
 
   protected onLinkClick(event: MouseEvent): void {
+    const href = this.config().href?.trim();
+    if (href && this.isExternalUrl(href)) {
+      return;
+    }
+
     const sectionId = this.targetSectionId();
     if (!sectionId) {
       return;
@@ -106,7 +111,15 @@ export class MobileEnquireBarComponent {
       return href.slice(1);
     }
 
+    if (href && this.isExternalUrl(href)) {
+      return null;
+    }
+
     return 'enquiry';
+  }
+
+  private isExternalUrl(href: string): boolean {
+    return /^https?:\/\//i.test(href);
   }
 
   private scrollToSection(section: HTMLElement, sectionId: string): void {

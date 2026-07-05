@@ -1,0 +1,88 @@
+<div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+  <div class="flex items-center gap-3">
+    <p-button
+      icon="pi pi-arrow-left"
+      styleClass="admin-btn-ghost admin-btn-sm"
+      (onClick)="goBack()"
+    />
+    <h1 class="font-serif text-xl font-bold text-ssrk-text-heading">{{ pageTitle() }}</h1>
+  </div>
+  <p-button label="Save User" styleClass="admin-btn-primary admin-btn-sm" (onClick)="saveUser()" />
+</div>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_280px]">
+  <section class="admin-card p-5">
+    <h2 class="admin-section-title">Account Details</h2>
+    <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Full Name *</label>
+        <input pInputText class="w-full" placeholder="e.g. Sunita Patra" fluid />
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Email Address *</label>
+        <input pInputText type="email" class="w-full" placeholder="sunita@ssrkedu.com" fluid />
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Temporary Password *</label>
+        <p-password
+          placeholder="Min 8 characters"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          [toggleMask]="true"
+          [feedback]="false"
+          [fluid]="true"
+        />
+      </div>
+      <div class="admin-auth-field">
+        <label class="admin-auth-label">Confirm Password *</label>
+        <p-password
+          placeholder="Repeat password"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          [toggleMask]="true"
+          [feedback]="false"
+          [fluid]="true"
+        />
+      </div>
+    </div>
+    <label class="mt-1.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
+      <input type="checkbox" [checked]="accountActive()" (change)="accountActive.set($event.target.checked)" />
+      Account Active
+    </label>
+  </section>
+
+  <section class="admin-card p-[18px]">
+    <h2 class="admin-section-title">Permissions</h2>
+    <p class="mb-3 text-xs text-ssrk-text-muted">
+      Super Admin has all permissions by default. For Admin role, select permissions below.
+    </p>
+
+    <label class="admin-perm-item">
+      <input
+        type="checkbox"
+        [checked]="contentManagement()"
+        (change)="contentManagement.set($event.target.checked)"
+      />
+      <div>
+        <p class="text-[13px] font-semibold text-ssrk-text-heading">Content Management</p>
+        <p class="mt-0.5 text-[11px] text-ssrk-text-muted">
+          Create, edit and publish pages, courses, faculty.
+        </p>
+      </div>
+    </label>
+
+    <label class="admin-perm-item">
+      <input
+        type="checkbox"
+        [checked]="enquiryManagement()"
+        (change)="enquiryManagement.set($event.target.checked)"
+      />
+      <div>
+        <p class="text-[13px] font-semibold text-ssrk-text-heading">Enquiry Management</p>
+        <p class="mt-0.5 text-[11px] text-ssrk-text-muted">
+          View, update status, add notes, export enquiries.
+        </p>
+      </div>
+    </label>
+  </section>
+</div>

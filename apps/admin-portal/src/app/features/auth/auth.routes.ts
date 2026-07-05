@@ -9,6 +9,13 @@ export const AUTH_ROUTES: Routes = [
       ),
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./pages/forgot-password-page/forgot-password-page.component').then(
+        (m) => m.ForgotPasswordPageComponent,
+      ),
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'login',

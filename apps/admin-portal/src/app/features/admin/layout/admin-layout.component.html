@@ -1,9 +1,21 @@
 <div class="flex min-h-screen bg-ssrk-bg">
-  <app-admin-sidebar />
+  @if (sidebarOpen()) {
+    <button
+      type="button"
+      class="fixed inset-0 z-40 bg-black/40 lg:hidden"
+      aria-label="Close navigation"
+      (click)="closeSidebar()"
+    ></button>
+  }
 
-  <div class="flex min-w-0 flex-1 flex-col">
-    <app-admin-topbar />
-    <main class="flex-1 p-6">
+  <app-admin-sidebar
+    [mobileOpen]="sidebarOpen()"
+    (navigate)="closeSidebar()"
+  />
+
+  <div class="flex min-w-0 flex-1 flex-col lg:ml-60">
+    <app-admin-header (menuToggle)="toggleSidebar()" />
+    <main class="flex-1 px-4 py-5 sm:px-6 lg:px-8">
       <router-outlet />
     </main>
   </div>

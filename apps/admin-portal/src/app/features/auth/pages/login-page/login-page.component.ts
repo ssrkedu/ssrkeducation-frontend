@@ -1,18 +1,58 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { Password } from 'primeng/password';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { AuthBrandComponent } from '../../components/auth-brand/auth-brand.component';
+
+type LoginFormGroup = FormGroup<{
+  email: FormControl<string>;
+  password: FormControl<string>;
+}>;
 
 @Component({
   selector: 'app-login-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    AuthBrandComponent,
+    InputText,
+    Password,
+    Button,
+  ],
   templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
+  private readonly fb = inject(NonNullableFormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  protected signIn(): void {
-    this.authService.signIn();
-    void this.router.navigateByUrl('/');
+  protected readonly isSubmitting = signal(false);
+
+  protected readonly form: LoginFormGroup = this.fb.group({
+    email: this.fb.control(''),
+    password: this.fb.control(''),
+  });
+
+  protected submit(): void {
+    this.isSubmitting.set(true);
+
+    this.authService.login(this.form.getRawValue()).subscribe({
+      next: () => {
+        const returnUrl =
+          this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
+        void this.router.navigateByUrl(returnUrl);
+        this.isSubmitting.set(false);
+      },
+    });
   }
 }

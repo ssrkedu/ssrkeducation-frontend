@@ -1,7 +1,9 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { afterNextRender, Component, inject, input, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import { EnquiryFormComponent, EnquiryFormOption, EnquiryFormValue } from '@ssrk/shared/ui';
-import { catchError, finalize, Observable, of, switchMap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, switchMap } from 'rxjs';
+import { scrollToEnquiryWhenReady } from '../../../../../core/site-context/enquiry-deep-link.util';
 import { toApiLanguage } from '../../../../../core/public-api/language-code.util';
 import { PublicEnquiryService } from '../../../../../core/public-api/public-enquiry.service';
 import { SiteLanguage, SiteLanguageService } from '../../../../../core/site-context/site-language.service';
@@ -17,6 +19,7 @@ import { TrustEnquirySectionContentVm } from '../../models/trust-enquiry-section
 export class TrustEnquirySectionComponent {
   private readonly enquiryService = inject(PublicEnquiryService);
   private readonly siteLanguage = inject(SiteLanguageService);
+  private readonly route = inject(ActivatedRoute);
 
   readonly content = input.required<TrustEnquirySectionContentVm>();
   readonly collegeOptions = input.required<EnquiryFormOption[]>();
@@ -25,6 +28,11 @@ export class TrustEnquirySectionComponent {
   protected readonly submitting = signal(false);
   protected readonly submitSuccess = signal(false);
   protected readonly submitError = signal<string | null>(null);
+
+  protected readonly initialCollegeCode = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('institution') ?? '')),
+    { initialValue: '' },
+  );
 
   protected readonly interestOptions = toSignal(
     toObservable(this.siteLanguage.language).pipe(
@@ -36,6 +44,10 @@ export class TrustEnquirySectionComponent {
     ),
     { initialValue: [] as EnquiryFormOption[] },
   );
+
+  constructor() {
+    afterNextRender(() => scrollToEnquiryWhenReady());
+  }
 
   protected onSubmitted(value: EnquiryFormValue): void {
     this.submitting.set(true);

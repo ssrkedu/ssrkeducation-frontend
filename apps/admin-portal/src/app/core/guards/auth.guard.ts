@@ -10,5 +10,7 @@ export const authGuard: CanMatchFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/auth/login']);
+  return router.createUrlTree(['/auth/login'], {
+    queryParams: { returnUrl: router.url },
+  });
 };

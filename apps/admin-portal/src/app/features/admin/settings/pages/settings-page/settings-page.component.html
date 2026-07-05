@@ -1,0 +1,65 @@
+<app-admin-page-header title="Settings" subtitle="Manage your account details" />
+
+<section class="admin-card max-w-2xl p-5">
+  <h2 class="admin-section-title">Profile</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="admin-auth-field">
+      <label class="admin-auth-label" for="settings-name">Full Name</label>
+      <input
+        pInputText
+        id="settings-name"
+        type="text"
+        formControlName="name"
+        placeholder="Your full name"
+        class="w-full"
+        fluid
+        [invalid]="isInvalid('name')"
+      />
+      @if (isInvalid('name')) {
+        <small class="admin-auth-error">Enter your full name.</small>
+      }
+    </div>
+
+    <div class="admin-auth-field">
+      <label class="admin-auth-label" for="settings-email">Email Address</label>
+      <input
+        pInputText
+        id="settings-email"
+        type="email"
+        formControlName="email"
+        placeholder="you@ssrkedu.com"
+        class="w-full"
+        fluid
+        [invalid]="isInvalid('email')"
+      />
+      @if (isInvalid('email')) {
+        <small class="admin-auth-error">Enter a valid email address.</small>
+      }
+    </div>
+
+    <div class="admin-auth-field">
+      <label class="admin-auth-label">Role</label>
+      <input
+        pInputText
+        type="text"
+        class="w-full"
+        [value]="roleLabel()"
+        disabled
+        fluid
+      />
+    </div>
+
+    @if (saveMessage(); as message) {
+      <p class="mb-3 text-xs font-medium text-emerald-700">{{ message }}</p>
+    }
+
+    <p-button
+      type="submit"
+      label="Save Changes"
+      [loading]="isSaving()"
+      [disabled]="isSaving()"
+      styleClass="admin-btn-primary admin-btn-sm"
+    />
+  </form>
+</section>

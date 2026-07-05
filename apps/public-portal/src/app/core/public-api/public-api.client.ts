@@ -6,10 +6,12 @@ import { map, Observable, tap } from 'rxjs';
 import {
   CreateEnquiryRequestDto,
   CreateEnquiryResponseDto,
+  CoursesListDto,
   InstitutionsListDto,
   InterestTopicsListDto,
   PageContentDto,
   ResolveSiteDto,
+  ScholarshipsListDto,
 } from './dtos/public-api.dtos';
 import { logLanguageFallback } from './language-fallback.util';
 import { ApiLanguageCode } from './language-code.util';
@@ -73,6 +75,49 @@ export class PublicApiClient {
         map((response) => unwrapApiResponse(response)),
         tap((data) =>
           logLanguageFallback(`sites/${tenantKey}/institutions`, data.language),
+        ),
+      );
+  }
+
+  getCourses(
+    tenantKey: string,
+    lang: ApiLanguageCode,
+  ): Observable<CoursesListDto> {
+    const params = new HttpParams().set('lang', lang);
+
+    return this.http
+      .get<ApiResponse<CoursesListDto>>(
+        buildPublicApiUrl(PUBLIC_API_ROUTES.sites.courses(tenantKey)),
+        { params },
+      )
+      .pipe(
+        map((response) => unwrapApiResponse(response)),
+        tap((data) =>
+          logLanguageFallback(`sites/${tenantKey}/courses`, data.language),
+        ),
+      );
+  }
+
+  getScholarships(
+    tenantKey: string,
+    lang: ApiLanguageCode,
+    courseSlug?: string,
+  ): Observable<ScholarshipsListDto> {
+    let params = new HttpParams().set('lang', lang);
+
+    if (courseSlug) {
+      params = params.set('courseSlug', courseSlug);
+    }
+
+    return this.http
+      .get<ApiResponse<ScholarshipsListDto>>(
+        buildPublicApiUrl(PUBLIC_API_ROUTES.sites.scholarships(tenantKey)),
+        { params },
+      )
+      .pipe(
+        map((response) => unwrapApiResponse(response)),
+        tap((data) =>
+          logLanguageFallback(`sites/${tenantKey}/scholarships`, data.language),
         ),
       );
   }

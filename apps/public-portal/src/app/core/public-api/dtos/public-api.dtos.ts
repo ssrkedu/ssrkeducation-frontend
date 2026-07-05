@@ -101,10 +101,47 @@ export interface CreateEnquiryRequestDto {
   interestCodes: string[];
   message?: string | null;
   source: string;
+  courseSlug?: string | null;
 }
 
 export interface CreateEnquiryResponseDto {
   id: string;
   status: string;
   message: string;
+}
+
+export interface CoursesListDto {
+  items: CourseItemDto[];
+  language: LanguageResolutionDto;
+}
+
+export interface CourseItemDto {
+  id: string;
+  code: string;
+  slug: string;
+  name: string;
+  summary: string | null;
+  eligibility: string | null;
+  feeDisplayText: string | null;
+  sortOrder: number;
+}
+
+export interface ScholarshipsListDto {
+  items: ScholarshipItemDto[];
+  language: LanguageResolutionDto;
+}
+
+export interface ScholarshipItemDto {
+  id: string;
+  code: string;
+  slug: string;
+  name: string;
+  summary: string | null;
+  eligibility: string | null;
+  benefit: string | null;
+  howToApply: string | null;
+  deadlineUtc: string | null;
+  appliesToAllCourses: boolean;
+  courseSlugs: string[];
+  sortOrder: number;
 }

@@ -1,6 +1,155 @@
-<section class="rounded-lg border border-ssrk-border bg-white p-6">
-  <h2 class="font-serif text-xl font-bold text-ssrk-text-heading">Dashboard</h2>
-  <p class="mt-2 text-sm text-ssrk-text-muted">
-    Admin portal shell is ready. Content modules will be added here.
-  </p>
+<app-admin-page-header title="Dashboard" [subtitle]="todayLabel">
+</app-admin-page-header>
+
+<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  <article class="admin-card flex items-start gap-3.5 p-5">
+    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-amber-100">
+      <svg class="h-5 w-5 stroke-amber-700" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    </div>
+    <div>
+      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+        {{ stats.newEnquiries() }}
+      </p>
+      <p class="mt-1 text-xs text-ssrk-text-muted">New Enquiries</p>
+    </div>
+  </article>
+
+  <article class="admin-card flex items-start gap-3.5 p-5">
+    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-ssrk-blue-light">
+      <svg class="h-5 w-5 stroke-ssrk-blue-primary" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    </div>
+    <div>
+      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+        {{ stats.totalEnquiries() }}
+      </p>
+      <p class="mt-1 text-xs text-ssrk-text-muted">Total Enquiries</p>
+    </div>
+  </article>
+
+  <article class="admin-card flex items-start gap-3.5 p-5">
+    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-emerald-100">
+      <svg class="h-5 w-5 stroke-emerald-600" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+      </svg>
+    </div>
+    <div>
+      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+        {{ stats.publishedCourses() }}
+      </p>
+      <p class="mt-1 text-xs text-ssrk-text-muted">Published Courses</p>
+    </div>
+  </article>
+
+  <article class="admin-card flex items-start gap-3.5 p-5">
+    <div class="flex h-[42px] w-[42px] items-center justify-center rounded-ssrk-md bg-violet-100">
+      <svg class="h-5 w-5 stroke-violet-600" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5" />
+        <circle cx="9" cy="7" r="4" />
+      </svg>
+    </div>
+    <div>
+      <p class="font-serif text-[26px] font-bold leading-none text-ssrk-text-heading">
+        {{ stats.activeUsers() }}
+      </p>
+      <p class="mt-1 text-xs text-ssrk-text-muted">Active Users</p>
+    </div>
+  </article>
+</div>
+
+<section class="admin-card mb-5">
+  <div class="flex items-center justify-between px-5 pt-[18px]">
+    <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Recent Enquiries</h2>
+    <p-button
+      label="View All"
+      routerLink="/enquiries"
+      styleClass="admin-btn-outline admin-btn-sm"
+    />
+  </div>
+  <div class="px-5 pb-5 pt-3">
+    <p-table
+      [value]="recentEnquiries()"
+      styleClass="admin-table"
+      [tableStyle]="{ 'min-width': '40rem' }"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Student</th>
+          <th>Course</th>
+          <th>Institution</th>
+          <th>Status</th>
+          <th>Submitted</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-enquiry>
+        <tr class="cursor-pointer" [routerLink]="['/enquiries', enquiry.id]">
+          <td><strong>{{ enquiry.name }}</strong></td>
+          <td>{{ enquiry.course }}</td>
+          <td>{{ enquiry.institution }}</td>
+          <td>
+            <app-admin-status-badge
+              [label]="enquiry.status"
+              [variant]="enquiry.status === 'New' ? 'new' : 'reviewed'"
+            />
+          </td>
+          <td class="text-ssrk-text-muted">{{ enquiry.submittedOn }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </section>
+
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+  <section class="admin-card">
+    <div class="px-5 pt-[18px]">
+      <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Quick Actions</h2>
+    </div>
+    <div class="flex flex-col gap-2 px-5 pb-5 pt-3">
+      <p-button
+        label="Review New Enquiries"
+        routerLink="/enquiries"
+        styleClass="admin-btn-outline w-full justify-start"
+      />
+      @if (auth.canWriteCms()) {
+        <p-button
+          label="Add New Course"
+          routerLink="/cms/courses/new"
+          styleClass="admin-btn-outline w-full justify-start"
+        />
+      }
+      @if (auth.isSuperAdmin()) {
+        <p-button
+          label="Add New User"
+          routerLink="/users/new"
+          styleClass="admin-btn-outline w-full justify-start"
+        />
+      }
+    </div>
+  </section>
+
+  <section class="admin-card">
+    <div class="px-5 pt-[18px]">
+      <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Enquiries by Course</h2>
+    </div>
+    <div class="space-y-2.5 px-5 pb-5 pt-3">
+      @for (item of enquiriesByCourse(); track item.course) {
+        <div>
+          <div class="mb-1 flex justify-between text-xs">
+            <span class="font-semibold text-ssrk-text-heading">{{ item.course }}</span>
+            <span class="text-ssrk-text-muted">{{ item.count }}</span>
+          </div>
+          <div class="h-1.5 rounded bg-ssrk-border">
+            <div
+              class="h-1.5 rounded bg-ssrk-blue-primary"
+              [style.width.%]="item.percent"
+            ></div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>

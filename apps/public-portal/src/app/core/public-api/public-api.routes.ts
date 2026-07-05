@@ -7,6 +7,9 @@ export const PUBLIC_API_ROUTES = {
       `/api/public/sites/${tenantKey}/pages/${pageKey}`,
     institutions: (tenantKey: string) =>
       `/api/public/sites/${tenantKey}/institutions`,
+    courses: (tenantKey: string) => `/api/public/sites/${tenantKey}/courses`,
+    scholarships: (tenantKey: string) =>
+      `/api/public/sites/${tenantKey}/scholarships`,
   },
   enquiries: {
     interestTopics: '/api/public/enquiry-interest-topics',
@@ -18,12 +21,23 @@ export function buildPublicApiUrl(path: string): string {
   return `${environment.apiBaseUrl}${path}`;
 }
 
-/** Local dev hosts are not in DB — resolve against the seeded primary domain. */
+/** Maps the browser hostname to a host stored in site_domains for resolve API. */
 export function getResolveHost(hostname: string): string {
   const host = hostname.toLowerCase();
 
   if (environment.publicSite.mainHosts.includes(host)) {
     return 'ssrkedu.in';
+  }
+
+  // local: ssrkdc.lvh.me → ssrkdc.ssrkedu.in (seeded domain in DB)
+  if (environment.name === 'local' && host.endsWith('.lvh.me')) {
+    const subdomain = host.split('.')[0];
+
+    if (subdomain === 'ssrkeducation') {
+      return 'ssrkedu.in';
+    }
+
+    return `${subdomain}.ssrkedu.in`;
   }
 
   return host;

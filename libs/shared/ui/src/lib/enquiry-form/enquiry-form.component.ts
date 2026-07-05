@@ -57,6 +57,7 @@ export class EnquiryFormComponent {
   readonly submitting = input(false);
   readonly submitSuccess = input(false);
   readonly errorMessage = input<string | null>(null);
+  readonly initialCollegeCode = input('');
 
   readonly submitted = output<EnquiryFormValue>();
 
@@ -87,6 +88,13 @@ export class EnquiryFormComponent {
   );
 
   constructor() {
+    effect(() => {
+      const collegeCode = this.initialCollegeCode().trim();
+      if (collegeCode) {
+        this.form.controls.collegeCode.setValue(collegeCode);
+      }
+    });
+
     effect(() => {
       if (!this.submitSuccess()) {
         return;

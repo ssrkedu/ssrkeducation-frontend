@@ -8,6 +8,7 @@ import { PublicPageContentService } from '../../../../../core/public-api/public-
 import { SiteLanguage, SiteLanguageService } from '../../../../../core/site-context/site-language.service';
 import { mapTrustInstitutionsPageContentVm } from '../../../home/mappers/trust-home-page-content.mapper';
 import { mapInstitutionToCardPresentationVm } from '../../../home/mappers/trust-institution-card.mapper';
+import { resolveInstitutionSiteUrl } from '../../../../../core/site-context/public-site-url.utils';
 import { InstitutionsApiService } from '../../api/institutions-api.service';
 import { InstitutionsPageVm } from '../../models/institutions-page.vm';
 
@@ -80,7 +81,7 @@ export class InstitutionsPageComponent {
 
     return institutions.map((institution) => ({
       institution,
-      siteUrl: institution.href,
+      siteUrl: resolveInstitutionSiteUrl(institution.subdomain),
       presentation: mapInstitutionToCardPresentationVm(institution),
       ctaLabel: page.cardCtaLabel ?? 'Visit College site',
     }));
