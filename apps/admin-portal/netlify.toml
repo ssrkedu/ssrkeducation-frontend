@@ -1,0 +1,11 @@
+# Netlify site for admin: set Package directory = apps/admin-portal
+# Remove "@netlify/angular-runtime" from Site → Build plugins (required).
+
+[build]
+  command = "npx nx run admin-portal:build --configuration=dev"
+  publish = "dist/apps/admin-portal/browser"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

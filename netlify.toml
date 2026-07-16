@@ -1,11 +1,9 @@
-# Default Netlify site = public portal (dev).
-# Admin site uses netlify.admin.toml via NETLIFY_CONFIG env var.
+# Default site = public portal (Package directory empty / repo root).
 
 [build]
-  command = "nx run public-portal:build --configuration=dev"
+  command = "npx nx run public-portal:build --configuration=dev"
   publish = "dist/apps/public-portal/browser"
 
-# Angular client-side routes
 [[redirects]]
   from = "/*"
   to = "/index.html"
