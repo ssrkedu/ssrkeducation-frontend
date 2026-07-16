@@ -1,11 +1,11 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { API_BASE_URL } from '../api/build-api-url';
 import { SKIP_AUTH } from './auth-context';
 import { TokenStorage } from './token-storage';
 
 function isAdminApiRequest(url: string): boolean {
-  const apiBase = environment.apiBaseUrl.replace(/\/$/, '');
+  const apiBase = API_BASE_URL.replace(/\/$/, '');
   return url.startsWith(apiBase) || url.startsWith('/api/');
 }
 

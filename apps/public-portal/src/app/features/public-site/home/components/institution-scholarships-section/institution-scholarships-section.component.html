@@ -43,25 +43,49 @@
               }
             </p>
 
-            @if (applyNowUrl()) {
-              <a
-                class="group/link mt-auto inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
-                [href]="applyNowUrl()!"
-              >
-                Check eligibility
-                <svg
-                  class="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  aria-hidden="true"
+            <div class="mt-auto flex flex-wrap gap-4 pt-2">
+              @if (eligibilityHref(scholarship); as eligibilityUrl) {
+                <a
+                  class="group/link inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
+                  [href]="eligibilityUrl"
                 >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-            }
+                  Check eligibility
+                  <svg
+                    class="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              }
+
+              @if (scholarship.moreInfoUrl) {
+                <a
+                  class="group/link inline-flex items-center gap-1.5 text-[13px] font-bold text-ssrk-blue-primary hover:text-ssrk-saffron"
+                  [href]="scholarship.moreInfoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get more info
+                  <svg
+                    class="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              }
+            </div>
           </article>
         </app-ssrk-card>
       }

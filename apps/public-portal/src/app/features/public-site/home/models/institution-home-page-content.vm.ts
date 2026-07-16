@@ -15,6 +15,8 @@ export interface InstitutionScholarshipCardVm {
   benefit: string | null;
   appliesToAllCourses: boolean;
   courseSlugs: string[];
+  checkEligibilityUrl: string | null;
+  moreInfoUrl: string | null;
 }
 
 export interface InstitutionSectionIntroVm {

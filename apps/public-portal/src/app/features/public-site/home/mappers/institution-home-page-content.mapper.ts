@@ -152,5 +152,7 @@ function mapScholarshipCards(
       benefit: scholarship.benefit,
       appliesToAllCourses: scholarship.appliesToAllCourses,
       courseSlugs: scholarship.courseSlugs,
+      checkEligibilityUrl: scholarship.checkEligibilityUrl,
+      moreInfoUrl: scholarship.moreInfoUrl,
     }));
 }

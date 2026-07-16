@@ -30,26 +30,26 @@
 
   <p-select
     inputId="enquiry-filter-institution"
-    [options]="institutionOptions"
+    [options]="institutionOptions()"
     optionLabel="label"
     optionValue="value"
     placeholder="All Institutions"
     styleClass="admin-filter-select"
-    [ngModel]="filters().institution"
-    (ngModelChange)="updateFilter('institution', $event)"
+    [ngModel]="filters().institutionId"
+    (ngModelChange)="updateFilter('institutionId', $event)"
   />
 
   <p-select
     inputId="enquiry-filter-course"
-    [options]="courseOptions"
+    [options]="courseOptions()"
     optionLabel="label"
     optionValue="value"
     placeholder="All Courses"
     styleClass="admin-filter-select admin-filter-select-wide"
     [filter]="true"
     filterPlaceholder="Search courses…"
-    [ngModel]="filters().course"
-    (ngModelChange)="updateFilter('course', $event)"
+    [ngModel]="filters().courseId"
+    (ngModelChange)="updateFilter('courseId', $event)"
   />
 
   <p-iconfield styleClass="admin-filter-search">
@@ -69,13 +69,17 @@
 
 <section class="admin-card">
   <p-table
-    [value]="filteredEnquiries()"
+    [value]="enquiries()"
     styleClass="admin-table"
     [tableStyle]="{ 'min-width': '60rem' }"
     [paginator]="true"
-    [rows]="10"
+    [rows]="pageSize()"
     [rowsPerPageOptions]="[10, 25, 50]"
     [rowHover]="true"
+    [lazy]="true"
+    [loading]="loading()"
+    [totalRecords]="totalCount()"
+    (onLazyLoad)="onLazyLoad($event)"
     sortField="submittedOn"
     [sortOrder]="-1"
   >

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button } from 'primeng/button';
@@ -8,8 +8,11 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Textarea } from 'primeng/textarea';
-import { map } from 'rxjs';
-import { AdminDemoDataService } from '../../../data/admin-demo.service';
+import { map, of, switchMap } from 'rxjs';
+import { CmsApiService } from '../../api/cms-api.service';
+import { CmsContextService } from '../../data/cms-context.service';
+import { mapCmsCourseDetailDtoToVm } from '../../mappers/course.mapper';
+import { CourseDetailVm } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-edit-page',
@@ -32,13 +35,15 @@ import { AdminDemoDataService } from '../../../data/admin-demo.service';
 export class CourseEditPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly demoData = inject(AdminDemoDataService);
+  private readonly cmsApi = inject(CmsApiService);
+  private readonly cmsContext = inject(CmsContextService);
 
   private readonly slug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
     { initialValue: null },
   );
 
+  protected readonly course = signal<CourseDetailVm | null>(null);
   protected readonly activeLanguage = signal<'od' | 'en'>('od');
   protected readonly published = signal(true);
   protected readonly showInList = signal(true);
@@ -46,11 +51,34 @@ export class CourseEditPageComponent {
 
   protected readonly pageTitle = computed(() => {
     const slug = this.slug();
-    if (!slug) return 'New Course';
+    if (!slug || slug === 'new') return 'New Course';
 
-    const course = this.demoData.courses().find((item) => item.slug === slug);
-    return course ? `Edit ${course.name}` : 'Edit Course';
+    const item = this.course();
+    return item ? `Edit ${item.translations[0]?.name ?? item.code}` : 'Edit Course';
   });
+
+  constructor() {
+    this.route.paramMap
+      .pipe(
+        map((params) => params.get('slug')),
+        switchMap((slug) => {
+          const institutionId = this.cmsContext.selectedInstitutionId();
+          if (!slug || slug === 'new' || !institutionId) {
+            this.course.set(null);
+            return of(null);
+          }
+
+          return this.cmsApi.getCourseBySlug(institutionId, slug);
+        }),
+        takeUntilDestroyed(),
+      )
+      .subscribe((dto) => {
+        if (!dto) return;
+        const vm = mapCmsCourseDetailDtoToVm(dto);
+        this.course.set(vm);
+        this.published.set(vm.status === 'Published');
+      });
+  }
 
   protected setLanguage(language: 'od' | 'en' | string | number | undefined): void {
     if (language === 'od' || language === 'en') {
@@ -63,10 +91,20 @@ export class CourseEditPageComponent {
   }
 
   protected saveDraft(): void {
-    window.alert('Saved as draft! (demo)');
+    const item = this.course();
+    if (!item) return;
+
+    this.cmsApi.setCourseStatus(item.id, { status: 'Draft' }).subscribe(() => {
+      void this.router.navigateByUrl('/cms');
+    });
   }
 
   protected publish(): void {
-    window.alert('Published! (demo)');
+    const item = this.course();
+    if (!item) return;
+
+    this.cmsApi.setCourseStatus(item.id, { status: 'Published' }).subscribe(() => {
+      void this.router.navigateByUrl('/cms');
+    });
   }
 }

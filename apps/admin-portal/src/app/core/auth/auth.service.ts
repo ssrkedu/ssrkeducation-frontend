@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ApiResponse } from '@ssrk/shared/types';
 import { unwrapApiResponse } from '@ssrk/shared/utils';
 import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
-import { API_ROUTES, buildApiUrl } from '../api/api.routes';
+import { buildApiUrl } from '../api/build-api-url';
+import { API_ROUTES } from '../api/api.routes';
 import { skipAuth } from './auth-context';
 import { mapApiUser } from './auth.mapper';
 import {

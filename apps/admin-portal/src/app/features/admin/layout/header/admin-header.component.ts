@@ -3,9 +3,13 @@ import {
   Component,
   inject,
   output,
+  signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
-import { AdminDemoDataService } from '../../data/admin-demo.service';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { Perm } from '../../../../core/auth/permissions';
+import { DashboardApiService } from '../../dashboard/api/dashboard-api.service';
 import { AdminHeaderUserMenuComponent } from '../components/admin-header-user-menu/admin-header-user-menu.component';
 
 @Component({
@@ -15,11 +19,21 @@ import { AdminHeaderUserMenuComponent } from '../components/admin-header-user-me
   templateUrl: './admin-header.component.html',
 })
 export class AdminHeaderComponent {
-  private readonly demoData = inject(AdminDemoDataService);
+  private readonly dashboardApi = inject(DashboardApiService);
+  private readonly auth = inject(AuthService);
 
   readonly menuToggle = output<void>();
 
-  protected readonly newEnquiryCount = this.demoData.newEnquiryCount;
+  protected readonly newEnquiryCount = signal(0);
+
+  constructor() {
+    if (this.auth.hasPermission(Perm.Enquiry.Read)) {
+      this.dashboardApi
+        .getSummary()
+        .pipe(takeUntilDestroyed())
+        .subscribe((summary) => this.newEnquiryCount.set(summary.newEnquiryCount));
+    }
+  }
 
   protected onMenuToggle(): void {
     this.menuToggle.emit();

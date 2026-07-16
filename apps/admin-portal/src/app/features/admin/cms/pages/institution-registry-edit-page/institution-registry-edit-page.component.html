@@ -1,0 +1,111 @@
+<div class="mb-4 flex items-center justify-between gap-4">
+  <div class="flex items-center gap-3">
+    <a routerLink="/cms">
+      <p-button label="Back" icon="pi pi-arrow-left" styleClass="admin-btn-outline admin-btn-sm" />
+    </a>
+    <h1 class="font-serif text-xl font-bold text-ssrk-text-heading">{{ pageTitle() }}</h1>
+  </div>
+  @if (auth.canWriteCms()) {
+    <div class="flex gap-2">
+      <p-button label="Save Draft" styleClass="admin-btn-outline admin-btn-sm" [loading]="saving()" (onClick)="saveDraft()" />
+      <p-button label="Publish" styleClass="admin-btn-primary admin-btn-sm" [loading]="saving()" (onClick)="publish()" />
+    </div>
+  }
+</div>
+
+@if (errorMessage()) {
+  <p class="mb-4 text-sm text-red-700">{{ errorMessage() }}</p>
+}
+
+<section class="admin-card mb-4 p-5">
+  <h2 class="mb-3 font-serif text-base font-bold">Shared</h2>
+  <div class="grid gap-3 md:grid-cols-2">
+    <div>
+      <label class="mb-1 block text-sm">Slug</label>
+      <input pInputText class="w-full" [ngModel]="slug()" (ngModelChange)="slug.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Subdomain</label>
+      <input pInputText class="w-full" [ngModel]="subdomain()" (ngModelChange)="subdomain.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Icon key</label>
+      <input pInputText class="w-full" [ngModel]="iconKey()" (ngModelChange)="iconKey.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Sort order</label>
+      <p-inputnumber class="w-full" [ngModel]="sortOrder()" (ngModelChange)="sortOrder.set($event ?? 0)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Primary color</label>
+      <input pInputText class="w-full" [ngModel]="primaryColor()" (ngModelChange)="primaryColor.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Logo URL</label>
+      <input pInputText class="w-full" [ngModel]="logoUrl()" (ngModelChange)="logoUrl.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Icon background</label>
+      <input pInputText class="w-full" [ngModel]="iconBackgroundColor()" (ngModelChange)="iconBackgroundColor.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Icon stroke</label>
+      <input pInputText class="w-full" [ngModel]="iconStrokeColor()" (ngModelChange)="iconStrokeColor.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+  </div>
+</section>
+
+<section class="admin-card p-5">
+  <p-tabs [value]="activeLanguage()" (valueChange)="activeLanguage.set($event === 'en' ? 'en' : 'or')">
+    <p-tablist>
+      <p-tab value="or">ଓଡ଼ିଆ *</p-tab>
+      <p-tab value="en">English</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="or">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Name *</label>
+          <input pInputText class="w-full" [ngModel]="odiaName()" (ngModelChange)="odiaName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Short name</label>
+          <input pInputText class="w-full" [ngModel]="odiaShortName()" (ngModelChange)="odiaShortName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Description</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="odiaDescription()" (ngModelChange)="odiaDescription.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Courses line</label>
+          <input pInputText class="w-full" [ngModel]="odiaCoursesLine()" (ngModelChange)="odiaCoursesLine.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">Programs line</label>
+          <input pInputText class="w-full" [ngModel]="odiaProgramsLine()" (ngModelChange)="odiaProgramsLine.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="en">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Name</label>
+          <input pInputText class="w-full" [ngModel]="englishName()" (ngModelChange)="englishName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Short name</label>
+          <input pInputText class="w-full" [ngModel]="englishShortName()" (ngModelChange)="englishShortName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Description</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="englishDescription()" (ngModelChange)="englishDescription.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Courses line</label>
+          <input pInputText class="w-full" [ngModel]="englishCoursesLine()" (ngModelChange)="englishCoursesLine.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">Programs line</label>
+          <input pInputText class="w-full" [ngModel]="englishProgramsLine()" (ngModelChange)="englishProgramsLine.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</section>

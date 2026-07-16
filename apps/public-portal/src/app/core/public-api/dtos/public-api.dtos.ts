@@ -144,4 +144,6 @@ export interface ScholarshipItemDto {
   appliesToAllCourses: boolean;
   courseSlugs: string[];
   sortOrder: number;
+  checkEligibilityUrl: string | null;
+  moreInfoUrl: string | null;
 }

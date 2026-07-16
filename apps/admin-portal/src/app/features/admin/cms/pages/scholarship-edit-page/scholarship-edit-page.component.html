@@ -1,0 +1,113 @@
+<div class="mb-4 flex items-center justify-between gap-4">
+  <div class="flex items-center gap-3">
+    <a routerLink="/cms">
+      <p-button label="Back" icon="pi pi-arrow-left" styleClass="admin-btn-outline admin-btn-sm" />
+    </a>
+    <h1 class="font-serif text-xl font-bold text-ssrk-text-heading">{{ pageTitle() }}</h1>
+  </div>
+  @if (auth.canWriteCms()) {
+    <div class="flex gap-2">
+      <p-button label="Save Draft" styleClass="admin-btn-outline admin-btn-sm" [loading]="saving()" (onClick)="saveDraft()" />
+      <p-button label="Publish" styleClass="admin-btn-primary admin-btn-sm" [loading]="saving()" (onClick)="publish()" />
+    </div>
+  }
+</div>
+
+@if (errorMessage()) {
+  <p class="mb-4 text-sm text-red-700">{{ errorMessage() }}</p>
+}
+
+<section class="admin-card mb-4 p-5">
+  <h2 class="mb-3 font-serif text-base font-bold">Shared</h2>
+  <div class="grid gap-3 md:grid-cols-2">
+    <div>
+      <label class="mb-1 block text-sm">Code</label>
+      <input pInputText class="w-full" [ngModel]="code()" (ngModelChange)="code.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Slug</label>
+      <input pInputText class="w-full" [ngModel]="slugValue()" (ngModelChange)="slugValue.set($event)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Sort order</label>
+      <p-inputnumber class="w-full" [ngModel]="sortOrder()" (ngModelChange)="sortOrder.set($event ?? 0)" [disabled]="!auth.canWriteCms()" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm">Check eligibility URL</label>
+      <input
+        pInputText
+        class="w-full"
+        placeholder="e.g. https://ssrkedu.in/#enquiry or /#enquiry"
+        [ngModel]="checkEligibilityUrl()"
+        (ngModelChange)="checkEligibilityUrl.set($event)"
+        [disabled]="!auth.canWriteCms()"
+      />
+    </div>
+    <div class="md:col-span-2">
+      <label class="mb-1 block text-sm">Get more info URL (external — opens in new tab)</label>
+      <input
+        pInputText
+        class="w-full"
+        placeholder="https://example.com/scholarship-details"
+        [ngModel]="moreInfoUrl()"
+        (ngModelChange)="moreInfoUrl.set($event)"
+        [disabled]="!auth.canWriteCms()"
+      />
+    </div>
+  </div>
+</section>
+
+<section class="admin-card p-5">
+  <p-tabs [value]="activeLanguage()" (valueChange)="activeLanguage.set($event === 'en' ? 'en' : 'or')">
+    <p-tablist>
+      <p-tab value="or">ଓଡ଼ିଆ *</p-tab>
+      <p-tab value="en">English</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="or">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Name *</label>
+          <input pInputText class="w-full" [ngModel]="odiaName()" (ngModelChange)="odiaName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Summary</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="odiaSummary()" (ngModelChange)="odiaSummary.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Eligibility text</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="odiaEligibility()" (ngModelChange)="odiaEligibility.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Benefit</label>
+          <textarea pTextarea class="w-full" rows="2" [ngModel]="odiaBenefit()" (ngModelChange)="odiaBenefit.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">How to apply</label>
+          <textarea pTextarea class="w-full" rows="2" [ngModel]="odiaHowToApply()" (ngModelChange)="odiaHowToApply.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="en">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Name</label>
+          <input pInputText class="w-full" [ngModel]="englishName()" (ngModelChange)="englishName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Summary</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="englishSummary()" (ngModelChange)="englishSummary.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Eligibility text</label>
+          <textarea pTextarea class="w-full" rows="3" [ngModel]="englishEligibility()" (ngModelChange)="englishEligibility.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Benefit</label>
+          <textarea pTextarea class="w-full" rows="2" [ngModel]="englishBenefit()" (ngModelChange)="englishBenefit.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">How to apply</label>
+          <textarea pTextarea class="w-full" rows="2" [ngModel]="englishHowToApply()" (ngModelChange)="englishHowToApply.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</section>

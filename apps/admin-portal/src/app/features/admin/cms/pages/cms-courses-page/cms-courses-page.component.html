@@ -1,5 +1,5 @@
 <app-admin-page-header title="Content Management">
-  @if (auth.canWriteCms()) {
+  @if (auth.canWriteCms() && !isTrust() && institutionTab() === 'courses') {
     <a routerLink="/cms/courses/new">
       <p-button label="Create Course" icon="pi pi-plus" styleClass="admin-btn-primary admin-btn-sm" />
     </a>
@@ -12,114 +12,297 @@
   />
 }
 
+@if (loadError()) {
+  <p class="mb-4 text-sm text-red-700">{{ loadError() }}</p>
+}
+
 <div class="mb-4">
   <p-selectbutton
-    [options]="institutionOptions"
+    [options]="contextOptions()"
     optionLabel="label"
     optionValue="id"
     styleClass="admin-filter-selectbutton"
-    [ngModel]="institutionContext()"
-    (ngModelChange)="setInstitution($event)"
+    [ngModel]="selectedContextId()"
+    (ngModelChange)="setContext($event)"
   />
 </div>
 
-<p-tabs
-  [value]="activeSection()"
-  (valueChange)="setSection($event)"
-  [scrollable]="true"
-  styleClass="admin-cms-tabs"
->
-  <p-tablist>
-    @for (section of sectionOptions; track section.id) {
-      <p-tab [value]="section.id">{{ section.label }}</p-tab>
-    }
-  </p-tablist>
+@if (isTrust()) {
+  <p-tabs
+    [value]="trustTab()"
+    (valueChange)="setTrustTab($event)"
+    [scrollable]="true"
+    styleClass="admin-cms-tabs"
+  >
+    <p-tablist>
+      @for (tab of trustTabs; track tab.id) {
+        <p-tab [value]="tab.id">{{ tab.label }}</p-tab>
+      }
+    </p-tablist>
 
-  <p-tabpanels>
-    @for (section of sectionOptions; track section.id) {
-      <p-tabpanel [value]="section.id">
-        @if (section.id === 'courses') {
-          <section class="admin-card mt-4">
-            <p-table
-              [value]="courses()"
-              styleClass="admin-table"
-              [tableStyle]="{ 'min-width': '50rem' }"
-              [paginator]="true"
-              [rows]="10"
-              [rowsPerPageOptions]="[10, 25, 50]"
-              [rowHover]="true"
-              sortField="name"
-              [sortOrder]="1"
-            >
-              <ng-template #header>
-                <tr>
-                  <th pSortableColumn="name">
-                    Course Name
-                    <p-sortIcon field="name" />
-                  </th>
-                  <th pSortableColumn="slug">
-                    Slug
-                    <p-sortIcon field="slug" />
-                  </th>
-                  <th pSortableColumn="duration">
-                    Duration
-                    <p-sortIcon field="duration" />
-                  </th>
-                  <th pSortableColumn="seats">
-                    Seats
-                    <p-sortIcon field="seats" />
-                  </th>
-                  <th pSortableColumn="status">
-                    Status
-                    <p-sortIcon field="status" />
-                  </th>
-                  <th pSortableColumn="updatedOn">
-                    Last Updated
-                    <p-sortIcon field="updatedOn" />
-                  </th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template #body let-course>
-                <tr>
-                  <td><strong>{{ course.name }}</strong></td>
-                  <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
-                  <td>{{ course.duration }}</td>
-                  <td>{{ course.seats }}</td>
-                  <td>
-                    <app-admin-status-badge
-                      [label]="course.status"
-                      [variant]="course.status === 'Published' ? 'published' : 'draft'"
-                    />
-                  </td>
-                  <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
-                  <td>
-                    @if (auth.canWriteCms()) {
-                      <div class="flex gap-2">
-                        <a [routerLink]="['/cms/courses', course.slug, 'edit']">
-                          <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                        </a>
-                        <p-button label="Delete" styleClass="admin-btn-danger admin-btn-sm" [link]="true" />
-                      </div>
-                    } @else {
-                      <span class="text-xs text-ssrk-text-muted">Read only</span>
-                    }
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </section>
-        } @else {
-          <section class="admin-card mt-4 p-8 text-center">
-            <h2 class="font-serif text-lg font-bold text-ssrk-text-heading">
-              {{ sectionLabel(section.id) }}
-            </h2>
-            <p class="mt-2 text-sm text-ssrk-text-muted">
-              This CMS section will be built in the next iteration. Courses are available under the Courses tab.
-            </p>
-          </section>
-        }
+    <p-tabpanels>
+      @for (tab of trustTabs; track tab.id) {
+        <p-tabpanel [value]="tab.id">
+          @if (tab.id === 'home' || tab.id === 'chrome' || tab.id === 'institutions') {
+            <section class="admin-card mt-4">
+              <p-table [value]="sectionRows()" styleClass="admin-table" [rowHover]="true">
+                <ng-template #header>
+                  <tr>
+                    <th>Section</th>
+                    <th>Component</th>
+                    <th>Status</th>
+                    <th>Visible</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-section>
+                  <tr>
+                    <td><strong>{{ section.sectionKey }}</strong></td>
+                    <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
+                    <td>
+                      <app-admin-status-badge
+                        [label]="section.status"
+                        [variant]="section.status === 'Published' ? 'published' : 'draft'"
+                      />
+                    </td>
+                    <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
+                    <td>
+                      <a [routerLink]="sectionEditLink(section.sectionKey)">
+                        <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                      </a>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </section>
+          } @else if (tab.id === 'registry') {
+            <section class="admin-card mt-4">
+              <p-table [value]="institutions()" styleClass="admin-table" [rowHover]="true">
+                <ng-template #header>
+                  <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-institution>
+                  <tr>
+                    <td><strong>{{ institution.name }}</strong></td>
+                    <td class="text-xs text-ssrk-text-muted">{{ institution.code }}</td>
+                    <td>
+                      <app-admin-status-badge
+                        [label]="institution.status"
+                        [variant]="institution.status === 'Published' ? 'published' : 'draft'"
+                      />
+                    </td>
+                    <td>
+                      <a [routerLink]="['/cms', 'registry', institution.id, 'edit']">
+                        <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                      </a>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </section>
+          } @else if (tab.id === 'seo') {
+            <section class="admin-card mt-4 p-6">
+              <div class="flex flex-col gap-3">
+                <a routerLink="/cms/trust/home/seo">
+                  <p-button label="Edit Home SEO" styleClass="admin-btn-outline" />
+                </a>
+                <a routerLink="/cms/trust/institutions/seo">
+                  <p-button label="Edit Institutions Page SEO" styleClass="admin-btn-outline" />
+                </a>
+              </div>
+            </section>
+          } @else if (tab.id === 'branding') {
+            <section class="admin-card mt-4 p-6">
+              <a routerLink="/cms/trust/branding">
+                <p-button label="Edit Site Branding" styleClass="admin-btn-outline" />
+              </a>
+            </section>
+          }
+        </p-tabpanel>
+      }
+    </p-tabpanels>
+  </p-tabs>
+} @else {
+  <p-tabs
+    [value]="institutionTab()"
+    (valueChange)="setInstitutionTab($event)"
+    [scrollable]="true"
+    styleClass="admin-cms-tabs"
+  >
+    <p-tablist>
+      @for (tab of institutionTabs; track tab.id) {
+        <p-tab [value]="tab.id">{{ tab.label }}</p-tab>
+      }
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel value="home">
+        <section class="admin-card mt-4">
+          <p class="mb-3 px-1 text-sm text-ssrk-text-muted">
+            Edit institution home sections (hero, overview, courses intro, scholarships intro).
+            Course and scholarship cards come from their tabs and appear on this home page.
+          </p>
+          <p-table [value]="institutionHomeSections()" styleClass="admin-table" [rowHover]="true">
+            <ng-template #header>
+              <tr>
+                <th>Section</th>
+                <th>Component</th>
+                <th>Status</th>
+                <th>Visible</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-section>
+              <tr>
+                <td><strong>{{ section.sectionKey }}</strong></td>
+                <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
+                <td>
+                  <app-admin-status-badge
+                    [label]="section.status"
+                    [variant]="section.status === 'Published' ? 'published' : 'draft'"
+                  />
+                </td>
+                <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
+                <td>
+                  <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
+                    <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                  </a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
       </p-tabpanel>
-    }
-  </p-tabpanels>
-</p-tabs>
+
+      <p-tabpanel value="courses">
+        <section class="admin-card mt-4">
+          <p class="mb-3 px-1 text-sm text-ssrk-text-muted">
+            Course records for this college. On the public site they appear on the institution home
+            (and later on /courses when that page is enabled).
+          </p>
+          <p-table
+            [value]="courses()"
+            styleClass="admin-table"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            [rows]="10"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [rowHover]="true"
+            sortField="name"
+            [sortOrder]="1"
+          >
+            <ng-template #header>
+              <tr>
+                <th pSortableColumn="name">
+                  Course Name
+                  <p-sortIcon field="name" />
+                </th>
+                <th pSortableColumn="slug">
+                  Slug
+                  <p-sortIcon field="slug" />
+                </th>
+                <th pSortableColumn="duration">
+                  Duration
+                  <p-sortIcon field="duration" />
+                </th>
+                <th pSortableColumn="seats">
+                  Seats
+                  <p-sortIcon field="seats" />
+                </th>
+                <th pSortableColumn="status">
+                  Status
+                  <p-sortIcon field="status" />
+                </th>
+                <th pSortableColumn="updatedOn">
+                  Last Updated
+                  <p-sortIcon field="updatedOn" />
+                </th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-course>
+              <tr>
+                <td><strong>{{ course.name }}</strong></td>
+                <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
+                <td>{{ course.duration }}</td>
+                <td>{{ course.seats ?? '—' }}</td>
+                <td>
+                  <app-admin-status-badge
+                    [label]="course.status"
+                    [variant]="course.status === 'Published' ? 'published' : 'draft'"
+                  />
+                </td>
+                <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
+                <td>
+                  @if (auth.canWriteCms()) {
+                    <a [routerLink]="['/cms/courses', course.slug, 'edit']">
+                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                    </a>
+                  } @else {
+                    <span class="text-xs text-ssrk-text-muted">Read only</span>
+                  }
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
+      </p-tabpanel>
+
+      <p-tabpanel value="scholarships">
+        <section class="admin-card mt-4">
+          <div class="mb-3 flex items-center justify-between px-1">
+            <p class="text-sm text-ssrk-text-muted">
+              Scholarship cards on the institution home. Each card can have Check eligibility and Get
+              more info (external, opens in a new tab).
+            </p>
+            @if (auth.canWriteCms()) {
+              <a routerLink="/cms/scholarships/new">
+                <p-button label="Create Scholarship" icon="pi pi-plus" styleClass="admin-btn-primary admin-btn-sm" />
+              </a>
+            }
+          </div>
+          <p-table [value]="scholarships()" styleClass="admin-table" [rowHover]="true">
+            <ng-template #header>
+              <tr>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>More info URL</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-item>
+              <tr>
+                <td><strong>{{ item.name }}</strong></td>
+                <td class="text-xs text-ssrk-text-muted">{{ item.slug }}</td>
+                <td>
+                  <app-admin-status-badge
+                    [label]="item.status"
+                    [variant]="item.status === 'Published' ? 'published' : 'draft'"
+                  />
+                </td>
+                <td class="max-w-[14rem] truncate text-xs text-ssrk-text-muted">
+                  {{ item.moreInfoUrl || '—' }}
+                </td>
+                <td>
+                  @if (auth.canWriteCms()) {
+                    <a [routerLink]="['/cms/scholarships', item.slug, 'edit']">
+                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                    </a>
+                  } @else {
+                    <span class="text-xs text-ssrk-text-muted">Read only</span>
+                  }
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+}

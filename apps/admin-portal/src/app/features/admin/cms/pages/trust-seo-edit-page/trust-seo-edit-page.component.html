@@ -1,0 +1,59 @@
+<div class="mb-4 flex items-center justify-between gap-4">
+  <div class="flex items-center gap-3">
+    <a routerLink="/cms">
+      <p-button label="Back" icon="pi pi-arrow-left" styleClass="admin-btn-outline admin-btn-sm" />
+    </a>
+    <h1 class="font-serif text-xl font-bold text-ssrk-text-heading">{{ pageTitle() }}</h1>
+  </div>
+  @if (auth.canWriteCms()) {
+    <p-button
+      label="Save"
+      styleClass="admin-btn-primary admin-btn-sm"
+      [loading]="saving()"
+      (onClick)="save()"
+    />
+  }
+</div>
+
+@if (errorMessage()) {
+  <p class="mb-4 text-sm text-red-700">{{ errorMessage() }}</p>
+}
+
+<section class="admin-card p-5">
+  <p-tabs [value]="activeLanguage()" (valueChange)="activeLanguage.set($event === 'en' ? 'en' : 'or')">
+    <p-tablist>
+      <p-tab value="or">ଓଡ଼ିଆ *</p-tab>
+      <p-tab value="en">English</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="or">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Page title</label>
+          <input pInputText class="w-full" [ngModel]="odiaTitle()" (ngModelChange)="odiaTitle.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Meta title</label>
+          <input pInputText class="w-full" [ngModel]="odiaMetaTitle()" (ngModelChange)="odiaMetaTitle.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">Meta description</label>
+          <textarea pTextarea class="w-full" rows="4" [ngModel]="odiaMetaDescription()" (ngModelChange)="odiaMetaDescription.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="en">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Page title</label>
+          <input pInputText class="w-full" [ngModel]="englishTitle()" (ngModelChange)="englishTitle.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div class="mb-3">
+          <label class="mb-1 block text-sm">Meta title</label>
+          <input pInputText class="w-full" [ngModel]="englishMetaTitle()" (ngModelChange)="englishMetaTitle.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">Meta description</label>
+          <textarea pTextarea class="w-full" rows="4" [ngModel]="englishMetaDescription()" (ngModelChange)="englishMetaDescription.set($event)" [disabled]="!auth.canWriteCms()"></textarea>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</section>

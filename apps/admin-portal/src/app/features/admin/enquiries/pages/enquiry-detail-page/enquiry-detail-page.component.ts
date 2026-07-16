@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
-import { map } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
-import { AdminDemoDataService } from '../../../data/admin-demo.service';
-import { EnquiryStatus } from '../../../models/enquiry.model';
+import { EnquiriesApiService } from '../../api/enquiries-api.service';
+import { mapEnquiryDetailDtoToVm } from '../../mappers/enquiry.mapper';
+import { EnquiryDetailVm, EnquiryStatus } from '../../models/enquiry.model';
 import { AdminPermissionBannerComponent } from '../../../shared/components/admin-permission-banner/admin-permission-banner.component';
 
 @Component({
@@ -20,24 +21,16 @@ import { AdminPermissionBannerComponent } from '../../../shared/components/admin
 export class EnquiryDetailPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly demoData = inject(AdminDemoDataService);
+  private readonly enquiriesApi = inject(EnquiriesApiService);
   protected readonly auth = inject(AuthService);
 
-  private readonly enquiryId = toSignal(
-    this.route.paramMap.pipe(map((params) => Number(params.get('id')))),
-    { initialValue: 0 },
-  );
-
-  protected readonly enquiry = computed(() =>
-    this.demoData.getEnquiryById(this.enquiryId()),
-  );
+  protected readonly enquiry = signal<EnquiryDetailVm | null>(null);
+  protected readonly noteDraft = signal('');
 
   protected readonly statusOptions = [
     { label: 'New', value: 'New' },
     { label: 'Reviewed', value: 'Reviewed' },
   ];
-
-  protected readonly noteDraft = signal('');
 
   protected readonly detailRows = computed(() => {
     const item = this.enquiry();
@@ -54,10 +47,25 @@ export class EnquiryDetailPageComponent {
     ];
   });
 
+  constructor() {
+    this.route.paramMap
+      .pipe(
+        map((params) => params.get('id') ?? ''),
+        switchMap((id) => (id ? this.enquiriesApi.getById(id) : of(null))),
+        takeUntilDestroyed(),
+      )
+      .subscribe((dto) => {
+        this.enquiry.set(dto ? mapEnquiryDetailDtoToVm(dto) : null);
+      });
+  }
+
   protected updateStatus(status: EnquiryStatus): void {
     const item = this.enquiry();
     if (!item || !this.auth.canWriteEnquiries()) return;
-    this.demoData.updateEnquiryStatus(item.id, status);
+
+    this.enquiriesApi.updateStatus(item.id, { status }).subscribe((dto) => {
+      this.enquiry.set(mapEnquiryDetailDtoToVm(dto));
+    });
   }
 
   protected saveNote(): void {
@@ -65,8 +73,10 @@ export class EnquiryDetailPageComponent {
     const note = this.noteDraft().trim();
     if (!item || !note || !this.auth.canWriteEnquiries()) return;
 
-    this.demoData.addEnquiryNote(item.id, note);
-    this.noteDraft.set('');
+    this.enquiriesApi.addNote(item.id, { note }).subscribe((dto) => {
+      this.enquiry.set(mapEnquiryDetailDtoToVm(dto));
+      this.noteDraft.set('');
+    });
   }
 
   protected markReviewed(): void {
