@@ -1,0 +1,16 @@
+# Used by the admin Netlify site only.
+# In that site → Site configuration → Environment variables:
+#   NETLIFY_CONFIG = netlify.admin.toml
+#
+# Also remove the "@netlify/angular-runtime" plugin from the site UI
+# (this app is a static SPA, not Angular SSR).
+
+[build]
+  command = "nx run admin-portal:build --configuration=dev"
+  publish = "dist/apps/admin-portal/browser"
+
+# Angular client-side routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

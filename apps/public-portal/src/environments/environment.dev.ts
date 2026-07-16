@@ -3,7 +3,7 @@ import { AppEnvironment } from './public-site-environment.model';
 export const environment: AppEnvironment = {
   name: 'dev',
   production: false,
-  apiBaseUrl: 'https://dev-api.ssrkeducation.com',
+  apiBaseUrl: 'https://ssrkeducation-backend.onrender.com',
   publicSite: {
     protocol: 'https',
     apexDomain: 'dev.ssrkeducation.com',
