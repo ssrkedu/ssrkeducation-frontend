@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { TrustChromeContentService } from '../../services/trust-chrome-content.service';
 import { SiteContextService } from '../../../../../core/site-context/site-context.service';
+import { buildSiteLogoSrc, siteLogoAlt } from '../../../../../core/site-context/site-logo.util';
 
 @Component({
   selector: 'app-trust-footer',
@@ -8,8 +9,9 @@ import { SiteContextService } from '../../../../../core/site-context/site-contex
 })
 export class TrustFooterComponent {
   private readonly chromeContent = inject(TrustChromeContentService);
+  private readonly siteContext = inject(SiteContextService);
 
-  protected readonly site = inject(SiteContextService).site;
+  protected readonly site = this.siteContext.site;
   protected readonly currentYear = new Date().getFullYear();
   protected readonly chrome = this.chromeContent.chrome;
 
@@ -23,4 +25,8 @@ export class TrustFooterComponent {
         href: link.href ?? link.routerLink ?? '#',
       })) ?? [],
   );
+  protected readonly logoSrc = computed(
+    () => this.site()?.logoUrl || buildSiteLogoSrc(this.site()?.tenantKey),
+  );
+  protected readonly logoAlt = computed(() => siteLogoAlt(this.site()?.tenantKey));
 }

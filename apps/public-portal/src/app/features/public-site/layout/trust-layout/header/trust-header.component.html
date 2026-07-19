@@ -4,11 +4,14 @@
       routerLink="/"
       class="flex min-w-0 max-w-[calc(100%-6.5rem)] flex-1 items-center gap-2.5 sm:gap-3 lg:max-w-[300px] xl:max-w-[360px]"
     >
-      <div
-        class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
-      >
-        S
-      </div>
+      <img
+        class="ssrk-site-logo"
+        [src]="logoSrc()"
+        [alt]="logoAlt()"
+        width="56"
+        height="56"
+        decoding="async"
+      />
       <div class="min-w-0 flex-1">
         <p class="break-words font-serif text-base font-bold leading-tight text-ssrk-blue-primary sm:text-lg">
           {{ site()?.name }}

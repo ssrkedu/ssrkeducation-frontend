@@ -31,9 +31,8 @@
       </div>
 
       <div class="admin-auth-field">
-        <label class="admin-auth-label" for="login-password">Password</label>
+        <label class="admin-auth-label" id="login-password-label">Password</label>
         <p-password
-          inputId="login-password"
           formControlName="password"
           placeholder="Your password"
           autocomplete="current-password"
@@ -42,6 +41,7 @@
           [toggleMask]="true"
           [feedback]="false"
           [fluid]="true"
+          ariaLabelledBy="login-password-label"
         />
 
       </div>

@@ -1,4 +1,5 @@
 import { MobileNavDrawerConfig } from '@ssrk/shared/ui';
+import { environment } from '../../../../../environments/environment';
 import { PageContentDto } from '../../../../core/public-api/dtos/public-api.dtos';
 import {
   ChromeContactSectionPayloadDto,
@@ -90,6 +91,14 @@ function getSectionPayload<T>(
 function mapHeaderNavLinkVm(raw: ChromeNavLinkPayloadDto): TrustHeaderNavLinkVm {
   const children = raw.children?.map(mapNavChildLinkVm);
 
+  if (raw.label === 'Admin Portal') {
+    return {
+      label: raw.label,
+      href: environment.publicSite.adminPortalUrl,
+      children,
+    };
+  }
+
   if (raw.href === '/') {
     return { label: raw.label, routerLink: '/', exact: true, children };
   }
@@ -143,6 +152,14 @@ function mapMobileNavConfigVm(
     title: payload.title ?? 'Menu',
     ariaLabel: payload.ariaLabel ?? 'Trust mobile navigation',
     items: (payload.items ?? []).map((item) => {
+      if (item.label === 'Admin Portal' && item.type === 'link') {
+        return {
+          type: 'link' as const,
+          label: item.label,
+          href: environment.publicSite.adminPortalUrl,
+        };
+      }
+
       if (item.type !== 'group' || item.label !== 'Institutions') {
         return item;
       }

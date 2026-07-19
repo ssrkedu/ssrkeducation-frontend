@@ -71,25 +71,24 @@
   </div>
 
   <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
-    <label class="ssrk-enquiry-form__label" for="enquiry-college">Interested College</label>
+    <label class="ssrk-enquiry-form__label" id="enquiry-college-label">Interested College</label>
     <p-select
-      inputId="enquiry-college"
       formControlName="collegeCode"
       [options]="collegeOptions()"
       optionLabel="label"
       optionValue="value"
       placeholder="Select a College"
       styleClass="ssrk-enquiry-form__select w-full"
+      ariaLabelledBy="enquiry-college-label"
       [invalid]="isInvalid('collegeCode')"
     />
   </div>
 
   <div class="ssrk-enquiry-form__field min-w-0 max-w-full">
-    <label class="ssrk-enquiry-form__label" for="enquiry-interests">
+    <label class="ssrk-enquiry-form__label" id="enquiry-interests-label">
       What would you like to know about?
     </label>
     <p-multiselect
-      inputId="enquiry-interests"
       formControlName="interests"
       [options]="interestOptions()"
       optionLabel="label"
@@ -97,6 +96,7 @@
       placeholder="Select topics..."
       [displaySelectedLabel]="false"
       styleClass="ssrk-enquiry-form__multiselect w-full"
+      ariaLabelledBy="enquiry-interests-label"
       [invalid]="isInvalid('interests')"
     />
 

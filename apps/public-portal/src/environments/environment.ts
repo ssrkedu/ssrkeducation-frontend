@@ -9,5 +9,6 @@ export const environment: AppEnvironment = {
     apexDomain: 'ssrkeducation.com',
     port: null,
     mainHosts: ['ssrkeducation.com', 'www.ssrkeducation.com'],
+    adminPortalUrl: 'https://admin.ssrkedu.in',
   },
 };

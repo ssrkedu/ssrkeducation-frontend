@@ -10,5 +10,6 @@ export const environment: AppEnvironment = {
     apexDomain: 'dev.ssrkedu.in',
     port: null,
     mainHosts: ['dev.ssrkedu.in', 'www.dev.ssrkedu.in', 'dev-ssrkedu.netlify.app'],
+    adminPortalUrl: 'https://dev-admin.ssrkedu.in',
   },
 };

@@ -4,6 +4,7 @@ import { LangToggleComponent, MobileNavHamburgerComponent } from '@ssrk/shared/u
 import { TrustChromeContentService } from '../../services/trust-chrome-content.service';
 import { SiteLanguageService } from '../../../../../core/site-context/site-language.service';
 import { SiteContextService } from '../../../../../core/site-context/site-context.service';
+import { buildSiteLogoSrc, siteLogoAlt } from '../../../../../core/site-context/site-logo.util';
 
 @Component({
   selector: 'app-trust-header',
@@ -15,13 +16,18 @@ export class TrustHeaderComponent {
   private readonly headerRef = viewChild<ElementRef<HTMLElement>>('headerRef');
   private readonly destroyRef = inject(DestroyRef);
   private readonly chromeContent = inject(TrustChromeContentService);
+  private readonly siteContext = inject(SiteContextService);
 
-  protected readonly site = inject(SiteContextService).site;
+  protected readonly site = this.siteContext.site;
   protected readonly siteLanguage = inject(SiteLanguageService);
   protected readonly headerSpacerHeight = signal(70);
   protected readonly navLinks = computed(
     () => this.chromeContent.chrome()?.navLinks ?? [],
   );
+  protected readonly logoSrc = computed(
+    () => this.site()?.logoUrl || buildSiteLogoSrc(this.site()?.tenantKey),
+  );
+  protected readonly logoAlt = computed(() => siteLogoAlt(this.site()?.tenantKey));
 
   constructor() {
     afterNextRender(() => {

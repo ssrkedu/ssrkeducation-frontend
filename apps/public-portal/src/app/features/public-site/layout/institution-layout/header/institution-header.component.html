@@ -1,20 +1,31 @@
 <header class="sticky top-0 z-50 border-b border-ssrk-border bg-white shadow-sm">
   <div class="mx-auto flex min-h-[70px] max-w-[1240px] items-center justify-between gap-3 px-4 py-2.5 lg:px-8">
-    <a routerLink="/" class="flex min-w-0 items-center gap-3">
-      <div
-        class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[10px] bg-ssrk-blue-primary font-serif text-lg font-bold text-white"
-      >
-        {{ site()?.name?.charAt(0) }}
-      </div>
+    <div class="flex min-w-0 items-center gap-3">
+      <a routerLink="/" class="shrink-0">
+        <img
+          class="ssrk-site-logo"
+          [src]="logoSrc()"
+          [alt]="logoAlt()"
+          width="56"
+          height="56"
+          decoding="async"
+        />
+      </a>
       <div class="min-w-0">
-        <p class="font-serif text-lg font-bold leading-none text-ssrk-blue-primary">
+        <a
+          routerLink="/"
+          class="block truncate font-serif text-lg font-bold leading-none text-ssrk-blue-primary"
+        >
           {{ site()?.name }}
-        </p>
-        <p class="mt-0.5 text-[10px] font-medium uppercase tracking-wide text-ssrk-text-muted">
-          {{ site()?.tagline }}
-        </p>
+        </a>
+        <a
+          class="mt-1 inline-block text-[11px] font-semibold text-ssrk-blue-primary underline underline-offset-2 transition hover:text-ssrk-blue-deep"
+          [href]="trustSiteUrl"
+        >
+          Part of SSRK Educational Trust
+        </a>
       </div>
-    </a>
+    </div>
 
     <nav class="hidden items-center gap-6 text-sm font-semibold text-ssrk-text-body lg:flex">
       <a

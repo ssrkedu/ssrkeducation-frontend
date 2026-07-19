@@ -2,12 +2,14 @@
   <div class="mx-auto grid w-full min-w-0 max-w-[1240px] gap-8 px-4 py-10 sm:px-6 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)_minmax(0,1fr)] lg:px-8">
     <div class="min-w-0">
       <div class="flex min-w-0 items-center gap-3">
-        <div
-          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-white/12 font-serif text-lg font-bold text-white"
-          aria-hidden="true"
-        >
-          S
-        </div>
+        <img
+          class="ssrk-site-logo ssrk-site-logo--footer"
+          [src]="logoSrc()"
+          [alt]="logoAlt()"
+          width="44"
+          height="44"
+          decoding="async"
+        />
         <div class="min-w-0">
           <p class="truncate font-serif text-lg font-bold">{{ site()?.name }}</p>
           <p class="mt-0.5 truncate text-xs text-white/60">

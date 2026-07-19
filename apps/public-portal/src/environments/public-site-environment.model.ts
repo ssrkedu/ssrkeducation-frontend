@@ -3,6 +3,8 @@ export interface PublicSiteEnvironmentConfig {
   apexDomain: string;
   port: number | null;
   mainHosts: string[];
+  /** Absolute URL for the Admin Portal header/mobile nav link. */
+  adminPortalUrl: string;
 }
 
 export interface AppEnvironment {

@@ -30,9 +30,8 @@
         <h2 class="font-serif text-[15px] font-bold text-ssrk-text-heading">Status</h2>
       </div>
       <div class="px-5 pb-5 pt-1">
-        <label class="admin-auth-label" for="enquiry-status">Current Status</label>
+        <label class="admin-auth-label" id="enquiry-status-label">Current Status</label>
         <p-select
-          inputId="enquiry-status"
           [options]="statusOptions"
           optionLabel="label"
           optionValue="value"
@@ -40,6 +39,7 @@
           [disabled]="!auth.canWriteEnquiries()"
           [ngModel]="item.status"
           (ngModelChange)="updateStatus($event)"
+          ariaLabelledBy="enquiry-status-label"
         />
 
         <p class="mb-2.5 mt-4 text-xs font-semibold uppercase tracking-wide text-ssrk-text-muted">

@@ -6,6 +6,54 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--trust-header-height, 80px);
+  --ssrk-mobile-enquire-bar-height: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Reserve space under footer when fixed mobile enquire bar is visible. */
+@media (max-width: 1023px) {
+  .ssrk-layout--enquire-bar {
+    padding-bottom: var(--ssrk-mobile-enquire-bar-height);
+  }
+}
+
+.ssrk-site-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .ssrk-site-logo {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ssrk-site-logo {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+.ssrk-site-logo--footer {
+  width: 44px;
+  height: 44px;
+}
+
+@media (min-width: 640px) {
+  .ssrk-site-logo--footer {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ssrk-site-logo--footer {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 html,
@@ -515,7 +563,7 @@ body {
 
 @media (max-width: 1023px) {
   .ssrk-scroll-top.p-scrolltop {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(var(--ssrk-mobile-enquire-bar-height) + 16px);
   }
 }
 

@@ -9,5 +9,6 @@ export const environment: AppEnvironment = {
     apexDomain: 'lvh.me',
     port: 4200,
     mainHosts: ['localhost', 'ssrkeducation.lvh.me'],
+    adminPortalUrl: 'http://localhost:4201',
   },
 };

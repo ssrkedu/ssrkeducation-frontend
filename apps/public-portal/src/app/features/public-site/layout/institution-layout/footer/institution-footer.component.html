@@ -4,17 +4,26 @@
   >
     <div class="min-w-0">
       <div class="flex min-w-0 items-center gap-3">
-        <div
-          class="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-white/12 font-serif text-lg font-bold text-white"
-          aria-hidden="true"
-        >
-          {{ site()?.name?.charAt(0) || 'S' }}
-        </div>
+        <img
+          class="ssrk-site-logo ssrk-site-logo--footer"
+          [src]="logoSrc()"
+          [alt]="logoAlt()"
+          width="44"
+          height="44"
+          decoding="async"
+        />
         <div class="min-w-0">
           <p class="truncate font-serif text-lg font-bold">{{ site()?.name }}</p>
           <p class="mt-0.5 truncate text-xs text-white/60">
             {{ footerIntro()?.locationLine ?? 'Odisha, India' }}
           </p>
+          <a
+            class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-white/75 transition hover:text-ssrk-saffron"
+            [href]="trustSiteUrl"
+          >
+            Part of SSRK Educational Trust
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 

@@ -2,6 +2,7 @@
 // Chrome now loads from GET /api/public/sites/trust/pages/chrome
 
 import { buildTenantSiteUrl } from '../../../site-context/public-site-url.utils';
+import { environment } from '../../../../../environments/environment';
 import {
   TrustFooterLink,
   TrustNavChildLink,
@@ -28,7 +29,7 @@ export const TRUST_MAIN_NAV_LINKS: TrustNavLink[] = [
     href: '#institutions',
     children: TRUST_INSTITUTION_LINKS,
   },
-  { label: 'Admin Portal', href: '#' },
+  { label: 'Admin Portal', href: environment.publicSite.adminPortalUrl },
   { label: 'Enquire Now', href: '#enquiry', cta: true },
 ];
 

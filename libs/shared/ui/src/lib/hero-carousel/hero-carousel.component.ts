@@ -12,6 +12,34 @@ import {
   HeroCarouselTheme,
 } from './hero-carousel.types';
 
+type CarouselTouchStartPos = { x: number; y: number };
+
+let carouselTouchMovePatched = false;
+
+// PrimeNG carousel always preventDefaults touchmove, which blocks page scroll on mobile.
+// Only lock the gesture when it is clearly horizontal so vertical scroll still works.
+function patchCarouselTouchMoveForPageScroll(): void {
+  if (carouselTouchMovePatched) {
+    return;
+  }
+  carouselTouchMovePatched = true;
+
+  Carousel.prototype.onTouchMove = function (this: Carousel, event: TouchEvent) {
+    const touch = event.touches[0];
+    const startPos = (this as Carousel & { startPos?: CarouselTouchStartPos }).startPos;
+    if (!touch || !startPos) {
+      return;
+    }
+
+    const deltaX = touch.pageX - startPos.x;
+    const deltaY = touch.pageY - startPos.y;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && event.cancelable) {
+      event.preventDefault();
+    }
+  };
+}
+
 @Component({
   selector: 'app-hero-carousel',
   imports: [Carousel, RouterLink, PrimeTemplate, NgClass, NgTemplateOutlet],
@@ -20,6 +48,10 @@ import {
 export class HeroCarouselComponent {
   readonly slides = input.required<HeroCarouselSlide[]>();
   readonly options = input<HeroCarouselOptions>({});
+
+  constructor() {
+    patchCarouselTouchMoveForPageScroll();
+  }
 
   protected resolvedOptions(): Required<HeroCarouselOptions> {
     return {

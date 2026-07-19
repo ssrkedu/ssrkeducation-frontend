@@ -72,13 +72,14 @@
       </div>
     </div>
     <div class="mt-1.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
-      <p-checkbox
-        inputId="user-account-active"
-        [binary]="true"
-        [ngModel]="accountActive()"
-        (ngModelChange)="accountActive.set($event)"
-      />
-      <label for="user-account-active">Account Active</label>
+      <label class="flex cursor-pointer items-center gap-2">
+        <p-checkbox
+          [binary]="true"
+          [ngModel]="accountActive()"
+          (ngModelChange)="accountActive.set($event)"
+        />
+        <span>Account Active</span>
+      </label>
     </div>
   </section>
 

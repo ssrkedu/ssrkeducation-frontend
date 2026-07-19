@@ -1,14 +1,14 @@
-<div class="flex min-h-screen w-full min-w-0 max-w-full flex-col overflow-x-clip">
+<div
+  class="flex min-h-screen w-full min-w-0 max-w-full flex-col overflow-x-clip transition-[padding] duration-300"
+  [class.ssrk-layout--enquire-bar]="!!mobileEnquireConfig() && enquireService.barVisible()"
+>
   <app-trust-header />
 
   @if (mobileNavConfig(); as navConfig) {
     <app-mobile-nav-drawer [config]="navConfig" />
   }
 
-  <main
-    class="min-w-0 max-w-full flex-1 overflow-x-clip transition-[padding] duration-300 lg:pb-0"
-    [class.pb-[calc(3.5rem+env(safe-area-inset-bottom))]]="enquireService.barVisible()"
-  >
+  <main class="min-w-0 max-w-full flex-1 overflow-x-clip">
     <router-outlet />
   </main>
 

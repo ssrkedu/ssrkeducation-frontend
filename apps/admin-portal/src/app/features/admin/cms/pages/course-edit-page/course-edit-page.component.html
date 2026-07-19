@@ -141,22 +141,24 @@
     <section class="admin-card p-[18px]">
       <h2 class="admin-section-title">Visibility</h2>
       <div class="flex items-center gap-2 text-[13px] text-ssrk-text-body">
-        <p-checkbox
-          inputId="course-published"
-          [binary]="true"
-          [ngModel]="published()"
-          (ngModelChange)="published.set($event)"
-        />
-        <label for="course-published">Published (live on site)</label>
+        <label class="flex cursor-pointer items-center gap-2">
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="published()"
+            (ngModelChange)="published.set($event)"
+          />
+          <span>Published (live on site)</span>
+        </label>
       </div>
       <div class="mt-2.5 flex items-center gap-2 text-[13px] text-ssrk-text-body">
-        <p-checkbox
-          inputId="course-show-list"
-          [binary]="true"
-          [ngModel]="showInList()"
-          (ngModelChange)="showInList.set($event)"
-        />
-        <label for="course-show-list">Show in course list</label>
+        <label class="flex cursor-pointer items-center gap-2">
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="showInList()"
+            (ngModelChange)="showInList.set($event)"
+          />
+          <span>Show in course list</span>
+        </label>
       </div>
     </section>
   </div>

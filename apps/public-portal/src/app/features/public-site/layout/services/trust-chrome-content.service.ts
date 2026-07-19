@@ -38,6 +38,12 @@ export class TrustChromeContentService {
             return of(null);
           }
 
+          // Institution tenants do not publish a public chrome page yet (only trust does).
+          // Avoid /sites/{institution}/pages/chrome 404 noise on institution hosts.
+          if (site.siteType !== 'trust') {
+            return of(null);
+          }
+
           return this.pageContent
             .getPageContent(tenantKey, 'chrome', toApiLanguage(language))
             .pipe(
