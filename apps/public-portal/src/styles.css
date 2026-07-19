@@ -56,6 +56,44 @@ html {
   }
 }
 
+/* Toast stays fully on-screen on mobile (PrimeNG breakpoints + safe area). */
+.ssrk-toast.p-toast {
+  box-sizing: border-box;
+  max-width: min(25rem, calc(100vw - 1.5rem));
+}
+
+.ssrk-toast .p-toast-message {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ssrk-toast .p-toast-message-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .ssrk-toast.p-toast {
+    top: max(0.75rem, env(safe-area-inset-top, 0px)) !important;
+    width: calc(100% - 1.5rem) !important;
+    max-width: calc(100% - 1.5rem) !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    transform: none !important;
+  }
+
+  .ssrk-toast .p-toast-message-content {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .ssrk-toast .p-toast-summary,
+  .ssrk-toast .p-toast-detail {
+    line-height: 1.35;
+  }
+}
+
 html,
 body {
   width: 100%;

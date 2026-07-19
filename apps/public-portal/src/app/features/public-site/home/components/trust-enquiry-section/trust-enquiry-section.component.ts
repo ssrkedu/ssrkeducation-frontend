@@ -2,12 +2,13 @@ import { afterNextRender, Component, inject, input, signal } from '@angular/core
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { EnquiryFormComponent, EnquiryFormOption, EnquiryFormValue } from '@ssrk/shared/ui';
+import { ApiResponseError, toUserFacingError } from '@ssrk/shared/utils';
+import { MessageService } from 'primeng/api';
 import { catchError, finalize, map, Observable, of, switchMap } from 'rxjs';
 import { scrollToEnquiryWhenReady } from '../../../../../core/site-context/enquiry-deep-link.util';
 import { toApiLanguage } from '../../../../../core/public-api/language-code.util';
 import { PublicEnquiryService } from '../../../../../core/public-api/public-enquiry.service';
 import { SiteLanguage, SiteLanguageService } from '../../../../../core/site-context/site-language.service';
-import { ApiResponseError, toUserFacingError } from '@ssrk/shared/utils';
 import { TrustEnquirySectionContentVm } from '../../models/trust-enquiry-section-content.vm';
 
 @Component({
@@ -18,6 +19,7 @@ import { TrustEnquirySectionContentVm } from '../../models/trust-enquiry-section
 })
 export class TrustEnquirySectionComponent {
   private readonly enquiryService = inject(PublicEnquiryService);
+  private readonly messageService = inject(MessageService);
   private readonly siteLanguage = inject(SiteLanguageService);
   private readonly route = inject(ActivatedRoute);
 
@@ -59,11 +61,18 @@ export class TrustEnquirySectionComponent {
       .pipe(
         finalize(() => this.submitting.set(false)),
         catchError((error: unknown): Observable<null> => {
-          this.submitError.set(
+          const detail =
             error instanceof ApiResponseError
               ? error.message
-              : toUserFacingError(error),
-          );
+              : toUserFacingError(error);
+
+          this.submitError.set(detail);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Enquiry failed',
+            detail,
+            life: 6000,
+          });
           return of(null);
         }),
       )
@@ -73,6 +82,12 @@ export class TrustEnquirySectionComponent {
         }
 
         this.submitSuccess.set(true);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Enquiry submitted',
+          detail: 'Thank you. Our admissions team will contact you soon.',
+          life: 5000,
+        });
         window.setTimeout(() => this.submitSuccess.set(false), 3000);
       });
   }
