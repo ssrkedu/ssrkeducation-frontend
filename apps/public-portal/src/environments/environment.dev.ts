@@ -6,8 +6,9 @@ export const environment: AppEnvironment = {
   apiBaseUrl: 'https://ssrkeducation-backend.onrender.com',
   publicSite: {
     protocol: 'https',
-    apexDomain: 'dev.ssrkeducation.com',
+    // Institution links → https://ssrkdc.dev.ssrkedu.com (wildcard DNS → Netlify)
+    apexDomain: 'dev.ssrkedu.com',
     port: null,
-    mainHosts: ['dev.ssrkeducation.com','dev-ssrkedu.netlify.app'],
+    mainHosts: ['dev.ssrkedu.com', 'www.dev.ssrkedu.com', 'dev-ssrkedu.netlify.app'],
   },
 };

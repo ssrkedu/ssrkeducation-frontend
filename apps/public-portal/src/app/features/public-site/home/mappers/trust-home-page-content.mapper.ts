@@ -1,4 +1,5 @@
-import { AnnouncementTickerConfig } from '@ssrk/shared/ui';
+import { AnnouncementTickerConfig, HeroCarouselSlide } from '@ssrk/shared/ui';
+import { TRUST_HERO_SLIDES } from '../../../../core/config/public-site/trust/trust-hero.config';
 import { PageContentDto, PageContentSectionDto } from '../../../../core/public-api/dtos/public-api.dtos';
 import {
   AboutSectionPayloadDto,
@@ -93,8 +94,16 @@ function mapAnnouncementsVm(
   };
 }
 
-function mapHeroVm(payload: HeroSectionPayloadDto) {
-  return payload.slides ?? [];
+function mapHeroVm(payload: HeroSectionPayloadDto): HeroCarouselSlide[] {
+  // Prefer API images when present; otherwise use local preview assets by slide id.
+  return (payload.slides ?? []).map((slide) => {
+    const local = TRUST_HERO_SLIDES.find((item) => item.id === slide.id);
+    return {
+      ...slide,
+      backgroundImage: slide.backgroundImage ?? local?.backgroundImage,
+      supportImages: slide.supportImages ?? local?.supportImages,
+    };
+  });
 }
 
 function mapStatsVm(payload: StatsSectionPayloadDto) {

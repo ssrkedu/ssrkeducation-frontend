@@ -36,6 +36,7 @@ export interface InstitutionScholarshipsSectionVm extends InstitutionSectionIntr
 }
 
 export interface InstitutionHomePageContentVm {
+  announcements: import('@ssrk/shared/ui').AnnouncementTickerConfig;
   heroSlides: import('@ssrk/shared/ui').HeroCarouselSlide[];
   overview: InstitutionOverviewVm;
   coursesSection: InstitutionCoursesSectionVm;

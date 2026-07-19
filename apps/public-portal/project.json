@@ -30,7 +30,21 @@
 
         "tsConfig": "apps/public-portal/tsconfig.app.json",
 
-        "styles": ["apps/public-portal/src/styles.css"]
+        "styles": ["apps/public-portal/src/styles.css"],
+
+        "assets": [
+
+          {
+
+            "glob": "**/*",
+
+            "input": "apps/public-portal/public",
+
+            "output": "/"
+
+          }
+
+        ]
 
       },
 

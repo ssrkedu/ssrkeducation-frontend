@@ -22,6 +22,7 @@ export interface CmsInstitutionVm {
 
 export type CmsSection =
   | 'home'
+  | 'chrome'
   | 'courses'
   | 'scholarships';
 

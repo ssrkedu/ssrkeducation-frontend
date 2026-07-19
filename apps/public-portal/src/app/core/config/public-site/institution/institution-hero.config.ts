@@ -1,47 +1,57 @@
-import { HeroCarouselSlide } from '@ssrk/shared/ui';
-import { PublicPageKey, SiteContext } from '../../../site-context/site-context.model';
+// FALLBACK-PHASE: local preview hero until CMS media URLs land.
 
-export function buildInstitutionHeroSlides(
-  site: SiteContext | null,
-  isPageEnabled: (page: PublicPageKey) => boolean,
-): HeroCarouselSlide[] {
-  return [
-    {
-      id: 'admissions',
-      badge: 'Admissions Open',
-      title: `Welcome to ${site?.name ?? 'SSRK'}`,
-      description:
-        site?.tagline ??
-        'Government-affiliated programmes in Science, Arts, Commerce and more.',
-      theme: 'institutions',
-      primaryAction: {
-        label: 'Enquire for Admission',
-        href: '#enquiry',
-        variant: 'primary',
-      },
-      secondaryAction: {
-        label: 'Explore Programmes',
-        href: '#featured-courses',
-        variant: 'outline',
-      },
+import { HeroCarouselSlide } from '@ssrk/shared/ui';
+
+const SSRKDC_HERO_IMAGE =
+  '/assets/images/institutions/ssrkdc/ssrkdc_hero_entrance_1.jpeg';
+
+const SSRKJC_HERO_IMAGE =
+  '/assets/images/institutions/ssrkjc/ssrk_group_faculty_1.jpeg';
+
+/** Single official banner — no collage, no multi-slide. */
+const INSTITUTION_HERO_BY_TENANT: Record<string, HeroCarouselSlide> = {
+  ssrkdc: {
+    id: 'hero',
+    badge: 'SSRK Degree College',
+    title: 'Build Your Future with Quality Degree Education',
+    description:
+      'Explore courses, scholarships, admissions, faculty, and student support at SSRK Degree College.',
+    theme: 'institution',
+    backgroundImage: SSRKDC_HERO_IMAGE,
+    primaryAction: {
+      label: 'View Courses',
+      routerLink: '/courses',
+      variant: 'primary',
     },
-    {
-      id: 'scholarship',
-      badge: 'Scholarships Available',
-      title: 'Get Up to 100% Scholarship',
-      description: 'For eligible students across selected programmes at this college.',
-      theme: 'scholarship',
-      primaryAction: {
-        label: 'Check Eligibility',
-        href: '#enquiry',
-        variant: 'primary',
-      },
-      secondaryAction: {
-        label: 'View Courses',
-        routerLink: '/courses',
-        variant: 'outline',
-        hidden: !isPageEnabled('courses'),
-      },
+    secondaryAction: {
+      label: 'Enquire Now',
+      href: '#enquiry',
+      variant: 'outline',
     },
-  ];
+  },
+  ssrkjc: {
+    id: 'hero',
+    badge: 'SSRK Junior College (+2)',
+    title: 'Build Your Future with Quality +2 Education',
+    description:
+      'Explore courses, scholarships, admissions, faculty, and student support at SSRK Junior College.',
+    theme: 'institution',
+    backgroundImage: SSRKJC_HERO_IMAGE,
+    primaryAction: {
+      label: 'View Courses',
+      routerLink: '/courses',
+      variant: 'primary',
+    },
+    secondaryAction: {
+      label: 'Enquire Now',
+      href: '#enquiry',
+      variant: 'outline',
+    },
+  },
+};
+
+export function getInstitutionHeroPreview(
+  tenantKey: string,
+): HeroCarouselSlide | null {
+  return INSTITUTION_HERO_BY_TENANT[tenantKey] ?? null;
 }

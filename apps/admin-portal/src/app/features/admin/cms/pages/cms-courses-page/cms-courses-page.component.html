@@ -144,10 +144,49 @@
       <p-tabpanel value="home">
         <section class="admin-card mt-4">
           <p class="mb-3 px-1 text-sm text-ssrk-text-muted">
-            Edit institution home sections (hero, overview, courses intro, scholarships intro).
-            Course and scholarship cards come from their tabs and appear on this home page.
+            Edit institution home sections (announcements, hero, overview, courses intro,
+            scholarships intro). Course and scholarship cards come from their tabs and appear on
+            this home page.
           </p>
-          <p-table [value]="institutionHomeSections()" styleClass="admin-table" [rowHover]="true">
+          <p-table [value]="institutionPageSections()" styleClass="admin-table" [rowHover]="true">
+            <ng-template #header>
+              <tr>
+                <th>Section</th>
+                <th>Component</th>
+                <th>Status</th>
+                <th>Visible</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-section>
+              <tr>
+                <td><strong>{{ section.sectionKey }}</strong></td>
+                <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
+                <td>
+                  <app-admin-status-badge
+                    [label]="section.status"
+                    [variant]="section.status === 'Published' ? 'published' : 'draft'"
+                  />
+                </td>
+                <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
+                <td>
+                  <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
+                    <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                  </a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </section>
+      </p-tabpanel>
+
+      <p-tabpanel value="chrome">
+        <section class="admin-card mt-4">
+          <p class="mb-3 px-1 text-sm text-ssrk-text-muted">
+            Edit institution chrome used across the site (nav, contact, footer intro). Footer on
+            public pages reads contact and footer intro from here.
+          </p>
+          <p-table [value]="institutionPageSections()" styleClass="admin-table" [rowHover]="true">
             <ng-template #header>
               <tr>
                 <th>Section</th>

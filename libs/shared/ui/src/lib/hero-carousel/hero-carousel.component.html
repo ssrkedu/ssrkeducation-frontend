@@ -1,91 +1,113 @@
 @let carouselOptions = resolvedOptions();
+@let heroSlides = slides();
 
 <section class="ssrk-hero-carousel-wrap w-full max-w-full overflow-x-clip" [attr.aria-label]="carouselOptions.ariaLabel">
-  <p-carousel
-    [value]="slides()"
-    [numVisible]="1"
-    [numScroll]="1"
-    [circular]="carouselOptions.circular"
-    [autoplayInterval]="carouselOptions.autoplayInterval"
-    [showIndicators]="true"
-    [showNavigators]="false"
-    styleClass="ssrk-hero-carousel"
-  >
-    <ng-template let-slide pTemplate="item">
-      <article
-        class="ssrk-hero-slide"
-        [ngClass]="slideThemeClass(slide.theme)"
-        [style.background-image]="slide.backgroundImage ? 'url(' + slide.backgroundImage + ')' : null"
-      >
-        <div class="ssrk-hero-slide__overlay" aria-hidden="true"></div>
-
-        <div
-          class="pointer-events-none absolute bottom-[-80px] right-[-80px] z-[1] h-[340px] w-[340px] rounded-full border-[72px] border-white/[0.04]"
-          aria-hidden="true"
-        ></div>
-        <div
-          class="pointer-events-none absolute right-[60px] top-[-50px] z-[1] h-[180px] w-[180px] rounded-full border-[44px] border-white/[0.04]"
-          aria-hidden="true"
-        ></div>
-
-        <div class="relative z-[2] mx-auto w-full min-w-0 max-w-[1240px] px-4 md:px-6 lg:px-8">
-          <div class="max-w-[700px] min-w-0 text-white">
-            <span
-              class="mb-[18px] inline-block max-w-full rounded-[20px] border border-white/30 bg-white/15 px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[2px] text-white/90"
-            >
-              {{ slide.badge }}
-            </span>
-
-            <h1
-              class="mb-3.5 max-w-full break-words font-serif text-[clamp(24px,5.5vw,54px)] font-bold leading-[1.13] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.35)]"
-            >
-              {{ slide.title }}
-            </h1>
-
-            <p class="mb-7 max-w-[520px] break-words text-[clamp(13px,2.5vw,17px)] leading-relaxed text-white/85">
-              {{ slide.description }}
-            </p>
-
-            <div class="flex min-w-0 max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              @if (visibleAction(slide.primaryAction)) {
-                @if (slide.primaryAction.routerLink) {
-                  <a
-                    [routerLink]="slide.primaryAction.routerLink"
-                    [class]="actionClass(slide.primaryAction.variant ?? 'primary')"
-                  >
-                    {{ slide.primaryAction.label }}
-                  </a>
-                } @else {
-                  <a
-                    [href]="slide.primaryAction.href ?? '#'"
-                    [class]="actionClass(slide.primaryAction.variant ?? 'primary')"
-                  >
-                    {{ slide.primaryAction.label }}
-                  </a>
-                }
-              }
-
-              @if (visibleAction(slide.secondaryAction)) {
-                @if (slide.secondaryAction.routerLink) {
-                  <a
-                    [routerLink]="slide.secondaryAction.routerLink"
-                    [class]="actionClass(slide.secondaryAction.variant ?? 'outline')"
-                  >
-                    {{ slide.secondaryAction.label }}
-                  </a>
-                } @else {
-                  <a
-                    [href]="slide.secondaryAction.href ?? '#'"
-                    [class]="actionClass(slide.secondaryAction.variant ?? 'outline')"
-                  >
-                    {{ slide.secondaryAction.label }}
-                  </a>
-                }
-              }
-            </div>
-          </div>
-        </div>
-      </article>
-    </ng-template>
-  </p-carousel>
+  @if (isCarouselMode()) {
+    <p-carousel
+      [value]="heroSlides"
+      [numVisible]="1"
+      [numScroll]="1"
+      [circular]="carouselOptions.circular"
+      [autoplayInterval]="carouselOptions.autoplayInterval"
+      [showIndicators]="true"
+      [showNavigators]="false"
+      styleClass="ssrk-hero-carousel"
+    >
+      <ng-template let-slide pTemplate="item">
+        <ng-container *ngTemplateOutlet="heroSlideTpl; context: { $implicit: slide }" />
+      </ng-template>
+    </p-carousel>
+  } @else if (heroSlides[0]; as slide) {
+    <ng-container *ngTemplateOutlet="heroSlideTpl; context: { $implicit: slide }" />
+  }
 </section>
+
+<ng-template #heroSlideTpl let-slide>
+  <article
+    class="ssrk-hero-slide"
+    [ngClass]="slideThemeClass(slide.theme)"
+    [style.background-image]="slide.backgroundImage ? 'url(' + slide.backgroundImage + ')' : null"
+  >
+    <div class="ssrk-hero-slide__overlay" aria-hidden="true"></div>
+
+    <div
+      class="pointer-events-none absolute bottom-[-80px] right-[-80px] z-[1] h-[340px] w-[340px] rounded-full border-[72px] border-white/[0.04]"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="pointer-events-none absolute right-[60px] top-[-50px] z-[1] h-[180px] w-[180px] rounded-full border-[44px] border-white/[0.04]"
+      aria-hidden="true"
+    ></div>
+
+    <div [class]="slideLayoutClass(slide)">
+      <div class="max-w-[620px] min-w-0 text-white lg:max-w-[700px]">
+        <span
+          class="mb-[18px] inline-block max-w-full rounded-[20px] border border-white/30 bg-white/15 px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[2px] text-white/90"
+        >
+          {{ slide.badge }}
+        </span>
+
+        <h1
+          class="mb-3.5 max-w-full break-words font-serif text-[clamp(24px,5.5vw,54px)] font-bold leading-[1.13] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.35)]"
+        >
+          {{ slide.title }}
+        </h1>
+
+        <p class="mb-7 max-w-[520px] break-words text-[clamp(13px,2.5vw,17px)] leading-relaxed text-white/85">
+          {{ slide.description }}
+        </p>
+
+        <div class="flex min-w-0 max-w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          @if (visibleAction(slide.primaryAction)) {
+            @if (slide.primaryAction.routerLink) {
+              <a
+                [routerLink]="slide.primaryAction.routerLink"
+                [class]="actionClass(slide.primaryAction.variant ?? 'primary')"
+              >
+                {{ slide.primaryAction.label }}
+              </a>
+            } @else {
+              <a
+                [href]="slide.primaryAction.href ?? '#'"
+                [class]="actionClass(slide.primaryAction.variant ?? 'primary')"
+              >
+                {{ slide.primaryAction.label }}
+              </a>
+            }
+          }
+
+          @if (visibleAction(slide.secondaryAction)) {
+            @if (slide.secondaryAction.routerLink) {
+              <a
+                [routerLink]="slide.secondaryAction.routerLink"
+                [class]="actionClass(slide.secondaryAction.variant ?? 'outline')"
+              >
+                {{ slide.secondaryAction.label }}
+              </a>
+            } @else {
+              <a
+                [href]="slide.secondaryAction.href ?? '#'"
+                [class]="actionClass(slide.secondaryAction.variant ?? 'outline')"
+              >
+                {{ slide.secondaryAction.label }}
+              </a>
+            }
+          }
+        </div>
+      </div>
+
+      @if (slide.supportImages?.length) {
+        <div class="ssrk-hero-image-stack hidden lg:grid" aria-hidden="true">
+          @for (image of slide.supportImages; track image.src) {
+            <img
+              class="ssrk-hero-image-stack__img"
+              [src]="image.src"
+              [alt]="image.alt"
+              loading="eager"
+            />
+          }
+        </div>
+      }
+    </div>
+  </article>
+</ng-template>

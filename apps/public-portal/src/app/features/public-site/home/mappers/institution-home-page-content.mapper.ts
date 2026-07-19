@@ -1,4 +1,5 @@
-import { HeroCarouselSlide } from '@ssrk/shared/ui';
+import { AnnouncementTickerConfig, HeroCarouselSlide } from '@ssrk/shared/ui';
+import { getInstitutionHeroPreview } from '../../../../core/config/public-site/institution/institution-hero.config';
 import { buildTrustEnquiryUrl } from '../../../../core/site-context/public-site-url.utils';
 import {
   CourseItemDto,
@@ -6,6 +7,7 @@ import {
   PageContentSectionDto,
   ScholarshipItemDto,
 } from '../../../../core/public-api/dtos/public-api.dtos';
+import { AnnouncementsSectionPayloadDto } from '../../../../core/public-api/dtos/home-section-payloads.dto';
 import {
   InstitutionCoursesIntroSectionPayloadDto,
   InstitutionHeroSectionPayloadDto,
@@ -25,6 +27,12 @@ export function mapInstitutionHomePageContentVm(
   tenantKey: string,
 ): InstitutionHomePageContentVm {
   return {
+    announcements: mapAnnouncementsVm(
+      getSectionPayload<AnnouncementsSectionPayloadDto>(
+        page.sections,
+        'announcements',
+      ),
+    ),
     heroSlides: mapHeroSlides(
       getSectionPayload<InstitutionHeroSectionPayloadDto>(page.sections, 'hero'),
       tenantKey,
@@ -68,15 +76,43 @@ function getSectionPayload<T>(
   return (section?.payload ?? {}) as T;
 }
 
+function mapAnnouncementsVm(
+  payload: AnnouncementsSectionPayloadDto,
+): AnnouncementTickerConfig {
+  return {
+    label: payload.label ?? 'LATEST',
+    ariaLabel: payload.ariaLabel ?? 'Latest announcements',
+    items: (payload.items ?? []).map((item) => ({
+      id: item.id,
+      text: item.text,
+    })),
+  };
+}
+
 function mapHeroSlides(
   payload: InstitutionHeroSectionPayloadDto,
   tenantKey: string,
 ): HeroCarouselSlide[] {
+  const preview = getInstitutionHeroPreview(tenantKey);
+  const enquireUrl = buildTrustEnquiryUrl(tenantKey);
+
+  // Local preview for ssrkdc: one official campus image, no collage/carousel.
+  if (preview) {
+    return [
+      {
+        ...preview,
+        secondaryAction: {
+          label: preview.secondaryAction?.label ?? 'Enquire Now',
+          href: enquireUrl ?? preview.secondaryAction?.href ?? '#enquiry',
+          variant: 'outline',
+        },
+      },
+    ];
+  }
+
   if (!payload.title) {
     return [];
   }
-
-  const enquireUrl = buildTrustEnquiryUrl(tenantKey);
 
   return [
     {
@@ -85,7 +121,7 @@ function mapHeroSlides(
       title: payload.title,
       description: payload.description ?? '',
       backgroundImage: payload.imageUrl,
-      theme: 'institutions',
+      theme: 'institution',
       primaryAction: {
         label: payload.applyNowLabel ?? 'Apply Now',
         href: enquireUrl ?? '#featured-courses',

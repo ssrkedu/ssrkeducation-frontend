@@ -9,6 +9,14 @@
     <p>{{ vm.errorMessage }}</p>
   </div>
 } @else {
+  @if (vm.announcements?.items?.length) {
+    <app-announcement-ticker
+      [items]="vm.announcements!.items"
+      [label]="vm.announcements!.label ?? 'LATEST'"
+      [ariaLabel]="vm.announcements!.ariaLabel ?? 'Latest announcements'"
+    />
+  }
+
   @if (vm.heroSlides?.length) {
     <app-hero-carousel [slides]="vm.heroSlides!" />
   }

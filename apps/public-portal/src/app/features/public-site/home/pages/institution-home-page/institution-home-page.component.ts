@@ -1,7 +1,11 @@
 import { afterNextRender, Component, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
-import { HeroCarouselComponent, LoaderComponent } from '@ssrk/shared/ui';
+import {
+  AnnouncementTickerComponent,
+  HeroCarouselComponent,
+  LoaderComponent,
+} from '@ssrk/shared/ui';
 import {
   catchError,
   concat,
@@ -31,6 +35,7 @@ import { buildTrustEnquiryUrl } from '../../utils/trust-enquiry-url.util';
   selector: 'app-institution-home-page',
   host: { class: 'block w-full min-w-0 max-w-full' },
   imports: [
+    AnnouncementTickerComponent,
     HeroCarouselComponent,
     InstitutionOverviewSectionComponent,
     InstitutionCoursesSectionComponent,
@@ -97,6 +102,7 @@ export class InstitutionHomePageComponent {
 
               return {
                 status: 'ready',
+                announcements: content.announcements,
                 heroSlides: content.heroSlides,
                 overview: content.overview,
                 coursesSection: content.coursesSection,

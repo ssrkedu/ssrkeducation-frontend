@@ -8,7 +8,12 @@ export interface HeroCarouselAction {
   hidden?: boolean;
 }
 
-export type HeroCarouselTheme = 'scholarship' | 'institutions' | 'default';
+export type HeroCarouselTheme = 'scholarship' | 'institutions' | 'institution' | 'default';
+
+export interface HeroCarouselSupportImage {
+  src: string;
+  alt: string;
+}
 
 export interface HeroCarouselSlide {
   id?: string;
@@ -17,6 +22,7 @@ export interface HeroCarouselSlide {
   description: string;
   theme?: HeroCarouselTheme;
   backgroundImage?: string;
+  supportImages?: HeroCarouselSupportImage[];
   primaryAction: HeroCarouselAction;
   secondaryAction?: HeroCarouselAction;
 }
@@ -28,7 +34,7 @@ export interface HeroCarouselOptions {
 }
 
 export const DEFAULT_HERO_CAROUSEL_OPTIONS: Required<HeroCarouselOptions> = {
-  autoplayInterval: 5000,
+  autoplayInterval: 6000,
   circular: true,
   ariaLabel: 'Hero banner',
 };

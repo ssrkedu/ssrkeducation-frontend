@@ -1,8 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { toApiLanguage } from '../../../../core/public-api/language-code.util';
 import { PublicPageContentService } from '../../../../core/public-api/public-page-content.service';
+import { SiteContextService } from '../../../../core/site-context/site-context.service';
 import { SiteLanguageService } from '../../../../core/site-context/site-language.service';
 import { mapChromePageToVm } from '../mappers/trust-chrome-content.mapper';
 import { TrustChromeContentVm } from '../models/trust-chrome-content.vm';
@@ -11,6 +12,7 @@ import { TrustChromeContentVm } from '../models/trust-chrome-content.vm';
 export class TrustChromeContentService {
   private readonly pageContent = inject(PublicPageContentService);
   private readonly siteLanguage = inject(SiteLanguageService);
+  private readonly siteContext = inject(SiteContextService);
 
   private readonly chromeState = signal<TrustChromeContentVm | null>(null);
   private readonly loadingState = signal(true);
@@ -21,15 +23,23 @@ export class TrustChromeContentService {
   readonly error = this.errorState.asReadonly();
 
   constructor() {
-    toObservable(this.siteLanguage.language)
+    combineLatest([
+      toObservable(this.siteContext.site),
+      toObservable(this.siteLanguage.language),
+    ])
       .pipe(
         tap(() => {
           this.loadingState.set(true);
           this.errorState.set(null);
         }),
-        switchMap((language) =>
-          this.pageContent
-            .getPageContent('trust', 'chrome', toApiLanguage(language))
+        switchMap(([site, language]) => {
+          const tenantKey = site?.tenantKey;
+          if (!tenantKey) {
+            return of(null);
+          }
+
+          return this.pageContent
+            .getPageContent(tenantKey, 'chrome', toApiLanguage(language))
             .pipe(
               map(mapChromePageToVm),
               catchError((error: unknown) => {
@@ -40,8 +50,8 @@ export class TrustChromeContentService {
                 );
                 return of(null);
               }),
-            ),
-        ),
+            );
+        }),
       )
       .subscribe((chrome) => {
         this.chromeState.set(chrome);

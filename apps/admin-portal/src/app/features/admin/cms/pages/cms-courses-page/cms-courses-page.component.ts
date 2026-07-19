@@ -49,7 +49,7 @@ export class CmsCoursesPageComponent {
   protected readonly institutions = signal<CmsInstitutionVm[]>([]);
   protected readonly courses = signal<CourseListItemVm[]>([]);
   protected readonly scholarships = signal<CmsScholarshipListItemDto[]>([]);
-  protected readonly institutionHomePage = signal<CmsTrustPageDto | null>(null);
+  protected readonly institutionPage = signal<CmsTrustPageDto | null>(null);
   protected readonly trustPage = signal<CmsTrustPageDto | null>(null);
   protected readonly trustTab = signal<TrustTab>('home');
   protected readonly institutionTab = signal<CmsSection>('home');
@@ -76,9 +76,10 @@ export class CmsCoursesPageComponent {
     { id: 'branding', label: 'Branding' },
   ];
 
-  // Institution CMS: Home sections, Courses, Scholarships as separate tabs.
+  // Institution CMS: Home sections, Chrome, Courses, Scholarships as separate tabs.
   protected readonly institutionTabs: { id: CmsSection; label: string }[] = [
     { id: 'home', label: 'Home' },
+    { id: 'chrome', label: 'Chrome' },
     { id: 'courses', label: 'Courses' },
     { id: 'scholarships', label: 'Scholarships' },
   ];
@@ -88,8 +89,8 @@ export class CmsCoursesPageComponent {
     return page?.sections ?? [];
   });
 
-  protected readonly institutionHomeSections = computed((): CmsPageSectionSummaryDto[] => {
-    return this.institutionHomePage()?.sections ?? [];
+  protected readonly institutionPageSections = computed((): CmsPageSectionSummaryDto[] => {
+    return this.institutionPage()?.sections ?? [];
   });
 
   constructor() {
@@ -117,7 +118,7 @@ export class CmsCoursesPageComponent {
 
     this.cmsContext.selectInstitution(id);
     this.institutionTab.set('home');
-    this.loadInstitutionHome(id);
+    this.loadInstitutionPage(id, 'home');
     this.loadCourses(id);
     this.loadScholarships(id);
   }
@@ -146,8 +147,8 @@ export class CmsCoursesPageComponent {
       return;
     }
 
-    if (id === 'home') {
-      this.loadInstitutionHome(institutionId);
+    if (id === 'home' || id === 'chrome') {
+      this.loadInstitutionPage(institutionId, id);
     } else if (id === 'courses') {
       this.loadCourses(institutionId);
     } else if (id === 'scholarships') {
@@ -157,12 +158,13 @@ export class CmsCoursesPageComponent {
 
   protected institutionSectionEditLink(sectionKey: string): string[] {
     const institutionId = this.selectedInstitutionId();
+    const pageKey = this.institutionTab() === 'chrome' ? 'chrome' : 'home';
     return [
       '/cms',
       'institutions',
       institutionId ?? '',
       'pages',
-      'home',
+      pageKey,
       'sections',
       sectionKey,
       'edit',
@@ -196,15 +198,15 @@ export class CmsCoursesPageComponent {
     });
   }
 
-  private loadInstitutionHome(institutionId: string): void {
-    this.cmsApi.getInstitutionPage(institutionId, 'home').subscribe({
+  private loadInstitutionPage(institutionId: string, pageKey: string): void {
+    this.cmsApi.getInstitutionPage(institutionId, pageKey).subscribe({
       next: (page) => {
-        this.institutionHomePage.set(page);
+        this.institutionPage.set(page);
         this.loadError.set(null);
       },
       error: () => {
-        this.institutionHomePage.set(null);
-        this.loadError.set('Unable to load institution home sections.');
+        this.institutionPage.set(null);
+        this.loadError.set(`Unable to load institution ${pageKey} sections.`);
       },
     });
   }

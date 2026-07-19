@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PrimeTemplate } from 'primeng/api';
@@ -14,7 +14,7 @@ import {
 
 @Component({
   selector: 'app-hero-carousel',
-  imports: [Carousel, RouterLink, PrimeTemplate, NgClass],
+  imports: [Carousel, RouterLink, PrimeTemplate, NgClass, NgTemplateOutlet],
   templateUrl: './hero-carousel.component.html',
 })
 export class HeroCarouselComponent {
@@ -49,8 +49,25 @@ export class HeroCarouselComponent {
         return 'ssrk-hero-slide--scholarship';
       case 'institutions':
         return 'ssrk-hero-slide--institutions';
+      case 'institution':
+        return 'ssrk-hero-slide--institution';
       default:
         return 'ssrk-hero-slide--default';
     }
+  }
+
+  protected isCarouselMode(): boolean {
+    return this.slides().length > 1;
+  }
+
+  protected slideLayoutClass(slide: HeroCarouselSlide): string {
+    const base =
+      'relative z-[2] mx-auto grid w-full min-w-0 max-w-[1180px] grid-cols-1 items-center px-4 sm:px-6 lg:px-8';
+
+    if (slide.supportImages?.length) {
+      return `${base} lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-12`;
+    }
+
+    return base;
   }
 }

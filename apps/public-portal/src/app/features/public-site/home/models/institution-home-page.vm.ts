@@ -1,4 +1,4 @@
-import { HeroCarouselSlide } from '@ssrk/shared/ui';
+import { AnnouncementTickerConfig, HeroCarouselSlide } from '@ssrk/shared/ui';
 import {
   InstitutionCoursesSectionVm,
   InstitutionOverviewVm,
@@ -7,6 +7,7 @@ import {
 
 export interface InstitutionHomePageVm {
   status: 'loading' | 'ready' | 'error';
+  announcements?: AnnouncementTickerConfig;
   heroSlides?: HeroCarouselSlide[];
   overview?: InstitutionOverviewVm;
   coursesSection?: InstitutionCoursesSectionVm;
