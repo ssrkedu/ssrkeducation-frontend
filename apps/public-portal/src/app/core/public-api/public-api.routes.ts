@@ -40,9 +40,9 @@ export function getResolveHost(hostname: string): string {
     return `${subdomain}.ssrkedu.in`;
   }
 
-  // dev custom domain: ssrkdc.dev.ssrkedu.com → ssrkdc.ssrkedu.in
-  if (environment.name === 'dev' && host.endsWith('.dev.ssrkedu.com')) {
-    const subdomain = host.slice(0, -'.dev.ssrkedu.com'.length).split('.')[0];
+  // dev custom domain: ssrkdc.dev.ssrkedu.in → ssrkdc.ssrkedu.in
+  if (environment.name === 'dev' && host.endsWith('.dev.ssrkedu.in')) {
+    const subdomain = host.slice(0, -'.dev.ssrkedu.in'.length).split('.')[0];
     return subdomain ? `${subdomain}.ssrkedu.in` : 'ssrkedu.in';
   }
 
