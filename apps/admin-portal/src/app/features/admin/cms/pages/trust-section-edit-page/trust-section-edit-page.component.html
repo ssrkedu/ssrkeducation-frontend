@@ -41,39 +41,141 @@
       pTextarea
       class="w-full font-mono text-sm"
       rows="8"
+      placeholder="Paste or type shared JSON here…"
       [ngModel]="sharedPayload()"
       (ngModelChange)="sharedPayload.set($event)"
       [disabled]="!auth.canWriteCms()"
     ></textarea>
+
+    <div class="mt-3 rounded border border-dashed border-amber-300/80 bg-amber-50/70 p-3">
+      <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-amber-800">
+            Example only — not saved
+          </p>
+          <p class="text-xs text-amber-900/70">Reference format. Your editor above is the real content.</p>
+        </div>
+        <div class="flex gap-2">
+          <p-button
+            [label]="showSharedExample() ? 'Hide example' : 'Show example'"
+            styleClass="admin-btn-outline admin-btn-sm"
+            (onClick)="toggleSharedExample()"
+          />
+          @if (auth.canWriteCms()) {
+            <p-button
+              label="Use example"
+              styleClass="admin-btn-outline admin-btn-sm"
+              (onClick)="useSharedExample()"
+            />
+          }
+        </div>
+      </div>
+      @if (showSharedExample()) {
+        <pre
+          class="max-h-48 overflow-auto rounded bg-white/80 p-3 font-mono text-xs leading-relaxed text-ssrk-text-muted"
+          >{{ sharedExample }}</pre
+        >
+      }
+    </div>
   </section>
 
   <section class="admin-card p-5">
     <h2 class="mb-3 font-serif text-base font-bold text-ssrk-text-heading">Readable copy</h2>
     <p-tabs [value]="activeLanguage()" (valueChange)="activeLanguage.set($event === 'en' ? 'en' : 'or')">
       <p-tablist>
-        <p-tab value="or">ଓଡ଼ିଆ (required)</p-tab>
-        <p-tab value="en">English</p-tab>
+        <p-tab value="en">{{ englishTabLabel() }}</p-tab>
+        <p-tab value="or">{{ odiaTabLabel() }}</p-tab>
       </p-tablist>
       <p-tabpanels>
-        <p-tabpanel value="or">
-          <textarea
-            pTextarea
-            class="mt-3 w-full font-mono text-sm"
-            rows="16"
-            [ngModel]="odiaPayload()"
-            (ngModelChange)="odiaPayload.set($event)"
-            [disabled]="!auth.canWriteCms()"
-          ></textarea>
-        </p-tabpanel>
         <p-tabpanel value="en">
           <textarea
             pTextarea
             class="mt-3 w-full font-mono text-sm"
             rows="16"
+            placeholder="Paste or type English JSON here…"
             [ngModel]="englishPayload()"
             (ngModelChange)="englishPayload.set($event)"
             [disabled]="!auth.canWriteCms()"
           ></textarea>
+
+          <div class="mt-3 rounded border border-dashed border-amber-300/80 bg-amber-50/70 p-3">
+            <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-amber-800">
+                  Example only — not saved
+                </p>
+                <p class="text-xs text-amber-900/70">
+                  Valid shape for <span class="font-mono">{{ item.sectionKey }}</span>. Editor above is
+                  real content.
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <p-button
+                  [label]="showLanguageExample() ? 'Hide example' : 'Show example'"
+                  styleClass="admin-btn-outline admin-btn-sm"
+                  (onClick)="toggleLanguageExample()"
+                />
+                @if (auth.canWriteCms()) {
+                  <p-button
+                    label="Use example"
+                    styleClass="admin-btn-outline admin-btn-sm"
+                    (onClick)="useLanguageExample('en')"
+                  />
+                }
+              </div>
+            </div>
+            @if (showLanguageExample()) {
+              <pre
+                class="max-h-64 overflow-auto rounded bg-white/80 p-3 font-mono text-xs leading-relaxed text-ssrk-text-muted"
+                >{{ languageExample() }}</pre
+              >
+            }
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="or">
+          <textarea
+            pTextarea
+            class="mt-3 w-full font-mono text-sm"
+            rows="16"
+            placeholder="Paste or type Odia JSON here…"
+            [ngModel]="odiaPayload()"
+            (ngModelChange)="odiaPayload.set($event)"
+            [disabled]="!auth.canWriteCms()"
+          ></textarea>
+
+          <div class="mt-3 rounded border border-dashed border-amber-300/80 bg-amber-50/70 p-3">
+            <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-amber-800">
+                  Example only — not saved
+                </p>
+                <p class="text-xs text-amber-900/70">
+                  Valid shape for <span class="font-mono">{{ item.sectionKey }}</span>. Editor above is
+                  real content.
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <p-button
+                  [label]="showLanguageExample() ? 'Hide example' : 'Show example'"
+                  styleClass="admin-btn-outline admin-btn-sm"
+                  (onClick)="toggleLanguageExample()"
+                />
+                @if (auth.canWriteCms()) {
+                  <p-button
+                    label="Use example"
+                    styleClass="admin-btn-outline admin-btn-sm"
+                    (onClick)="useLanguageExample('or')"
+                  />
+                }
+              </div>
+            </div>
+            @if (showLanguageExample()) {
+              <pre
+                class="max-h-64 overflow-auto rounded bg-white/80 p-3 font-mono text-xs leading-relaxed text-ssrk-text-muted"
+                >{{ languageExample() }}</pre
+              >
+            }
+          </div>
         </p-tabpanel>
       </p-tabpanels>
     </p-tabs>

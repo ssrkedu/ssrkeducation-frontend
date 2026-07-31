@@ -11,6 +11,7 @@ import { map, switchMap } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
 import { CmsInstitutionDetailDto } from '../../api/dtos/cms.dto';
+import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
 
 @Component({
   selector: 'app-institution-registry-edit-page',
@@ -35,6 +36,7 @@ export class InstitutionRegistryEditPageComponent {
   private readonly router = inject(Router);
   private readonly cmsApi = inject(CmsApiService);
   protected readonly auth = inject(AuthService);
+  private readonly languageRequirements = inject(CmsLanguageRequirementsService);
 
   private readonly institutionId = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
@@ -70,6 +72,8 @@ export class InstitutionRegistryEditPageComponent {
   });
 
   constructor() {
+    this.languageRequirements.ensureLoaded().pipe(takeUntilDestroyed()).subscribe();
+
     this.route.paramMap
       .pipe(
         map((params) => params.get('id') ?? ''),
@@ -121,8 +125,12 @@ export class InstitutionRegistryEditPageComponent {
       return;
     }
 
-    if (!this.odiaName().trim()) {
-      this.errorMessage.set('Odia name is required.');
+    const requiredError = this.languageRequirements.missingRequiredNameMessage({
+      or: this.odiaName(),
+      en: this.englishName(),
+    });
+    if (requiredError) {
+      this.errorMessage.set(requiredError);
       return;
     }
 

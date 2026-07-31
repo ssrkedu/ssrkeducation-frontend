@@ -7,6 +7,7 @@ import { InputText } from 'primeng/inputtext';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
+import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
 
 @Component({
   selector: 'app-trust-branding-edit-page',
@@ -18,6 +19,7 @@ export class TrustBrandingEditPageComponent {
   private readonly cmsApi = inject(CmsApiService);
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
+  private readonly languageRequirements = inject(CmsLanguageRequirementsService);
 
   protected readonly primaryColor = signal('#1e3a8a');
   protected readonly logoUrl = signal('');
@@ -25,11 +27,13 @@ export class TrustBrandingEditPageComponent {
   protected readonly odiaTagline = signal('');
   protected readonly englishName = signal('');
   protected readonly englishTagline = signal('');
-  protected readonly activeLanguage = signal<'or' | 'en'>('or');
+  protected readonly activeLanguage = signal<'or' | 'en'>('en');
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly saving = signal(false);
 
   constructor() {
+    this.languageRequirements.ensureLoaded().pipe(takeUntilDestroyed()).subscribe();
+
     this.cmsApi
       .getTrustSite()
       .pipe(takeUntilDestroyed())
@@ -53,8 +57,12 @@ export class TrustBrandingEditPageComponent {
       return;
     }
 
-    if (!this.odiaName().trim()) {
-      this.errorMessage.set('Odia site name is required.');
+    const requiredError = this.languageRequirements.missingRequiredNameMessage({
+      or: this.odiaName(),
+      en: this.englishName(),
+    });
+    if (requiredError) {
+      this.errorMessage.set(requiredError);
       return;
     }
 

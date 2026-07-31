@@ -44,6 +44,8 @@ export const API_ROUTES = {
         'api/admin/cms/institutions/{institutionId}/scholarships/by-slug/{slug}',
       scholarshipDetail: 'api/admin/cms/scholarships/{id}',
       scholarshipStatus: 'api/admin/cms/scholarships/{id}/status',
+      languages: 'api/admin/cms/languages',
+      languageRequirements: 'api/admin/cms/languages/requirements',
     },
     users: {
       list: 'api/admin/users',

@@ -12,6 +12,7 @@ import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
 import { CmsScholarshipDetailDto } from '../../api/dtos/cms.dto';
 import { CmsContextService } from '../../data/cms-context.service';
+import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
 
 @Component({
   selector: 'app-scholarship-edit-page',
@@ -37,6 +38,7 @@ export class ScholarshipEditPageComponent {
   private readonly cmsApi = inject(CmsApiService);
   private readonly cmsContext = inject(CmsContextService);
   protected readonly auth = inject(AuthService);
+  private readonly languageRequirements = inject(CmsLanguageRequirementsService);
 
   private readonly slug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug'))),
@@ -72,6 +74,8 @@ export class ScholarshipEditPageComponent {
   });
 
   constructor() {
+    this.languageRequirements.ensureLoaded().pipe(takeUntilDestroyed()).subscribe();
+
     this.route.paramMap
       .pipe(
         map((params) => params.get('slug')),
@@ -132,8 +136,12 @@ export class ScholarshipEditPageComponent {
       return;
     }
 
-    if (!this.odiaName().trim()) {
-      this.errorMessage.set('Odia name is required.');
+    const requiredError = this.languageRequirements.missingRequiredNameMessage({
+      or: this.odiaName(),
+      en: this.englishName(),
+    });
+    if (requiredError) {
+      this.errorMessage.set(requiredError);
       return;
     }
 

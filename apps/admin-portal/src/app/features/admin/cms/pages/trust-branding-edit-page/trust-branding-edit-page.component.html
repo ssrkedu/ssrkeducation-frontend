@@ -34,28 +34,28 @@
 <section class="admin-card p-5">
   <p-tabs [value]="activeLanguage()" (valueChange)="activeLanguage.set($event === 'en' ? 'en' : 'or')">
     <p-tablist>
+      <p-tab value="en">English (required)</p-tab>
       <p-tab value="or">ଓଡ଼ିଆ</p-tab>
-      <p-tab value="en">English</p-tab>
     </p-tablist>
     <p-tabpanels>
-      <p-tabpanel value="or">
-        <div class="mt-3 mb-3">
-          <label class="mb-1 block text-sm">Site name (Odia) *</label>
-          <input pInputText class="w-full" [ngModel]="odiaName()" (ngModelChange)="odiaName.set($event)" [disabled]="!auth.canWriteCms()" />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm">Tagline (Odia)</label>
-          <input pInputText class="w-full" [ngModel]="odiaTagline()" (ngModelChange)="odiaTagline.set($event)" [disabled]="!auth.canWriteCms()" />
-        </div>
-      </p-tabpanel>
       <p-tabpanel value="en">
         <div class="mt-3 mb-3">
-          <label class="mb-1 block text-sm">Site name (English)</label>
+          <label class="mb-1 block text-sm">Site name (English) *</label>
           <input pInputText class="w-full" [ngModel]="englishName()" (ngModelChange)="englishName.set($event)" [disabled]="!auth.canWriteCms()" />
         </div>
         <div>
           <label class="mb-1 block text-sm">Tagline (English)</label>
           <input pInputText class="w-full" [ngModel]="englishTagline()" (ngModelChange)="englishTagline.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+      </p-tabpanel>
+      <p-tabpanel value="or">
+        <div class="mt-3 mb-3">
+          <label class="mb-1 block text-sm">Site name (Odia)</label>
+          <input pInputText class="w-full" [ngModel]="odiaName()" (ngModelChange)="odiaName.set($event)" [disabled]="!auth.canWriteCms()" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm">Tagline (Odia)</label>
+          <input pInputText class="w-full" [ngModel]="odiaTagline()" (ngModelChange)="odiaTagline.set($event)" [disabled]="!auth.canWriteCms()" />
         </div>
       </p-tabpanel>
     </p-tabpanels>

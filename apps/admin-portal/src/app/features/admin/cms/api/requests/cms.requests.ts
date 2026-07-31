@@ -104,4 +104,11 @@ export interface SetCmsScholarshipStatusRequest {
   status: string;
 }
 
+export interface UpdateCmsLanguageRequirementsRequest {
+  items: Array<{
+    languageCode: string;
+    isRequired: boolean;
+  }>;
+}
+
 export type { CmsCourseTranslationDto };

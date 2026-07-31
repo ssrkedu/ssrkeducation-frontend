@@ -24,33 +24,18 @@
         styleClass="admin-language-tabs"
       >
         <p-tablist>
-          <p-tab value="od">
-            ଓଡ଼ିଆ (Odia) <span class="text-[10px] text-red-600">*Required</span>
-          </p-tab>
           <p-tab value="en">
-            English <span class="text-[10px] text-ssrk-text-muted">Optional</span>
+            English <span class="text-[10px] text-red-600">*Required</span>
+          </p-tab>
+          <p-tab value="od">
+            ଓଡ଼ିଆ (Odia) <span class="text-[10px] text-ssrk-text-muted">Optional</span>
           </p-tab>
         </p-tablist>
 
         <p-tabpanels>
-          <p-tabpanel value="od">
-            <div class="admin-auth-field pt-3">
-              <label class="admin-auth-label">Course Name (Odia) *</label>
-              <input pInputText class="w-full" placeholder="ଯଥା: ବ୍ୟବସାୟ ପରିଚାଳନା ସ୍ନାତକ" fluid />
-            </div>
-            <div class="admin-auth-field">
-              <label class="admin-auth-label">Short Description (Odia)</label>
-              <textarea pTextarea rows="3" class="w-full" placeholder="ସଂକ୍ଷିପ୍ତ ବିବରଣ…"></textarea>
-            </div>
-            <div class="admin-auth-field">
-              <label class="admin-auth-label">Full Overview (Odia)</label>
-              <textarea pTextarea rows="5" class="w-full" placeholder="ସମ୍ପୂର୍ଣ ବିବରଣ…"></textarea>
-            </div>
-          </p-tabpanel>
-
           <p-tabpanel value="en">
             <div class="admin-auth-field pt-3">
-              <label class="admin-auth-label">Course Name (English)</label>
+              <label class="admin-auth-label">Course Name (English) *</label>
               <input pInputText class="w-full" placeholder="e.g. Bachelor of Business Administration" fluid />
             </div>
             <div class="admin-auth-field">
@@ -60,6 +45,21 @@
             <div class="admin-auth-field">
               <label class="admin-auth-label">Full Overview (English)</label>
               <textarea pTextarea rows="5" class="w-full" placeholder="Full course overview…"></textarea>
+            </div>
+          </p-tabpanel>
+
+          <p-tabpanel value="od">
+            <div class="admin-auth-field pt-3">
+              <label class="admin-auth-label">Course Name (Odia)</label>
+              <input pInputText class="w-full" placeholder="ଯଥା: ବ୍ୟବସାୟ ପରିଚାଳନା ସ୍ନାତକ" fluid />
+            </div>
+            <div class="admin-auth-field">
+              <label class="admin-auth-label">Short Description (Odia)</label>
+              <textarea pTextarea rows="3" class="w-full" placeholder="ସଂକ୍ଷିପ୍ତ ବିବରଣ…"></textarea>
+            </div>
+            <div class="admin-auth-field">
+              <label class="admin-auth-label">Full Overview (Odia)</label>
+              <textarea pTextarea rows="5" class="w-full" placeholder="ସମ୍ପୂର୍ଣ ବିବରଣ…"></textarea>
             </div>
           </p-tabpanel>
         </p-tabpanels>

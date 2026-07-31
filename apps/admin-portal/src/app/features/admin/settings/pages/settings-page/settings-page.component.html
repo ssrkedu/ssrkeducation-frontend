@@ -1,6 +1,6 @@
-<app-admin-page-header title="Settings" subtitle="Manage your account details" />
+<app-admin-page-header title="Settings" subtitle="Manage your account and CMS language rules" />
 
-<section class="admin-card max-w-2xl p-5">
+<section class="admin-card mb-5 max-w-2xl p-5">
   <h2 class="admin-section-title">Profile</h2>
 
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -64,4 +64,56 @@
       styleClass="admin-btn-primary admin-btn-sm"
     />
   </form>
+</section>
+
+<section class="admin-card max-w-2xl p-5">
+  <h2 class="admin-section-title">Content languages</h2>
+  <p class="mb-4 text-sm text-ssrk-text-muted">
+    Required languages must be filled before Save Draft or Publish across CMS content.
+  </p>
+
+  <div class="space-y-3">
+    @for (language of languages(); track language.code) {
+      <div class="flex items-center justify-between gap-4 rounded border border-ssrk-border/60 px-3 py-2">
+        <div>
+          <p class="font-medium text-ssrk-text-heading">{{ language.name }}</p>
+          <p class="text-xs text-ssrk-text-muted">
+            {{ language.nativeName }} · {{ language.code }}
+          </p>
+        </div>
+        <label class="flex items-center gap-2 text-sm" [attr.for]="'lang-required-' + language.code">
+          <p-checkbox
+            [binary]="true"
+            [ngModel]="languageDraft()[language.code]"
+            (ngModelChange)="setLanguageRequired(language.code, $event)"
+            [disabled]="!canEditLanguages() || isSavingLanguages()"
+            [inputId]="'lang-required-' + language.code"
+          />
+          Required
+        </label>
+      </div>
+    }
+  </div>
+
+  @if (languageMessage(); as message) {
+    <p-message severity="success" styleClass="admin-inline-message mt-4 w-full">
+      {{ message }}
+    </p-message>
+  }
+  @if (languageError(); as message) {
+    <p-message severity="error" styleClass="admin-inline-message mt-4 w-full">
+      {{ message }}
+    </p-message>
+  }
+
+  @if (canEditLanguages()) {
+    <p-button
+      class="mt-4 block"
+      label="Save language requirements"
+      [loading]="isSavingLanguages()"
+      [disabled]="isSavingLanguages()"
+      styleClass="admin-btn-primary admin-btn-sm"
+      (onClick)="saveLanguages()"
+    />
+  }
 </section>

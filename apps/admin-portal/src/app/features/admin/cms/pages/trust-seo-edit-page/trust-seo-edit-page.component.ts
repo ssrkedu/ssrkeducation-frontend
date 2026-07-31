@@ -9,6 +9,7 @@ import { Textarea } from 'primeng/textarea';
 import { map, switchMap } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
+import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
 
 @Component({
   selector: 'app-trust-seo-edit-page',
@@ -32,6 +33,7 @@ export class TrustSeoEditPageComponent {
   private readonly router = inject(Router);
   private readonly cmsApi = inject(CmsApiService);
   protected readonly auth = inject(AuthService);
+  private readonly languageRequirements = inject(CmsLanguageRequirementsService);
 
   private readonly pageKey = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('pageKey') ?? 'home')),
@@ -50,6 +52,8 @@ export class TrustSeoEditPageComponent {
   protected readonly saving = signal(false);
 
   constructor() {
+    this.languageRequirements.ensureLoaded().pipe(takeUntilDestroyed()).subscribe();
+
     this.route.paramMap
       .pipe(
         map((params) => params.get('pageKey') ?? 'home'),
@@ -76,8 +80,12 @@ export class TrustSeoEditPageComponent {
       return;
     }
 
-    if (!this.odiaTitle().trim() && !this.odiaMetaTitle().trim()) {
-      this.errorMessage.set('Odia title or meta title is required.');
+    const requiredError = this.languageRequirements.missingRequiredSeoMessage({
+      or: { title: this.odiaTitle(), metaTitle: this.odiaMetaTitle() },
+      en: { title: this.englishTitle(), metaTitle: this.englishMetaTitle() },
+    });
+    if (requiredError) {
+      this.errorMessage.set(requiredError);
       return;
     }
 

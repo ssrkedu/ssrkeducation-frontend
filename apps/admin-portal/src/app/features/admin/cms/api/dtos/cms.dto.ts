@@ -157,3 +157,12 @@ export interface CmsScholarshipDetailDto {
   updatedAtUtc: string | null;
   translations: CmsScholarshipTranslationDto[];
 }
+
+export interface CmsLanguageDto {
+  code: string;
+  name: string;
+  nativeName: string;
+  isDefault: boolean;
+  isRequired: boolean;
+  sortOrder: number;
+}

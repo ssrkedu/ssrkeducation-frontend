@@ -9,16 +9,39 @@ import { map, switchMap } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
 import { CmsTrustSectionDto } from '../../api/dtos/cms.dto';
+import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
+import {
+  sectionPayloadExample,
+  sharedPayloadExample,
+} from '../../data/section-payload-examples';
 
 function prettyJson(raw: string | null | undefined): string {
   if (!raw?.trim()) {
-    return '{}';
+    return '';
   }
 
   try {
-    return JSON.stringify(JSON.parse(raw), null, 2);
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && Object.keys(parsed).length === 0) {
+      return '';
+    }
+    return JSON.stringify(parsed, null, 2);
   } catch {
     return raw;
+  }
+}
+
+function isEmptyPayloadText(raw: string): boolean {
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed === '{}' || trimmed === 'null') {
+    return true;
+  }
+
+  try {
+    const parsed = JSON.parse(trimmed);
+    return !!parsed && typeof parsed === 'object' && !Array.isArray(parsed) && Object.keys(parsed).length === 0;
+  } catch {
+    return false;
   }
 }
 
@@ -32,6 +55,7 @@ export class TrustSectionEditPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cmsApi = inject(CmsApiService);
+  private readonly languageRequirements = inject(CmsLanguageRequirementsService);
   protected readonly auth = inject(AuthService);
 
   private readonly params = toSignal(
@@ -46,19 +70,36 @@ export class TrustSectionEditPageComponent {
   );
 
   protected readonly section = signal<CmsTrustSectionDto | null>(null);
-  protected readonly activeLanguage = signal<'or' | 'en'>('or');
-  protected readonly sharedPayload = signal('{}');
-  protected readonly odiaPayload = signal('{}');
-  protected readonly englishPayload = signal('{}');
+  protected readonly activeLanguage = signal<'or' | 'en'>('en');
+  protected readonly sharedPayload = signal('');
+  protected readonly odiaPayload = signal('');
+  protected readonly englishPayload = signal('');
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly saving = signal(false);
+  protected readonly showSharedExample = signal(true);
+  protected readonly showLanguageExample = signal(true);
 
   protected readonly pageTitle = computed(() => {
     const item = this.section();
     return item ? `Edit ${item.sectionKey}` : 'Edit Section';
   });
 
+  protected readonly odiaTabLabel = computed(() =>
+    this.languageRequirements.requiredLabel('or', 'ଓଡ଼ିଆ'),
+  );
+
+  protected readonly englishTabLabel = computed(() =>
+    this.languageRequirements.requiredLabel('en', 'English'),
+  );
+
+  protected readonly sharedExample = sharedPayloadExample();
+  protected readonly languageExample = computed(() =>
+    sectionPayloadExample(this.section()?.sectionKey ?? this.params().sectionKey),
+  );
+
   constructor() {
+    this.languageRequirements.ensureLoaded().pipe(takeUntilDestroyed()).subscribe();
+
     this.route.paramMap
       .pipe(
         map((paramMap) => ({
@@ -91,6 +132,33 @@ export class TrustSectionEditPageComponent {
       });
   }
 
+  protected toggleSharedExample(): void {
+    this.showSharedExample.update((open) => !open);
+  }
+
+  protected toggleLanguageExample(): void {
+    this.showLanguageExample.update((open) => !open);
+  }
+
+  protected useSharedExample(): void {
+    if (!this.auth.canWriteCms()) {
+      return;
+    }
+    this.sharedPayload.set(this.sharedExample);
+  }
+
+  protected useLanguageExample(language: 'en' | 'or'): void {
+    if (!this.auth.canWriteCms()) {
+      return;
+    }
+    const example = this.languageExample();
+    if (language === 'en') {
+      this.englishPayload.set(example);
+    } else {
+      this.odiaPayload.set(example);
+    }
+  }
+
   protected saveDraft(): void {
     this.save('Draft');
   }
@@ -110,11 +178,20 @@ export class TrustSectionEditPageComponent {
     let english: string;
 
     try {
-      shared = JSON.stringify(JSON.parse(this.sharedPayload()));
-      odia = JSON.stringify(JSON.parse(this.odiaPayload()));
-      english = JSON.stringify(JSON.parse(this.englishPayload()));
+      shared = JSON.stringify(JSON.parse(this.sharedPayload().trim() || '{}'));
+      odia = JSON.stringify(JSON.parse(this.odiaPayload().trim() || '{}'));
+      english = JSON.stringify(JSON.parse(this.englishPayload().trim() || '{}'));
     } catch {
       this.errorMessage.set('Payloads must be valid JSON.');
+      return;
+    }
+
+    if (this.languageRequirements.isRequired('en') && isEmptyPayloadText(english)) {
+      this.errorMessage.set('English translation is required.');
+      return;
+    }
+    if (this.languageRequirements.isRequired('or') && isEmptyPayloadText(odia)) {
+      this.errorMessage.set('Odia translation is required.');
       return;
     }
 
@@ -132,7 +209,7 @@ export class TrustSectionEditPageComponent {
       ? this.cmsApi.updateInstitutionSection(institutionId, pageKey, sectionKey, request)
       : this.cmsApi.updateTrustSection(pageKey, sectionKey, request);
 
-    const status$ = (dto: CmsTrustSectionDto) =>
+    const status$ = () =>
       institutionId
         ? this.cmsApi.setInstitutionSectionStatus(institutionId, pageKey, sectionKey, {
             status,
@@ -144,8 +221,7 @@ export class TrustSectionEditPageComponent {
           });
 
     update$.pipe(switchMap(status$)).subscribe({
-      next: (dto) => {
-        this.section.set(dto);
+      next: () => {
         this.saving.set(false);
         this.errorMessage.set(null);
         void this.router.navigateByUrl('/cms');
@@ -153,9 +229,7 @@ export class TrustSectionEditPageComponent {
       error: () => {
         this.saving.set(false);
         this.errorMessage.set(
-          status === 'Published'
-            ? 'Save/publish failed. Odia content is required to publish.'
-            : 'Save failed. Check payloads and try again.',
+          'Save failed. Fill required language payloads with valid JSON and try again.',
         );
       },
     });
