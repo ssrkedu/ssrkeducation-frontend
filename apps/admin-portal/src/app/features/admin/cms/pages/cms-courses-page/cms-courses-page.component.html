@@ -73,6 +73,11 @@
                     </td>
                   </tr>
                 </ng-template>
+                <ng-template #emptymessage>
+                  <tr>
+                    <td colspan="5" class="p-4 text-sm text-ssrk-text-muted">No sections found.</td>
+                  </tr>
+                </ng-template>
               </p-table>
             </section>
           } @else if (tab.id === 'registry') {
@@ -148,35 +153,46 @@
             scholarships intro). Course and scholarship cards come from their tabs and appear on
             this home page.
           </p>
-          <p-table [value]="institutionPageSections()" styleClass="admin-table" [rowHover]="true">
-            <ng-template #header>
-              <tr>
-                <th>Section</th>
-                <th>Component</th>
-                <th>Status</th>
-                <th>Visible</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-section>
-              <tr>
-                <td><strong>{{ section.sectionKey }}</strong></td>
-                <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
-                <td>
-                  <app-admin-status-badge
-                    [label]="section.status"
-                    [variant]="section.status === 'Published' ? 'published' : 'draft'"
-                  />
-                </td>
-                <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
-                <td>
-                  <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
-                    <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                  </a>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+          @if (loadingHomeSections()) {
+            <p class="px-1 py-4 text-sm text-ssrk-text-muted">Loading sections…</p>
+          } @else {
+            <p-table [value]="institutionHomeSections()" styleClass="admin-table" [rowHover]="true">
+              <ng-template #header>
+                <tr>
+                  <th>Section</th>
+                  <th>Component</th>
+                  <th>Status</th>
+                  <th>Visible</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-section>
+                <tr>
+                  <td><strong>{{ section.sectionKey }}</strong></td>
+                  <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
+                  <td>
+                    <app-admin-status-badge
+                      [label]="section.status"
+                      [variant]="section.status === 'Published' ? 'published' : 'draft'"
+                    />
+                  </td>
+                  <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
+                  <td>
+                    <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
+                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                    </a>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td colspan="5" class="p-4 text-sm text-ssrk-text-muted">
+                    No home sections found for this institution.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
         </section>
       </p-tabpanel>
 
@@ -186,35 +202,46 @@
             Edit institution chrome used across the site (nav, contact, footer intro). Footer on
             public pages reads contact and footer intro from here.
           </p>
-          <p-table [value]="institutionPageSections()" styleClass="admin-table" [rowHover]="true">
-            <ng-template #header>
-              <tr>
-                <th>Section</th>
-                <th>Component</th>
-                <th>Status</th>
-                <th>Visible</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-section>
-              <tr>
-                <td><strong>{{ section.sectionKey }}</strong></td>
-                <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
-                <td>
-                  <app-admin-status-badge
-                    [label]="section.status"
-                    [variant]="section.status === 'Published' ? 'published' : 'draft'"
-                  />
-                </td>
-                <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
-                <td>
-                  <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
-                    <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                  </a>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+          @if (loadingChromeSections()) {
+            <p class="px-1 py-4 text-sm text-ssrk-text-muted">Loading sections…</p>
+          } @else {
+            <p-table [value]="institutionChromeSections()" styleClass="admin-table" [rowHover]="true">
+              <ng-template #header>
+                <tr>
+                  <th>Section</th>
+                  <th>Component</th>
+                  <th>Status</th>
+                  <th>Visible</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-section>
+                <tr>
+                  <td><strong>{{ section.sectionKey }}</strong></td>
+                  <td class="text-xs text-ssrk-text-muted">{{ section.componentType }}</td>
+                  <td>
+                    <app-admin-status-badge
+                      [label]="section.status"
+                      [variant]="section.status === 'Published' ? 'published' : 'draft'"
+                    />
+                  </td>
+                  <td>{{ section.isVisible ? 'Yes' : 'No' }}</td>
+                  <td>
+                    <a [routerLink]="institutionSectionEditLink(section.sectionKey)">
+                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                    </a>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td colspan="5" class="p-4 text-sm text-ssrk-text-muted">
+                    No chrome sections found for this institution.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
         </section>
       </p-tabpanel>
 
@@ -224,71 +251,77 @@
             Course records for this college. On the public site they appear on the institution home
             (and later on /courses when that page is enabled).
           </p>
-          <p-table
-            [value]="courses()"
-            styleClass="admin-table"
-            [tableStyle]="{ 'min-width': '50rem' }"
-            [paginator]="true"
-            [rows]="10"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            [rowHover]="true"
-            sortField="name"
-            [sortOrder]="1"
-          >
-            <ng-template #header>
-              <tr>
-                <th pSortableColumn="name">
-                  Course Name
-                  <p-sortIcon field="name" />
-                </th>
-                <th pSortableColumn="slug">
-                  Slug
-                  <p-sortIcon field="slug" />
-                </th>
-                <th pSortableColumn="duration">
-                  Duration
-                  <p-sortIcon field="duration" />
-                </th>
-                <th pSortableColumn="seats">
-                  Seats
-                  <p-sortIcon field="seats" />
-                </th>
-                <th pSortableColumn="status">
-                  Status
-                  <p-sortIcon field="status" />
-                </th>
-                <th pSortableColumn="updatedOn">
-                  Last Updated
-                  <p-sortIcon field="updatedOn" />
-                </th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-course>
-              <tr>
-                <td><strong>{{ course.name }}</strong></td>
-                <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
-                <td>{{ course.duration }}</td>
-                <td>{{ course.seats ?? '—' }}</td>
-                <td>
-                  <app-admin-status-badge
-                    [label]="course.status"
-                    [variant]="course.status === 'Published' ? 'published' : 'draft'"
-                  />
-                </td>
-                <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
-                <td>
-                  @if (auth.canWriteCms()) {
-                    <a [routerLink]="['/cms/courses', course.slug, 'edit']">
-                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                    </a>
-                  } @else {
-                    <span class="text-xs text-ssrk-text-muted">Read only</span>
-                  }
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+          @if (loadingCourses()) {
+            <p class="px-1 py-4 text-sm text-ssrk-text-muted">Loading courses…</p>
+          } @else {
+            <p-table
+              [value]="courses()"
+              styleClass="admin-table"
+              [tableStyle]="{ 'min-width': '40rem' }"
+              [paginator]="true"
+              [rows]="10"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [rowHover]="true"
+              sortField="name"
+              [sortOrder]="1"
+            >
+              <ng-template #header>
+                <tr>
+                  <th pSortableColumn="name">
+                    Course Name
+                    <p-sortIcon field="name" />
+                  </th>
+                  <th pSortableColumn="slug">
+                    Slug
+                    <p-sortIcon field="slug" />
+                  </th>
+                  <th pSortableColumn="code">
+                    Code
+                    <p-sortIcon field="code" />
+                  </th>
+                  <th pSortableColumn="status">
+                    Status
+                    <p-sortIcon field="status" />
+                  </th>
+                  <th pSortableColumn="updatedOn">
+                    Last Updated
+                    <p-sortIcon field="updatedOn" />
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-course>
+                <tr>
+                  <td><strong>{{ course.name }}</strong></td>
+                  <td class="text-xs text-ssrk-text-muted">{{ course.slug }}</td>
+                  <td class="text-xs text-ssrk-text-muted">{{ course.code }}</td>
+                  <td>
+                    <app-admin-status-badge
+                      [label]="course.status"
+                      [variant]="course.status === 'Published' ? 'published' : 'draft'"
+                    />
+                  </td>
+                  <td class="text-xs text-ssrk-text-muted">{{ course.updatedOn }}</td>
+                  <td>
+                    @if (auth.canWriteCms()) {
+                      <a [routerLink]="['/cms/courses', course.slug, 'edit']">
+                        <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                      </a>
+                    } @else {
+                      <span class="text-xs text-ssrk-text-muted">Read only</span>
+                    }
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td colspan="6" class="p-4 text-sm text-ssrk-text-muted">
+                    No courses yet. Use Create Course to add one.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
         </section>
       </p-tabpanel>
 
@@ -301,45 +334,60 @@
             </p>
             @if (auth.canWriteCms()) {
               <a routerLink="/cms/scholarships/new">
-                <p-button label="Create Scholarship" icon="pi pi-plus" styleClass="admin-btn-primary admin-btn-sm" />
+                <p-button
+                  label="Create Scholarship"
+                  icon="pi pi-plus"
+                  styleClass="admin-btn-primary admin-btn-sm"
+                />
               </a>
             }
           </div>
-          <p-table [value]="scholarships()" styleClass="admin-table" [rowHover]="true">
-            <ng-template #header>
-              <tr>
-                <th>Name</th>
-                <th>Slug</th>
-                <th>Status</th>
-                <th>More info URL</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template #body let-item>
-              <tr>
-                <td><strong>{{ item.name }}</strong></td>
-                <td class="text-xs text-ssrk-text-muted">{{ item.slug }}</td>
-                <td>
-                  <app-admin-status-badge
-                    [label]="item.status"
-                    [variant]="item.status === 'Published' ? 'published' : 'draft'"
-                  />
-                </td>
-                <td class="max-w-[14rem] truncate text-xs text-ssrk-text-muted">
-                  {{ item.moreInfoUrl || '—' }}
-                </td>
-                <td>
-                  @if (auth.canWriteCms()) {
-                    <a [routerLink]="['/cms/scholarships', item.slug, 'edit']">
-                      <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
-                    </a>
-                  } @else {
-                    <span class="text-xs text-ssrk-text-muted">Read only</span>
-                  }
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+          @if (loadingScholarships()) {
+            <p class="px-1 py-4 text-sm text-ssrk-text-muted">Loading scholarships…</p>
+          } @else {
+            <p-table [value]="scholarships()" styleClass="admin-table" [rowHover]="true">
+              <ng-template #header>
+                <tr>
+                  <th>Name</th>
+                  <th>Slug</th>
+                  <th>Status</th>
+                  <th>More info URL</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-item>
+                <tr>
+                  <td><strong>{{ item.name }}</strong></td>
+                  <td class="text-xs text-ssrk-text-muted">{{ item.slug }}</td>
+                  <td>
+                    <app-admin-status-badge
+                      [label]="item.status"
+                      [variant]="item.status === 'Published' ? 'published' : 'draft'"
+                    />
+                  </td>
+                  <td class="max-w-[14rem] truncate text-xs text-ssrk-text-muted">
+                    {{ item.moreInfoUrl || '—' }}
+                  </td>
+                  <td>
+                    @if (auth.canWriteCms()) {
+                      <a [routerLink]="['/cms/scholarships', item.slug, 'edit']">
+                        <p-button label="Edit" styleClass="admin-btn-outline admin-btn-sm" [link]="true" />
+                      </a>
+                    } @else {
+                      <span class="text-xs text-ssrk-text-muted">Read only</span>
+                    }
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td colspan="5" class="p-4 text-sm text-ssrk-text-muted">
+                    No scholarships yet. Use Create Scholarship to add one.
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
         </section>
       </p-tabpanel>
     </p-tabpanels>

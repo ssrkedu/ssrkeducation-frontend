@@ -133,6 +133,12 @@ export class ScholarshipEditPageComponent {
   private persist(status: 'Draft' | 'Published'): void {
     const institutionId = this.cmsContext.selectedInstitutionId();
     if (!institutionId || !this.auth.canWriteCms()) {
+      this.errorMessage.set('Select an institution in Content Management first.');
+      return;
+    }
+
+    if (status === 'Published' && !this.auth.canPublishCms()) {
+      this.errorMessage.set('You do not have permission to publish CMS content.');
       return;
     }
 
@@ -142,6 +148,11 @@ export class ScholarshipEditPageComponent {
     });
     if (requiredError) {
       this.errorMessage.set(requiredError);
+      return;
+    }
+
+    if (!this.slugValue().trim()) {
+      this.errorMessage.set('Slug is required.');
       return;
     }
 
@@ -179,7 +190,15 @@ export class ScholarshipEditPageComponent {
       : this.cmsApi.createScholarship(institutionId, payload);
 
     save$
-      .pipe(switchMap((dto) => this.cmsApi.setScholarshipStatus(dto.id, { status })))
+      .pipe(
+        switchMap((dto) => {
+          this.cmsContext.setInstitutionTab('scholarships');
+          if (!this.auth.canPublishCms()) {
+            return of(dto);
+          }
+          return this.cmsApi.setScholarshipStatus(dto.id, { status });
+        }),
+      )
       .subscribe({
         next: () => {
           this.saving.set(false);

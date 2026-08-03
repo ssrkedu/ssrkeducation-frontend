@@ -7,8 +7,10 @@
   </div>
   @if (auth.canWriteCms()) {
     <div class="flex gap-2">
-      <p-button label="Save Draft" styleClass="admin-btn-outline admin-btn-sm" [loading]="saving()" (onClick)="saveDraft()" />
-      <p-button label="Publish" styleClass="admin-btn-primary admin-btn-sm" [loading]="saving()" (onClick)="publish()" />
+    <p-button label="Save Draft" styleClass="admin-btn-outline admin-btn-sm" [loading]="saving()" (onClick)="saveDraft()" />
+      @if (auth.canPublishCms()) {
+        <p-button label="Publish" styleClass="admin-btn-primary admin-btn-sm" [loading]="saving()" (onClick)="publish()" />
+      }
     </div>
   }
 </div>

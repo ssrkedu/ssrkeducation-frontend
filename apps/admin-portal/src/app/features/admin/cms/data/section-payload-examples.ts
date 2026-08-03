@@ -20,6 +20,14 @@ const EXAMPLES: Record<string, string> = {
     }
   ]
 }`,
+  InstitutionHeroSection: `{
+  "badge": "Admissions Open",
+  "title": "Welcome to the college",
+  "description": "Programme overview copy",
+  "imageUrl": "https://example.com/hero.jpg",
+  "applyNowLabel": "Apply Now",
+  "applyNowTrustUrl": "https://ssrkedu.in/#enquiry?institution=ssrkdc"
+}`,
   stats: `{
   "ariaLabel": "Why choose us",
   "items": [
@@ -126,7 +134,14 @@ const GENERIC_EXAMPLE = `{
   "description": "Section copy"
 }`;
 
-export function sectionPayloadExample(sectionKey: string): string {
+export function sectionPayloadExample(
+  sectionKey: string,
+  componentType?: string | null,
+): string {
+  if (componentType && EXAMPLES[componentType]) {
+    return EXAMPLES[componentType];
+  }
+
   return EXAMPLES[sectionKey] ?? GENERIC_EXAMPLE;
 }
 

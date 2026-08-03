@@ -5,10 +5,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Textarea } from 'primeng/textarea';
-import { map, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { CmsApiService } from '../../api/cms-api.service';
 import { CmsTrustSectionDto } from '../../api/dtos/cms.dto';
+import { CmsContextService } from '../../data/cms-context.service';
 import { CmsLanguageRequirementsService } from '../../data/cms-language-requirements.service';
 import {
   sectionPayloadExample,
@@ -110,6 +111,7 @@ export class TrustSectionEditPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cmsApi = inject(CmsApiService);
+  private readonly cmsContext = inject(CmsContextService);
   private readonly languageRequirements = inject(CmsLanguageRequirementsService);
   protected readonly auth = inject(AuthService);
 
@@ -149,7 +151,10 @@ export class TrustSectionEditPageComponent {
 
   protected readonly sharedExample = sharedPayloadExample();
   protected readonly languageExample = computed(() =>
-    sectionPayloadExample(this.section()?.sectionKey ?? this.params().sectionKey),
+    sectionPayloadExample(
+      this.section()?.sectionKey ?? this.params().sectionKey,
+      this.section()?.componentType,
+    ),
   );
 
   constructor() {
@@ -228,6 +233,11 @@ export class TrustSectionEditPageComponent {
       return;
     }
 
+    if (status === 'Published' && !this.auth.canPublishCms()) {
+      this.errorMessage.set('You do not have permission to publish CMS content.');
+      return;
+    }
+
     let shared: string;
     let odia: string;
     let english: string;
@@ -264,29 +274,39 @@ export class TrustSectionEditPageComponent {
       ? this.cmsApi.updateInstitutionSection(institutionId, pageKey, sectionKey, request)
       : this.cmsApi.updateTrustSection(pageKey, sectionKey, request);
 
-    const status$ = () =>
-      institutionId
-        ? this.cmsApi.setInstitutionSectionStatus(institutionId, pageKey, sectionKey, {
-            status,
-            isVisible: true,
-          })
-        : this.cmsApi.setTrustSectionStatus(pageKey, sectionKey, {
-            status,
-            isVisible: true,
-          });
+    update$
+      .pipe(
+        switchMap((dto) => {
+          if (!this.auth.canPublishCms()) {
+            return of(dto);
+          }
 
-    update$.pipe(switchMap(status$)).subscribe({
-      next: () => {
-        this.saving.set(false);
-        this.errorMessage.set(null);
-        void this.router.navigateByUrl('/cms');
-      },
-      error: () => {
-        this.saving.set(false);
-        this.errorMessage.set(
-          'Save failed. Fill required language payloads with valid JSON and try again.',
-        );
-      },
-    });
+          return institutionId
+            ? this.cmsApi.setInstitutionSectionStatus(institutionId, pageKey, sectionKey, {
+                status,
+                isVisible: true,
+              })
+            : this.cmsApi.setTrustSectionStatus(pageKey, sectionKey, {
+                status,
+                isVisible: true,
+              });
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.saving.set(false);
+          this.errorMessage.set(null);
+          if (institutionId) {
+            this.cmsContext.setInstitutionTab(pageKey === 'chrome' ? 'chrome' : 'home');
+          }
+          void this.router.navigateByUrl('/cms');
+        },
+        error: () => {
+          this.saving.set(false);
+          this.errorMessage.set(
+            'Save failed. Fill required language payloads with valid JSON and try again.',
+          );
+        },
+      });
   }
 }

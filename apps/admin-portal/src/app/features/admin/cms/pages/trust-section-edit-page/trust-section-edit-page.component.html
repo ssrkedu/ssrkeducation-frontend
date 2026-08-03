@@ -13,12 +13,14 @@
         [loading]="saving()"
         (onClick)="saveDraft()"
       />
-      <p-button
-        label="Publish"
-        styleClass="admin-btn-primary admin-btn-sm"
-        [loading]="saving()"
-        (onClick)="publish()"
-      />
+      @if (auth.canPublishCms()) {
+        <p-button
+          label="Publish"
+          styleClass="admin-btn-primary admin-btn-sm"
+          [loading]="saving()"
+          (onClick)="publish()"
+        />
+      }
     </div>
   }
 </div>
