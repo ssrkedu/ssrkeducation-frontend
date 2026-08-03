@@ -15,13 +15,68 @@ import {
   sharedPayloadExample,
 } from '../../data/section-payload-examples';
 
+/** Escape raw line breaks/tabs inside JSON strings so pasted multi-line values still parse. */
+function escapeRawBreaksInJsonStrings(raw: string): string {
+  let result = '';
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+
+    if (escaped) {
+      result += ch;
+      escaped = false;
+      continue;
+    }
+
+    if (inString && ch === '\\') {
+      result += ch;
+      escaped = true;
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = !inString;
+      result += ch;
+      continue;
+    }
+
+    if (inString) {
+      if (ch === '\n') {
+        result += '\\n';
+        continue;
+      }
+      if (ch === '\r') {
+        if (raw[i + 1] === '\n') {
+          i++;
+        }
+        result += '\\n';
+        continue;
+      }
+      if (ch === '\t') {
+        result += '\\t';
+        continue;
+      }
+    }
+
+    result += ch;
+  }
+
+  return result;
+}
+
+function parsePayloadObject(raw: string): unknown {
+  return JSON.parse(escapeRawBreaksInJsonStrings(raw.trim() || '{}'));
+}
+
 function prettyJson(raw: string | null | undefined): string {
   if (!raw?.trim()) {
     return '';
   }
 
   try {
-    const parsed = JSON.parse(raw);
+    const parsed = parsePayloadObject(raw);
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && Object.keys(parsed).length === 0) {
       return '';
     }
@@ -38,7 +93,7 @@ function isEmptyPayloadText(raw: string): boolean {
   }
 
   try {
-    const parsed = JSON.parse(trimmed);
+    const parsed = parsePayloadObject(trimmed);
     return !!parsed && typeof parsed === 'object' && !Array.isArray(parsed) && Object.keys(parsed).length === 0;
   } catch {
     return false;
@@ -178,9 +233,9 @@ export class TrustSectionEditPageComponent {
     let english: string;
 
     try {
-      shared = JSON.stringify(JSON.parse(this.sharedPayload().trim() || '{}'));
-      odia = JSON.stringify(JSON.parse(this.odiaPayload().trim() || '{}'));
-      english = JSON.stringify(JSON.parse(this.englishPayload().trim() || '{}'));
+      shared = JSON.stringify(parsePayloadObject(this.sharedPayload()));
+      odia = JSON.stringify(parsePayloadObject(this.odiaPayload()));
+      english = JSON.stringify(parsePayloadObject(this.englishPayload()));
     } catch {
       this.errorMessage.set('Payloads must be valid JSON.');
       return;
