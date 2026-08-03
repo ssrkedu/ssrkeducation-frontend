@@ -99,12 +99,16 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "local",
+      "options": {
+        "port": 4003
+      },
       "configurations": {
         "production": {
           "buildTarget": "admin-portal:build:production"
         },
         "local": {
-          "buildTarget": "admin-portal:build:local"
+          "buildTarget": "admin-portal:build:local",
+          "port": 4003
         },
         "dev": {
           "buildTarget": "admin-portal:build:dev"
@@ -117,7 +121,8 @@
         },
         "development": {
           "buildTarget": "admin-portal:build:local",
-          "proxyConfig": "apps/admin-portal/proxy.conf.json"
+          "proxyConfig": "apps/admin-portal/proxy.conf.json",
+          "port": 4003
         }
       }
     },
