@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:admin": "nx serve admin-portal --configuration=local --port=4201",
+    "start:admin": "nx serve admin-portal --configuration=local --port=4003",
     "start:public": "nx serve public-portal --configuration=local --port=4200",
     "build:admin": "nx build admin-portal",
     "build:public": "nx build public-portal",
