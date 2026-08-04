@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, delay, map, of } from 'rxjs';
+import { Observable, delay, map, of, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { ResolvedSiteDto } from '../public-api/dtos/public-api.dtos';
 import { toApiLanguage } from '../public-api/language-code.util';
 import { PublicApiClient } from '../public-api/public-api.client';
@@ -12,9 +13,8 @@ import {
 } from './site-context.model';
 import { SiteLanguageService } from './site-language.service';
 import { resolveTenantKeyFromHost } from './site-host.utils';
-// FALLBACK-PHASE: mock site registry kept for content-fallback plan
-// import { MOCK_SITE_REGISTRY } from './mock/public-site.mock-data';
-import { MOCK_COURSES } from './mock/public-site.mock-data';
+import { writeCachedSite } from './site-session-cache';
+import { MOCK_COURSES, MOCK_SITE_REGISTRY } from './mock/public-site.mock-data';
 
 @Injectable({ providedIn: 'root' })
 export class SiteResolverService {
@@ -26,18 +26,22 @@ export class SiteResolverService {
     language = this.siteLanguage.language(),
   ): Observable<SiteContext> {
     const resolveHost = getResolveHost(hostname);
-    const tenantKey = resolveTenantKeyFromHost(hostname);
+    const apiLanguage = toApiLanguage(language);
 
-    return this.api.resolveSite(resolveHost, toApiLanguage(language)).pipe(
+    // Failures must stay failures so a bad response never overwrites a good cache.
+    return this.api.resolveSite(resolveHost, apiLanguage).pipe(
       map(mapDtoToSiteContext),
-      catchError(() => {
-        if (tenantKey !== 'trust') {
-          return of(buildFallbackInstitutionSite(tenantKey));
-        }
-
-        throw new Error('Unable to resolve site for this host.');
-      }),
+      tap((site) => writeCachedSite(resolveHost, apiLanguage, site)),
     );
+  }
+
+  /** Local/dev only — never used when environment.production is true. */
+  getFallbackSite(hostname = window.location.hostname): SiteContext | null {
+    if (environment.production) {
+      return null;
+    }
+
+    return resolveFallbackSite(resolveTenantKeyFromHost(hostname));
   }
 
   getCoursesForInstitution(institutionId: string): Observable<CourseSummary[]> {
@@ -93,7 +97,16 @@ function mapEnabledPages(pages: string[]): PublicPageKey[] {
   );
 }
 
-function buildFallbackInstitutionSite(tenantKey: string): SiteContext {
+function resolveFallbackSite(tenantKey: string): SiteContext {
+  const fromRegistry = MOCK_SITE_REGISTRY[tenantKey];
+  if (fromRegistry) {
+    return fromRegistry;
+  }
+
+  if (tenantKey === 'trust') {
+    return MOCK_SITE_REGISTRY['trust'];
+  }
+
   return {
     siteType: 'institution',
     tenantKey,

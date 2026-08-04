@@ -17,8 +17,78 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;700&family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Serif:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      .ssrk-boot-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 0;
+        background: linear-gradient(160deg, #f8fafc 0%, #eef2ff 55%, #f8fafc 100%);
+        color: #0f172a;
+        font-family: 'Noto Sans', system-ui, sans-serif;
+      }
+
+      .ssrk-boot-splash__mark {
+        display: flex;
+        height: 3.5rem;
+        width: 3.5rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        background: #1e3a8a;
+        color: #fff;
+        font-family: 'Noto Serif', Georgia, serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        box-shadow: 0 8px 24px rgba(30, 58, 138, 0.28);
+      }
+
+      .ssrk-boot-splash__brand {
+        margin: 0;
+        font-family: 'Noto Serif', Georgia, serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        text-align: center;
+      }
+
+      .ssrk-boot-splash__hint {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #64748b;
+      }
+
+      .ssrk-boot-splash__spinner {
+        width: 1.75rem;
+        height: 1.75rem;
+        margin-top: 0.35rem;
+        border: 2.5px solid #c7d2fe;
+        border-top-color: #1e3a8a;
+        border-radius: 50%;
+        animation: ssrk-boot-spin 0.75s linear infinite;
+      }
+
+      @keyframes ssrk-boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
-    <app-root></app-root>
+    <app-root>
+      <div class="ssrk-boot-splash" role="status" aria-live="polite" aria-busy="true">
+        <div class="ssrk-boot-splash__mark" aria-hidden="true">SSRK</div>
+        <p class="ssrk-boot-splash__brand">SSRK Educational Trust</p>
+        <p class="ssrk-boot-splash__hint">Loading…</p>
+        <div class="ssrk-boot-splash__spinner" aria-hidden="true"></div>
+      </div>
+    </app-root>
   </body>
 </html>
